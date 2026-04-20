@@ -1,20 +1,16 @@
 const fs = require('fs');
 
 async function generate() {
-    // تنظيف المفتاح تماماً
-    const apiKey = process.env.GEMINI_API_KEY ? process.env.GEMINI_API_KEY.trim().replace(/[\u200B-\u200D\uFEFF]/g, "") : "";
+    const apiKey = process.env.GEMINI_API_KEY ? process.env.GEMINI_API_KEY.trim() : "";
     
-    // استخدام gemini-pro بدلاً من flash لأنه أضمن في الاستجابة حالياً
-    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${apiKey}`;
+    // الرابط ده هو "المسطرة" اللي هنقيس عليها
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
 
     const data = {
-        contents: [{
-            parts: [{ text: "اكتب مقالاً طويلاً باللغة العربية عن السياحة في مصر بتنسيق HTML." }]
-        }]
+        contents: [{ parts: [{ text: "اكتب مقالاً سريعاً عن الذكاء الاصطناعي بتنسيق HTML." }] }]
     };
 
     try {
-        console.log("محاولة أخيرة باستخدام gemini-pro...");
         const response = await fetch(url, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -23,13 +19,14 @@ async function generate() {
 
         const result = await response.json();
         
-        if (result.candidates && result.candidates[0].content.parts[0].text) {
-            const articleText = result.candidates[0].content.parts[0].text;
-            if (!fs.existsSync('./articles')) fs.mkdirSync('./articles', { recursive: true });
-            fs.writeFileSync(`articles/post-${Date.now()}.html`, articleText.replace(/```html|```/g, ""));
-            console.log("✅ أخيراً! تم النجاح.");
+        if (result.candidates) {
+            const text = result.candidates[0].content.parts[0].text;
+            if (!fs.existsSync('./articles')) fs.mkdirSync('./articles');
+            fs.writeFileSync(`articles/test-${Date.now()}.html`, text);
+            console.log("✅ أخيرااااااا! اشتغل!");
         } else {
-            console.error("الرد من جوجل:", JSON.stringify(result));
+            console.error("❌ المفتاح الجديد لسه فيه مشكلة أو الموديل مش متاح في مصر حالياً بدون VPN.");
+            console.log("التفاصيل:", JSON.stringify(result));
             process.exit(1);
         }
     } catch (e) {
