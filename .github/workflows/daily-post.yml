@@ -1,8 +1,6 @@
 name: Auto Post
 on:
-  workflow_dispatch:
-  schedule:
-    - cron: '0 12 * * *'
+  workflow_dispatch: # السطر ده هو اللي بيظهر الزرار اليدوي
 
 jobs:
   build:
@@ -13,18 +11,16 @@ jobs:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
-          node-version: '18'
+          node-version: '20'
       - run: npm install
       - name: Generate
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: node auto-writer.js
-
-           - name: Push
+      - name: Push
         run: |
           git config --global user.name 'bot'
           git config --global user.email 'bot@bot.com'
           git add articles/
           git commit -m "new post" || exit 0
           git push
- 
