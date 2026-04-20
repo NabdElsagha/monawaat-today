@@ -1,26 +1,49 @@
 name: Auto Post
+
+# تحديد متى يعمل البوت
 on:
-  workflow_dispatch: # السطر ده هو اللي بيظهر الزرار اليدوي
+  workflow_dispatch: # يسمح لك بتشغيل البوت يدوياً بضغطة زر
+  schedule:
+    - cron: '0 12 * * *' # يعمل تلقائياً كل يوم الساعة 12 ظهراً
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    
+    # إعطاء السيرفر صلاحية الكتابة والرفع على المستودع
     permissions:
       contents: write
+      
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      # 1. تحميل ملفات الموقع من GitHub للسيرفر
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      # 2. تجهيز بيئة Node.js (المحرك اللي بيشغل الكود)
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
           node-version: '20'
-      - run: npm install
-      - name: Generate
+
+      # 3. تثبيت المكتبات اللازمة (مثل مكتبة جوجل للذكاء الاصطناعي)
+      - name: Install Dependencies
+        run: npm install
+
+      # 4. تشغيل كود الكتابة (المخ)
+      - name: Run Auto Writer
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: node auto-writer.js
-      - name: Push
+
+      # 5. رفع المقال الجديد للمستودع عشان يظهر على الموقع
+      - name: Push Changes
         run: |
-          git config --global user.name 'bot'
-          git config --global user.email 'bot@bot.com'
+          git config --global user.name 'GitHub Action Bot'
+          git config --global user.email 'actions@github.com'
+          
+          # إضافة أي ملفات جديدة في مجلد المقالات
           git add articles/
-          git commit -m "new post" || exit 0
+          
+          # تنفيذ الرفع (لو مفيش جديد مش هيعمل خطأ)
+          git commit -m "إضافة مقال جديد تلقائياً" || exit 0
           git push
