@@ -3,34 +3,34 @@ const fs = require('fs');
 async function generate() {
     const apiKey = process.env.GEMINI_API_KEY ? process.env.GEMINI_API_KEY.trim() : "";
     
-    // الرابط ده هو "المسطرة" اللي هنقيس عليها
-    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
+    // هنستخدم Groq لأنه شغال في مصر بامتياز ومجاني
+    const url = `https://api.groq.com/openai/v1/chat/completions`;
 
     const data = {
-        contents: [{ parts: [{ text: "اكتب مقالاً سريعاً عن الذكاء الاصطناعي بتنسيق HTML." }] }]
+        model: "llama3-8b-8192",
+        messages: [{ role: "user", content: "اكتب مقالاً طويلاً باللغة العربية عن أهمية التكنولوجيا في حياة الطلاب بتنسيق HTML." }]
     };
 
     try {
+        console.log("جاري التوليد باستخدام المحرك البديل (Groq)...");
         const response = await fetch(url, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 
+                'Authorization': `Bearer ${apiKey}`,
+                'Content-Type': 'application/json' 
+            },
             body: JSON.stringify(data)
         });
 
         const result = await response.json();
+        const text = result.choices[0].message.content;
+
+        if (!fs.existsSync('./articles')) fs.mkdirSync('./articles');
+        fs.writeFileSync(`articles/post-${Date.now()}.html`, text.replace(/```html|```/g, ""));
         
-        if (result.candidates) {
-            const text = result.candidates[0].content.parts[0].text;
-            if (!fs.existsSync('./articles')) fs.mkdirSync('./articles');
-            fs.writeFileSync(`articles/test-${Date.now()}.html`, text);
-            console.log("✅ أخيرااااااا! اشتغل!");
-        } else {
-            console.error("❌ المفتاح الجديد لسه فيه مشكلة أو الموديل مش متاح في مصر حالياً بدون VPN.");
-            console.log("التفاصيل:", JSON.stringify(result));
-            process.exit(1);
-        }
+        console.log("✅ أخيراً! اشتغل والمقال نزل.");
     } catch (e) {
-        console.error("خطأ:", e.message);
+        console.error("❌ حتى البديل فيه مشكلة:", e.message);
         process.exit(1);
     }
 }
