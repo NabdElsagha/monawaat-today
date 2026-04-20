@@ -3,27 +3,20 @@ const fs = require("fs");
 
 async function generate() {
   try {
-    // تنظيف المفتاح من أي حروف غريبة (حل مشكلة ByteString)
-    const apiKey = process.env.GEMINI_API_KEY ? process.env.GEMINI_API_KEY.trim().replace(/[\u200B-\u200D\uFEFF]/g, "") : "";
-    if (!apiKey) throw new Error("API Key Missing");
+    // السطر ده هو اللي بينظف المفتاح من أي حروف غريبة
+    const key = process.env.GEMINI_API_KEY ? process.env.GEMINI_API_KEY.trim().replace(/[\u200B-\u200D\uFEFF]/g, "") : "";
+    if (!key) throw new Error("Key is missing");
 
-    const genAI = new GoogleGenerativeAI(apiKey);
+    const genAI = new GoogleGenerativeAI(key);
+    // السطر ده بينادي الموديل بالطريقة الجديدة الصحيحة
     const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
-    const prompt = "اكتب مقالاً طويلاً ومنوعاً عن موضوع تريند حالياً في مصر بتنسيق HTML جذاب (h2, p, ul).";
-
-    console.log("جاري طلب المقال...");
+    const prompt = "اكتب مقالاً طويلاً ومنوعاً باللغة العربية عن موضوع تريند في مصر بتنسيق HTML جذاب.";
     const result = await model.generateContent(prompt);
-    const text = result.response.text();
-
+    
     if (!fs.existsSync('./articles')) fs.mkdirSync('./articles', { recursive: true });
-
-    const fileName = `articles/post-${Date.now()}.html`;
-    fs.writeFileSync(fileName, text);
-    console.log("تم الحفظ بنجاح: " + fileName);
-  } catch (error) {
-    console.error("حدث خطأ:", error.message);
-    process.exit(1);
-  }
+    fs.writeFileSync(`articles/post-${Date.now()}.html`, result.response.text());
+    console.log("Done!");
+  } catch (e) { console.error(e); process.exit(1); }
 }
 generate();
