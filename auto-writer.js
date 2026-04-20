@@ -3,26 +3,27 @@ const fs = require("fs");
 
 async function generate() {
   try {
-    const apiKey = process.env.GEMINI_API_KEY ? process.env.GEMINI_API_KEY.trim().replace(/[\u200B-\u200D\uFEFF]/g, "") : "";
-    if (!apiKey) throw new Error("API Key Missing");
+    const key = process.env.GEMINI_API_KEY ? process.env.GEMINI_API_KEY.trim().replace(/[\u200B-\u200D\uFEFF]/g, "") : "";
+    if (!key) throw new Error("Key is missing");
 
-    const genAI = new GoogleGenerativeAI(apiKey);
-    // استخدمنا gemini-pro كبديل أضمن لو فلاش لسه فيه مشكلة في منطقتك
-    const model = genAI.getGenerativeModel({ model: "gemini-pro" });
-    
-    const prompt = "اكتب مقالاً إخبارياً طويلاً عن أهم تريند في مصر اليوم بتنسيق HTML جذاب.";
-    
-    console.log("جاري طلب المقال من Gemini...");
+    const genAI = new GoogleGenerativeAI(key);
+    // استخدمنا gemini-1.5-flash لأنه الأحدث والأسرع
+    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+
+    const prompt = "اكتب مقالاً طويلاً ومنوعاً باللغة العربية عن موضوع تريند حالياً في مصر بتنسيق HTML جذاب.";
+
+    console.log("جاري التوليد...");
     const result = await model.generateContent(prompt);
-    const text = result.response.text();
-    
+    const response = await result.response;
+    const text = response.text();
+
     if (!fs.existsSync('./articles')) fs.mkdirSync('./articles', { recursive: true });
-    
+
     const fileName = `articles/post-${Date.now()}.html`;
     fs.writeFileSync(fileName, text);
-    console.log("تم الحفظ بنجاح: " + fileName);
-  } catch (error) {
-    console.error("حدث خطأ:", error.message);
+    console.log("تم بنجاح: " + fileName);
+  } catch (e) {
+    console.error("حدث خطأ: ", e.message);
     process.exit(1);
   }
 }
