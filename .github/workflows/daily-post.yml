@@ -19,10 +19,12 @@ jobs:
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: node auto-writer.js
-      - name: Push
+
+           - name: Push
         run: |
           git config --global user.name 'bot'
           git config --global user.email 'bot@bot.com'
           git add articles/
           git commit -m "new post" || exit 0
           git push
+ 
