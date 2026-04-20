@@ -23,10 +23,11 @@ jobs:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: node auto-writer.js
 
-      - name: Commit and Push changes
+            - name: Commit and Push changes
         run: |
           git config --global user.name 'GitHub Action'
           git config --global user.email 'action@github.com'
-          git add .
+          # هنا بنقول له ضيف مجلد المقالات والملفات الأساسية بس
+          git add articles/ index.html
           git commit -m "نشر مقال جديد تلقائياً" || exit 0
           git push
