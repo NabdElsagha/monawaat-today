@@ -1,22 +1,41 @@
-const { GoogleGenerativeAI } = require("@google/generative-ai");
-const fs = require("fs");
+const fs = require('fs');
 
 async function generate() {
-  try {
-    // السطر ده هو اللي بينظف المفتاح من أي حروف غريبة
-    const key = process.env.GEMINI_API_KEY ? process.env.GEMINI_API_KEY.trim().replace(/[\u200B-\u200D\uFEFF]/g, "") : "";
-    if (!key) throw new Error("Key is missing");
+    const apiKey = process.env.GEMINI_API_KEY ? process.env.GEMINI_API_KEY.trim().replace(/[\u200B-\u200D\uFEFF]/g, "") : "";
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
 
-    const genAI = new GoogleGenerativeAI(key);
-    // السطر ده بينادي الموديل بالطريقة الجديدة الصحيحة
-    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+    const data = {
+        contents: [{
+            parts: [{ text: "اكتب مقالاً طويلاً ومنوعاً باللغة العربية عن أهم تريند في مصر اليوم بتنسيق HTML جذاب." }]
+        }]
+    };
 
-    const prompt = "اكتب مقالاً طويلاً ومنوعاً باللغة العربية عن موضوع تريند في مصر بتنسيق HTML جذاب.";
-    const result = await model.generateContent(prompt);
-    
-    if (!fs.existsSync('./articles')) fs.mkdirSync('./articles', { recursive: true });
-    fs.writeFileSync(`articles/post-${Date.now()}.html`, result.response.text());
-    console.log("Done!");
-  } catch (e) { console.error(e); process.exit(1); }
+    try {
+        console.log("جاري طلب المقال مباشرة من سيرفرات جوجل...");
+        const response = await fetch(url, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+        });
+
+        const result = await response.json();
+        
+        if (result.candidates && result.candidates[0].content.parts[0].text) {
+            const articleText = result.candidates[0].content.parts[0].text;
+            
+            if (!fs.existsSync('./articles')) fs.mkdirSync('./articles', { recursive: true });
+            const fileName = `articles/post-${Date.now()}.html`;
+            fs.writeFileSync(fileName, articleText);
+            
+            console.log("✅ تم بنجاح: " + fileName);
+        } else {
+            console.error("❌ خطأ في الرد من جوجل:", JSON.stringify(result));
+            process.exit(1);
+        }
+    } catch (error) {
+        console.error("❌ خطأ فني:", error.message);
+        process.exit(1);
+    }
 }
+
 generate();
