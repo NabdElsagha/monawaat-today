@@ -4,28 +4,22 @@ async function generate() {
     const apiKey = process.env.GEMINI_API_KEY ? process.env.GEMINI_API_KEY.trim() : "";
     const url = `https://api.groq.com/openai/v1/chat/completions`;
 
-    // قائمة المجالات لتنويع المحتوى
-    const categories = ["أخبار مصر", "تكنولوجيا", "اقتصاد", "رياضة", "منوعات"];
+    const categories = ["أخبار مصر", "تكنولوجيا", "اقتصاد", "رياضة", "فن وثقافة"];
     const randomCategory = categories[Math.floor(Math.random() * categories.length)];
     
-    // تحديد صورة عشوائية بناءً على المجال
-    const imageKeywords = {
-        "أخبار مصر": "egypt-news",
-        "تكنولوجيا": "technology",
-        "اقتصاد": "finance",
-        "رياضة": "sports",
-        "منوعات": "lifestyle"
-    };
-    const imageUrl = `https://images.unsplash.com/photo-1504711432869-5d5932e22196?q=80&w=1000&auto=format&fit=crop&sig=${Date.now()}`;
+    // صورة عشوائية حقيقية تتغير مع كل خبر
+    const imageUrl = `https://plus.unsplash.com/premium_photo-1688561384439-e243a83d22d5?q=80&w=800&auto=format&fit=crop&random=${Date.now()}`;
 
-    const prompt = `اكتب مقالاً إخبارياً مصرياً حصرياً لقسم "${randomCategory}" في موقع "الحدث المصري". 
+    const prompt = `اكتب مقالاً إخبارياً مصرياً قصيراً وحصرياً لقسم "${randomCategory}" في موقع "الحدث المصري". 
     يجب أن يكون الرد كود HTML فقط بهذا التنسيق:
     <div class="news-card">
-        <div class="card-img"><img src="${imageUrl}" style="width:100%; height:200px; object-fit:cover;" alt="خبر"></div>
+        <div class="card-img">
+            <img src="${imageUrl}" style="width:100%; height:220px; object-fit:cover;" alt="صورة الخبر">
+        </div>
         <div class="card-content">
             <span class="tag">${randomCategory}</span>
-            <h3>عنوان الخبر هنا</h3>
-            <p>ملخص الخبر بأسلوب شيق...</p>
+            <h3>عنوان الخبر بأسلوب صحفي جذاب</h3>
+            <p>تفاصيل الخبر بشكل مختصر ومفيد جداً للقارئ المصري...</p>
             <a href="#" class="btn-read">اقرأ المزيد</a>
         </div>
     </div>`;
@@ -41,7 +35,7 @@ async function generate() {
         });
 
         const result = await response.json();
-        const newCard = result.choices[0].message.content.replace(/```html|```/g, "").trim();
+        let newCard = result.choices[0].message.content.replace(/```html|```/g, "").trim();
 
         let indexContent = fs.readFileSync('index.html', 'utf8');
         const marker = '<div class="news-grid">';
@@ -49,7 +43,7 @@ async function generate() {
         if (indexContent.includes(marker)) {
             indexContent = indexContent.replace(marker, marker + '\n' + newCard);
             fs.writeFileSync('index.html', indexContent);
-            console.log(`✅ تم نشر خبر جديد في قسم ${randomCategory}`);
+            console.log("✅ تم تحديث الواجهة بنجاح!");
         }
     } catch (e) {
         process.exit(1);
