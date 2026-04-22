@@ -7,27 +7,27 @@ async function generate() {
     const categories = ["أخبار مصر", "تكنولوجيا", "اقتصاد", "رياضة", "فن وثقافة"];
     const randomCategory = categories[Math.floor(Math.random() * categories.length)];
 
-    // البرومبت ده بيجبر البوت إنه يختار كلمة إنجليزية تعبر عن الصورة
-    const prompt = `اكتب مقالاً إخبارياً مصرياً طويلاً ومحترفاً لقسم "${randomCategory}" في موقع "الحدث المصري".
+    // هنا بنطلب من البوت يختار الكلمة الدلالية بنفسه
+    const prompt = `اكتب مقالاً إخبارياً مصرياً طويلاً ومحترفاً لقسم "${randomCategory}" لموقع "الحدث المصري".
     التعليمات:
-    1. العنوان: جذاب واحترافي.
-    2. المحتوى: 6 جمل طويلة مفصلة.
-    3. صورة الخبر: اختر كلمة واحدة بالإنجليزية (Keyword) تعبر عن موضوع الخبر (مثلاً: gold, football, coding, Cairo).
+    1. العنوان: جذاب جداً.
+    2. المحتوى: مقال دسم (6 جمل طويلة).
+    3. الكلمة المفتاحية للصورة: اختر كلمة واحدة بالإنجليزية تعبر بدقة عن محتوى الخبر (مثل: economy, technology, football, museum).
     
-    الرد يكون كود HTML فقط بهذا الشكل:
+    الرد كود HTML فقط بهذا التنسيق:
     <div class="news-card">
         <div class="card-img-wrapper">
-            <img src="https://source.unsplash.com/featured/800x500/?{KEYWORD}" alt="الحدث المصري">
+            <img src="https://loremflickr.com/800/500/{KEYWORD}" alt="صورة الخبر" onerror="this.src='https://via.placeholder.com/800x500/002b5b/ffffff?text=الحدث+المصري'">
         </div>
         <div class="card-content">
             <span class="tag">${randomCategory}</span>
-            <h3>عنوان الخبر</h3>
-            <p>محتوى الخبر...</p>
+            <h3>عنوان الخبر هنا</h3>
+            <p>تفاصيل الخبر هنا...</p>
             <a href="#" class="btn-read">إقرأ التفاصيل الكاملة</a>
         </div>
     </div>
     
-    *ملاحظة: استبدل {KEYWORD} بالكلمة التي اخترتها.*`;
+    * ملاحظة: استبدل {KEYWORD} بالكلمة التي اخترتها بالإنجليزية.`;
 
     try {
         const response = await fetch(url, {
@@ -49,7 +49,7 @@ async function generate() {
         if (indexContent.includes(marker)) {
             indexContent = indexContent.replace(marker, marker + '\n' + content);
             fs.writeFileSync('index.html', indexContent);
-            console.log("✅ المقال نزل بصورة مرتبطة بالمحتوى!");
+            console.log("✅ المقال نزل بصورة ذكية!");
         }
     } catch (e) {
         process.exit(1);
