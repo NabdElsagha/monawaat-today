@@ -7,25 +7,29 @@ async function generate() {
     const categories = ["أخبار مصر", "تكنولوجيا", "اقتصاد", "رياضة", "فن وثقافة"];
     const randomCategory = categories[Math.floor(Math.random() * categories.length)];
     
-    // استخدام مصدر صور موثوق جداً وسريع مع رقم عشوائي لضمان التغيير
-    const imageID = Math.floor(Math.random() * 1000);
-    const imageUrl = `https://fastly.picsum.photos/id/${imageID % 500}/800/500.jpg?hmac=demo`;
+    // استخدام رابط صورة مباشر مع رقم عشوائي لضمان التحديث المستمر
+    const picId = Math.floor(Math.random() * 100) + 1;
+    const imageUrl = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/poke-ball.png`; // رابط تجريبي للتأكد من العرض
+    // الرابط الفعلي اللي هنعتمد عليه (احترافي وسريع):
+    const finalImg = `https://picsum.photos/800/500?random=${Date.now()}`;
 
-    const prompt = `اكتب مقالاً إخبارياً مصرياً دسماً واحترافياً لقسم "${randomCategory}" في موقع "الحدث المصري".
+    const prompt = `اكتب مقالاً إخبارياً مصرياً طويلاً ومحترماً لمنصة "الحدث المصري" في قسم "${randomCategory}".
     التعليمات:
-    1. العنوان: جذاب جداً واحترافي (Catchy).
-    2. المحتوى: مقال طويل نسبياً (فقرتين كبار) بأسلوب صحفي راقي.
-    3. التنسيق: HTML بسيط ونظيف جداً يريح العين على الموبايل.
-    4. ابتعد تماماً عن أي محتوى مسيء أو عناوين مضللة.
-
+    1. العنوان: طويل وجذاب وبعيد عن الإساءة.
+    2. المحتوى: فقرتين كاملتين بأسلوب صحفي دسم.
+    
     الرد كود HTML فقط:
-    <div class="news-card" style="margin-bottom:30px; background:#fff; border-radius:8px; box-shadow:0 2px 10px rgba(0,0,0,0.1); overflow:hidden;">
-        <img src="${imageUrl}" style="width:100%; height:250px; object-fit:cover; display:block;" alt="الحدث">
-        <div style="padding:20px;">
-            <span class="tag" style="background:#c5a059; color:#fff; padding:3px 10px; font-size:12px; border-radius:3px;">${randomCategory}</span>
-            <h3 style="color:#002b5b; font-size:1.4rem; margin:15px 0; line-height:1.4;">عنوان الخبر هنا</h3>
-            <p style="color:#444; line-height:1.7; font-size:1rem;">محتوى الخبر المفصل الذي يملأ العين ويقدم معلومة مفيدة...</p>
-            <a href="#" class="btn-read" style="color:#c5a059; text-decoration:none; font-weight:bold; display:inline-block; margin-top:10px;">إقرأ المزيد ←</a>
+    <div class="news-card" style="margin-bottom:30px; background:#fff; border-radius:12px; box-shadow:0 4px 15px rgba(0,0,0,0.05); overflow:hidden; border: 1px solid #eee;">
+        <div style="width:100%; height:250px; background:#f0f0f0; overflow:hidden;">
+            <img src="${finalImg}" style="width:100%; height:100%; object-fit:cover;" alt="الحدث المصري" onerror="this.src='https://via.placeholder.com/800x500/002b5b/ffffff?text=الحدث+المصري'">
+        </div>
+        <div style="padding:25px;">
+            <span style="background:#c5a059; color:#fff; padding:4px 12px; font-size:12px; border-radius:4px; font-weight:bold;">${randomCategory}</span>
+            <h3 style="color:#002b5b; font-size:1.6rem; margin:15px 0; line-height:1.4;">[العنوان]</h3>
+            <p style="color:#444; line-height:1.8; font-size:1.1rem; margin-bottom:15px;">[المحتوى]</p>
+            <div style="text-align:left;">
+                <a href="#" style="color:#c5a059; text-decoration:none; font-weight:bold;">إقرأ المزيد ←</a>
+            </div>
         </div>
     </div>`;
 
@@ -35,8 +39,7 @@ async function generate() {
             headers: { 'Authorization': `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
             body: JSON.stringify({
                 model: "llama-3.1-8b-instant",
-                messages: [{ role: "user", content: prompt }],
-                temperature: 0.6
+                messages: [{ role: "user", content: prompt }]
             })
         });
 
@@ -49,7 +52,7 @@ async function generate() {
         if (indexContent.includes(marker)) {
             indexContent = indexContent.replace(marker, marker + '\n' + newCard);
             fs.writeFileSync('index.html', indexContent);
-            console.log("✅ تم استعادة النظام ونشر المقال بنجاح!");
+            console.log("✅ تم النشر بنجاح والصور مؤمنة!");
         }
     } catch (e) {
         process.exit(1);
