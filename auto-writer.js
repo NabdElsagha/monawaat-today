@@ -6,32 +6,28 @@ async function generate() {
 
     const categories = ["أخبار مصر", "تكنولوجيا", "اقتصاد", "رياضة", "فن وثقافة"];
     const randomCategory = categories[Math.floor(Math.random() * categories.length)];
-    
-    // استخدام رابط صورة مباشر مع رقم عشوائي لضمان التحديث المستمر
-    const picId = Math.floor(Math.random() * 100) + 1;
-    const imageUrl = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/poke-ball.png`; // رابط تجريبي للتأكد من العرض
-    // الرابط الفعلي اللي هنعتمد عليه (احترافي وسريع):
-    const finalImg = `https://picsum.photos/800/500?random=${Date.now()}`;
 
-    const prompt = `اكتب مقالاً إخبارياً مصرياً طويلاً ومحترماً لمنصة "الحدث المصري" في قسم "${randomCategory}".
+    // البرومبت ده بيجبر البوت إنه يختار كلمة إنجليزية تعبر عن الصورة
+    const prompt = `اكتب مقالاً إخبارياً مصرياً طويلاً ومحترفاً لقسم "${randomCategory}" في موقع "الحدث المصري".
     التعليمات:
-    1. العنوان: طويل وجذاب وبعيد عن الإساءة.
-    2. المحتوى: فقرتين كاملتين بأسلوب صحفي دسم.
+    1. العنوان: جذاب واحترافي.
+    2. المحتوى: 6 جمل طويلة مفصلة.
+    3. صورة الخبر: اختر كلمة واحدة بالإنجليزية (Keyword) تعبر عن موضوع الخبر (مثلاً: gold, football, coding, Cairo).
     
-    الرد كود HTML فقط:
-    <div class="news-card" style="margin-bottom:30px; background:#fff; border-radius:12px; box-shadow:0 4px 15px rgba(0,0,0,0.05); overflow:hidden; border: 1px solid #eee;">
-        <div style="width:100%; height:250px; background:#f0f0f0; overflow:hidden;">
-            <img src="${finalImg}" style="width:100%; height:100%; object-fit:cover;" alt="الحدث المصري" onerror="this.src='https://via.placeholder.com/800x500/002b5b/ffffff?text=الحدث+المصري'">
+    الرد يكون كود HTML فقط بهذا الشكل:
+    <div class="news-card">
+        <div class="card-img-wrapper">
+            <img src="https://source.unsplash.com/featured/800x500/?{KEYWORD}" alt="الحدث المصري">
         </div>
-        <div style="padding:25px;">
-            <span style="background:#c5a059; color:#fff; padding:4px 12px; font-size:12px; border-radius:4px; font-weight:bold;">${randomCategory}</span>
-            <h3 style="color:#002b5b; font-size:1.6rem; margin:15px 0; line-height:1.4;">[العنوان]</h3>
-            <p style="color:#444; line-height:1.8; font-size:1.1rem; margin-bottom:15px;">[المحتوى]</p>
-            <div style="text-align:left;">
-                <a href="#" style="color:#c5a059; text-decoration:none; font-weight:bold;">إقرأ المزيد ←</a>
-            </div>
+        <div class="card-content">
+            <span class="tag">${randomCategory}</span>
+            <h3>عنوان الخبر</h3>
+            <p>محتوى الخبر...</p>
+            <a href="#" class="btn-read">إقرأ التفاصيل الكاملة</a>
         </div>
-    </div>`;
+    </div>
+    
+    *ملاحظة: استبدل {KEYWORD} بالكلمة التي اخترتها.*`;
 
     try {
         const response = await fetch(url, {
@@ -39,20 +35,21 @@ async function generate() {
             headers: { 'Authorization': `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
             body: JSON.stringify({
                 model: "llama-3.1-8b-instant",
-                messages: [{ role: "user", content: prompt }]
+                messages: [{ role: "user", content: prompt }],
+                temperature: 0.6
             })
         });
 
         const result = await response.json();
-        let newCard = result.choices[0].message.content.replace(/```html|```/g, "").trim();
+        let content = result.choices[0].message.content.replace(/```html|```/g, "").trim();
 
         let indexContent = fs.readFileSync('index.html', 'utf8');
         const marker = '<div class="news-grid">';
         
         if (indexContent.includes(marker)) {
-            indexContent = indexContent.replace(marker, marker + '\n' + newCard);
+            indexContent = indexContent.replace(marker, marker + '\n' + content);
             fs.writeFileSync('index.html', indexContent);
-            console.log("✅ تم النشر بنجاح والصور مؤمنة!");
+            console.log("✅ المقال نزل بصورة مرتبطة بالمحتوى!");
         }
     } catch (e) {
         process.exit(1);
