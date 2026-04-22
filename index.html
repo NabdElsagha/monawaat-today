@@ -3,61 +3,73 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>نبض الصاغة | بوابة المحتوى الذكي</title>
+    <title>الحدث المصري | عينك على الحقيقة</title>
     <style>
-        :root { --primary: #1a237e; --accent: #d32f2f; --bg: #f4f7f6; }
-        body { font-family: 'Segoe UI', Tahoma, Geneva, sans-serif; background: var(--bg); margin: 0; color: #333; }
-        header { background: linear-gradient(135deg, var(--primary), #0d47a1); color: white; padding: 40px 20px; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
-        .nav-bar { background: white; padding: 15px; text-align: center; box-shadow: 0 2px 5px rgba(0,0,0,0.1); position: sticky; top: 0; z-index: 1000; }
-        .nav-bar a { margin: 0 15px; text-decoration: none; color: var(--primary); font-weight: bold; }
-        .container { max-width: 1200px; margin: 30px auto; padding: 0 20px; }
-        .section-header { border-right: 6px solid var(--accent); padding-right: 15px; margin: 40px 0 20px; color: var(--primary); font-size: 1.5em; }
-        .news-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 25px; }
-        .card { background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 6px 15px rgba(0,0,0,0.05); transition: 0.3s; border: 1px solid #eee; }
-        .card:hover { transform: translateY(-10px); box-shadow: 0 12px 25px rgba(0,0,0,0.1); }
+        :root { --main-blue: #002b5b; --gold: #c5a059; --light-bg: #f5f7fa; }
+        body { font-family: 'Segoe UI', Tahoma, sans-serif; background: var(--light-bg); margin: 0; color: #333; }
+        
+        /* Navbar */
+        nav { background: white; border-bottom: 3px solid var(--main-blue); padding: 15px 0; text-align: center; position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        nav a { margin: 0 20px; text-decoration: none; color: var(--main-blue); font-weight: bold; font-size: 1.1em; }
+        nav a:hover { color: var(--gold); }
+
+        /* Header */
+        header { background: var(--main-blue); color: white; padding: 60px 20px; text-align: center; }
+        header h1 { margin: 0; font-size: 3.5em; border-bottom: 2px solid var(--gold); display: inline-block; padding-bottom: 10px; }
+        header p { margin-top: 15px; font-size: 1.2em; color: var(--gold); }
+
+        /* Sections */
+        .container { max-width: 1200px; margin: 40px auto; padding: 0 20px; }
+        .section-header { border-right: 8px solid var(--gold); padding-right: 15px; margin-bottom: 30px; font-size: 1.8em; color: var(--main-blue); font-weight: 900; }
+
+        /* News Grid */
+        .news-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 25px; }
+        .news-card { background: white; border-radius: 4px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.05); transition: 0.3s; border: 1px solid #eee; }
+        .news-card:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        .card-img { width: 100%; height: 200px; background: #ddd; display: flex; align-items: center; justify-content: center; color: #999; font-weight: bold; }
         .card-content { padding: 20px; }
-        .card-category { color: var(--accent); font-size: 0.8em; font-weight: bold; text-transform: uppercase; }
-        .card h3 { margin: 10px 0; color: var(--primary); font-size: 1.2em; line-height: 1.4; }
-        .card p { color: #666; font-size: 0.9em; line-height: 1.6; }
-        .read-more { display: block; background: var(--primary); color: white; text-align: center; padding: 12px; text-decoration: none; font-weight: bold; border-radius: 0 0 12px 12px; transition: 0.3s; }
-        .read-more:hover { background: var(--accent); }
-        .empty-state { text-align: center; padding: 50px; color: #999; border: 2px dashed #ccc; border-radius: 15px; }
+        .card-content .tag { background: var(--gold); color: white; padding: 3px 10px; font-size: 0.8em; border-radius: 2px; margin-bottom: 10px; display: inline-block; }
+        .card-content h3 { margin: 10px 0; font-size: 1.4em; line-height: 1.4; color: var(--main-blue); }
+        .btn-read { display: inline-block; margin-top: 15px; color: var(--gold); text-decoration: none; font-weight: bold; border: 1px solid var(--gold); padding: 8px 20px; border-radius: 4px; }
+        .btn-read:hover { background: var(--gold); color: white; }
+
+        footer { background: #001a38; color: white; padding: 30px; text-align: center; margin-top: 50px; }
     </style>
 </head>
 <body>
 
+<nav>
+    <a href="index.html">الرئيسية</a>
+    <a href="#">الأخبار</a>
+    <a href="#">تكنولوجيا</a>
+    <a href="#">اقتصاد</a>
+    <a href="#">رياضة</a>
+</nav>
+
 <header>
-    <h1>بوابة نبض الصاغة</h1>
-    <p>تغطية إخبارية شاملة تدار بالذكاء الاصطناعي</p>
+    <h1>الحدث المصري</h1>
+    <p>تغطية إخبارية شاملة تدار بتقنيات الذكاء الاصطناعي</p>
 </header>
 
-<div class="nav-bar">
-    <a href="#">الرئيسية</a>
-    <a href="#">أخبار مصر</a>
-    <a href="#">تكنولوجيا</a>
-    <a href="#">رياضة</a>
-    <a href="#">اقتصاد</a>
-</div>
-
 <div class="container">
-    <div class="section-header">🔴 أحدث المقالات والتريند</div>
+    <div class="section-header">أحدث التطورات</div>
     
-    <div class="news-grid" id="articles-container">
-        <div class="card">
+    <div class="news-grid">
+        <div class="news-card">
+            <div class="card-img">صورة الخبر</div>
             <div class="card-content">
-                <span class="card-category">أخبار</span>
-                <h3>جاري توليد المقالات الجديدة...</h3>
-                <p>انتظر قليلاً، يقوم البوت حالياً بصياغة أحدث التقارير الإخبارية من أجلك.</p>
+                <span class="tag">عاجل</span>
+                <h3>نظام التوليد الآلي يقوم الآن بصياغة الخبر الأول...</h3>
+                <p>انتظر ثواني ليقوم البوت بجمع التريندات وتحديث الواجهة تلقائياً.</p>
+                <a href="#" class="btn-read">اقرأ المزيد</a>
             </div>
-            <a href="#" class="read-more">قريباً</a>
         </div>
     </div>
 </div>
 
-<script>
-    // كود بسيط لجلب المقالات تلقائياً لو أردت مستقبلاً
-    console.log("بوابة نبض الصاغة جاهزة.");
-</script>
+<footer>
+    © 2026 الحدث المصري - جميع الحقوق محفوظة
+</footer>
 
 </body>
 </html>
