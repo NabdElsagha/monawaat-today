@@ -11,14 +11,14 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
-      - name: Run
+      - name: Run Generator
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-        run: node auto-
-            - name: Commit and Push changes
-      run: |
-        git config --global user.name "github-actions"
-        git config --global user.email "action@github.com"
-        git add index.html articles/
-        git commit -m "إضافة خبر جديد لـ الحدث المصري" || echo "لا توجد تغييرات"
-        git push
+        run: node auto-writer.js
+      - name: Commit and Push changes
+        run: |
+          git config --global user.name "github-actions"
+          git config --global user.email "action@github.com"
+          git add index.html articles/
+          git commit -m "إضافة خبر جديد لـ الحدث المصري" || echo "No changes"
+          git push
