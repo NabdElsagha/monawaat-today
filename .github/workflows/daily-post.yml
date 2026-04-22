@@ -1,6 +1,8 @@
 name: Auto Post
 on:
   workflow_dispatch:
+  schedule:
+    - cron: '0 */2 * * *'
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -15,10 +17,10 @@ jobs:
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: node auto-writer.js
-      - name: Commit and Push changes
+      - name: Commit and Push
         run: |
           git config --global user.name "github-actions"
           git config --global user.email "action@github.com"
-          git add index.html articles/
-          git commit -m "إضافة خبر جديد لـ الحدث المصري" || echo "No changes"
+          git add index.html
+          git commit -m "نشر خبر تلقائي" || exit 0
           git push
