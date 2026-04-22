@@ -3,181 +3,191 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>الحدث المصري | عينك على الحقيقة</title>
+    <title>الحدث المصري | تغطية إخبارية شاملة</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&family=Amiri:wght@700&display=swap" rel="stylesheet">
     <style>
-        :root { --main-blue: #002b5b; --gold: #c5a059; --light-bg: #f5f7fa; }
-        body { font-family: 'Segoe UI', Tahoma, sans-serif; background: var(--light-bg); margin: 0; color: #333; }
-        
-        /* Navbar */
-        nav { background: white; border-bottom: 3px solid var(--main-blue); padding: 15px 0; text-align: center; position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-        nav a { margin: 0 20px; text-decoration: none; color: var(--main-blue); font-weight: bold; font-size: 1.1em; }
+        :root {
+            --primary: #002b5b;
+            --gold: #c5a059;
+            --bg: #f4f7f9;
+            --text: #333;
+        }
+
+        body {
+            font-family: 'Cairo', sans-serif;
+            background-color: var(--bg);
+            margin: 0;
+            color: var(--text);
+        }
+
+        /* هيدر احترافي */
+        header {
+            background: var(--primary);
+            color: white;
+            padding: 40px 20px;
+            text-align: center;
+            border-bottom: 5px solid var(--gold);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        header h1 {
+            font-family: 'Amiri', serif;
+            font-size: 3.5rem;
+            margin: 0;
+            letter-spacing: -1px;
+        }
+
+        header p {
+            margin: 10px 0 0;
+            opacity: 0.8;
+            font-size: 1.1rem;
+        }
+
+        nav {
+            background: white;
+            padding: 15px;
+            text-align: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        nav a {
+            margin: 0 15px;
+            text-decoration: none;
+            color: var(--primary);
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
         nav a:hover { color: var(--gold); }
 
-        /* Header */
-        header { background: var(--main-blue); color: white; padding: 60px 20px; text-align: center; }
-        header h1 { margin: 0; font-size: 3.5em; border-bottom: 2px solid var(--gold); display: inline-block; padding-bottom: 10px; }
-        header p { margin-top: 15px; font-size: 1.2em; color: var(--gold); }
+        /* حاوية الأخبار */
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
 
-        /* Sections */
-        .container { max-width: 1200px; margin: 40px auto; padding: 0 20px; }
-        .section-header { border-right: 8px solid var(--gold); padding-right: 15px; margin-bottom: 30px; font-size: 1.8em; color: var(--main-blue); font-weight: 900; }
+        .section-title {
+            border-right: 5px solid var(--gold);
+            padding-right: 15px;
+            margin-bottom: 30px;
+            color: var(--primary);
+            font-size: 1.8rem;
+        }
 
-        /* News Grid */
-        .news-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 25px; }
-        .news-card { background: white; border-radius: 4px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.05); transition: 0.3s; border: 1px solid #eee; }
-        .news-card:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
-        .card-img { width: 100%; height: 200px; background: #ddd; display: flex; align-items: center; justify-content: center; color: #999; font-weight: bold; }
-        .card-content { padding: 20px; }
-        .card-content .tag { background: var(--gold); color: white; padding: 3px 10px; font-size: 0.8em; border-radius: 2px; margin-bottom: 10px; display: inline-block; }
-        .card-content h3 { margin: 10px 0; font-size: 1.4em; line-height: 1.4; color: var(--main-blue); }
-        .btn-read { display: inline-block; margin-top: 15px; color: var(--gold); text-decoration: none; font-weight: bold; border: 1px solid var(--gold); padding: 8px 20px; border-radius: 4px; }
-        .btn-read:hover { background: var(--gold); color: white; }
+        /* شكل الكارت المطور */
+        .news-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+        }
 
-        footer { background: #001a38; color: white; padding: 30px; text-align: center; margin-top: 50px; }
+        .news-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            transition: transform 0.3s;
+            border: 1px solid #eee;
+        }
+
+        .news-card:hover { transform: translateY(-5px); }
+
+        .card-img-wrapper {
+            width: 100%;
+            height: 400px;
+            background: #e9ecef;
+            position: relative;
+        }
+
+        .card-img-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .card-content {
+            padding: 35px;
+        }
+
+        .tag {
+            background: var(--gold);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 5px;
+            font-size: 0.9rem;
+            font-weight: bold;
+        }
+
+        .card-content h3 {
+            font-size: 2rem;
+            color: var(--primary);
+            margin: 20px 0;
+            line-height: 1.3;
+        }
+
+        .card-content p {
+            line-height: 1.8;
+            color: #555;
+            font-size: 1.15rem;
+            margin-bottom: 25px;
+        }
+
+        .btn-read {
+            display: inline-block;
+            padding: 10px 25px;
+            background: var(--primary);
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .btn-read:hover { background: var(--gold); }
+
+        footer {
+            text-align: center;
+            padding: 40px;
+            background: #eee;
+            margin-top: 50px;
+            color: #777;
+        }
+
+        @media (max-width: 768px) {
+            header h1 { font-size: 2.5rem; }
+            .card-img-wrapper { height: 250px; }
+            .card-content h3 { font-size: 1.5rem; }
+        }
     </style>
 </head>
 <body>
-
-<nav>
-    <a href="index.html">الرئيسية</a>
-    <a href="#">الأخبار</a>
-    <a href="#">تكنولوجيا</a>
-    <a href="#">اقتصاد</a>
-    <a href="#">رياضة</a>
-</nav>
 
 <header>
     <h1>الحدث المصري</h1>
     <p>تغطية إخبارية شاملة تدار بتقنيات الذكاء الاصطناعي</p>
 </header>
 
+<nav>
+    <a href="#">الرئيسية</a>
+    <a href="#">أخبار مصر</a>
+    <a href="#">تكنولوجيا</a>
+    <a href="#">اقتصاد</a>
+    <a href="#">رياضة</a>
+</nav>
+
 <div class="container">
-    <div class="section-header">أحدث التطورات</div>
+    <h2 class="section-title">أحدث التطورات</h2>
     
     <div class="news-grid">
-<div class="news-card" style="margin-bottom:30px; background:#fff; border-radius:8px; box-shadow:0 2px 10px rgba(0,0,0,0.1); overflow:hidden;">
-    <img src="https://fastly.picsum.photos/id/297/800/500.jpg?hmac=demo" style="width:100%; height:250px; object-fit:cover; display:block;" alt="الحدث">
-    <div style="padding:20px;">
-        <span class="tag" style="background:#c5a059; color:#fff; padding:3px 10px; font-size:12px; border-radius:3px;">اقتصاد</span>
-        <h3 style="color:#002b5b; font-size:1.4rem; margin:15px 0; line-height:1.4;">سوق العمل المصري: هل ينجح خطة الحكومة في خفض البطالة؟</h3>
-        <p style="color:#444; line-height:1.7; font-size:1rem;">كانت خطة الحكومة المصرية لخفض البطالة من بين أهم الإجراءات التي تم اتخاذها في السنوات الأخيرة لتحسين ситуаة الاقتصادية في مصر. وتتمثل هذه الخطة في توفير فرص عمل لعدد كبير من الشباب، وتقديم تدريبات وموارد لهم لتحسين مهاراتهم وتأهيلهم لمهن متطورة. وتعتمد هذه الخطة على تعاون بين القطاعين العام والخاص، حيث يتم منح الشركات والمؤسسات الحكومية فرصًا لاستيعاب الشباب وتطوير مهاراتهم. وتتمثل أهداف هذه الخطة في خفض نسبة البطالة بين الشباب، وتحسين مستوى التعليم والتدريب في مصر، وتعزيز التنمية الاقتصادية والاجتماعية.</p>
-        <p style="color:#444; line-height:1.7; font-size:1rem;">ومع ذلك، يبدو أن هذه الخطة لم تنجح بشكل كامل حتى الآن، حيث ظل معدل البطالة مرتفعًا في مصر، خاصة بين الشباب. وتعود هذه النتيجة إلى عدة عوامل، منها عدم وجود فرص عمل كافية في سوق العمل المصري، وعدم كفاية التدريب والتعليم لشباب مصر. وتشير بعض الدراسات إلى أن هناك حاجة لتحسين القطاع التعليمي والتدريبي في مصر، وتوفير فرص عمل أكثر لشباب مصر.</p>
-        <a href="#" class="btn-read" style="color:#c5a059; text-decoration:none; font-weight:bold; display:inline-block; margin-top:10px;">إقرأ المزيد ←</a>
-    </div>
-</div>
-<div class="news-card" style="grid-column: 1 / -1; max-width: 850px; margin: 0 auto 50px; background: #fff; box-shadow: 0 10px 30px rgba(0,0,0,0.08); border-radius: 12px; overflow: hidden;">
-    <img src="https://source.unsplash.com/featured/?egypt-education" style="width:100%; height:400px; object-fit:cover;" alt="صورة رئيسية">
-    
-    <div style="padding: 40px;">
-        <span class="tag" style="background:#c5a059; color:#white; padding:5px 15px; border-radius:4px;">أخبار مصر</span>
-        <h1 style="font-size:2.8rem; color:#002b5b; line-height:1.3; margin:20px 0;">تطورات جديدة في قطاع التعليم المصرى: تحليلات و إحصائيات</h1>
-        
-        <p style="font-size:1.25rem; line-height:1.9; color:#333; margin-bottom:30px; font-weight:500;">في ظل التطورات المستمرة في قطاع التعليم المصرى، يكتشفنا اليوم تفاصيل جديدة حول التغيرات التي سوف تحدث في هذا القطاع خلال السنوات القادمة. من بين هذه التغيرات، تحول قطاع التعليم نحو الاستدامة والتعليم المستمر، والتركيز على التكنولوجيا والابتكار في منهجيات التعليم. وفي هذا السياق، يقدم هذا المقال تحليلًا تفصيليًا لآفاق التطورات المستقبلية في قطاع التعليم المصرى.</p>
-        
-        <div style="display:flex; gap:25px; margin:30px 0; align-items:flex-start;">
-            <p style="flex:2; font-size:1.1rem; line-height:1.8; color:#555;">تحول قطاع التعليم نحو الاستدامة والتعليم المستمر يعد واحدًا من أهم التطورات التي يمر بها هذا القطاع في السنوات القادمة. وسيتم توجيه هذا التحول نحو تعزيز القدرات التعليمية وتطوير منهجيات التعليم لمواكبة التكنولوجيا الحديثة. كما سيتم التركيز على تعزيز التكنولوجيا والابتكار في منهجيات التعليم، مما يسهل على الطلبة الوصول إلى المعرفة والتحليل العلمي.</p>
-            <img src="https://source.unsplash.com/featured/?education-technologies" style="flex:1; width:250px; height:180px; border-radius:10px; object-fit:cover;">
         </div>
-        
-        <p style="font-size:1.1rem; line-height:1.8; color:#555; margin-bottom:30px;">بالإضافة إلى ذلك، سيتم تحديد إجازات تعليمية جديدة لشعب مصر، والتي ستقدم فرصًا للطلبة لتطوير مهاراتهم وتحسين قدراتهم التعليمية. كما سيتم تحسين نظام التعليم الجامعي، من خلال تطبيق منهجيات جديدة ومبتكرة تتيح للطلاب الوصول إلى المعرفة والتحليل العلمي بطرق أسهل.</p>
-        
-        <div style="background:#f9f9f9; border-right:5px solid #002b5b; padding:20px; margin:30px 0;">
-            <h4 style="margin:0; color:#002b5b;">نقطة تحليلية من "الحدث المصري":</h4>
-            <p style="margin:10px 0 0; color:#666; font-style:italic;">سيتم تطبيق هذه التطورات في قطاع التعليم المصرى خلال السنوات القادمة، مما سيؤدي إلى تحسين جودة التعليم وتطوير مهارات الطلبة. كما سيتم تعزيز دور التكنولوجيا والابتكار في منهجيات التعليم، مما يسهل على الطلبة الوصول إلى المعرفة والتحليل العلمي.</p>
-        </div>
-        
-        <p style="font-size:1.1rem; line-height:1.8; color:#555;">ومن خلال هذه التطورات، سيتم تحقيق أهداف تعليمية جديدة تعزز من جودة التعليم وتطوير مهارات الطلبة. كما سيتم تعزيز دور التكنولوجيا والابتكار في منهجيات التعليم، مما يسهل على الطلبة الوصول إلى المعرفة والتحليل العلمي.</p>
-    </div>
-</div>
-<div class="news-card" style="grid-column: 1 / -1; max-width: 900px; margin: 0 auto 40px;">
-    <div class="card-img">
-        <img src="https://picsum.photos/seed/0.24190868363825047/1000/600" style="width:100%; height:450px; object-fit:cover;" alt="صورة رئيسية">
-    </div>
-    <div class="card-content" style="padding: 30px;">
-        <span class="tag">اقتصاد</span>
-        <h2 style="font-size:2.5rem; color:#002b5b; margin:20px 0;">"تطورات حديثة في عالم الاقتصاد: ما هي الأسباب الرئيسية وراء ارتفاع أسعار الطاقة العالمية؟ "</h2>
-        
-        <p style="font-size:1.2rem; line-height:1.8; color:#333; font-weight:bold;">تقدمت الاقتصادات mundial خلال الأعوام القليلة الماضية بمعدل سريع، مما أدى إلى ارتفاع الطلب على الطاقة، مما ساهم في زيادة أسعار الطاقة العالمية. هذه هي النظرة العامة للموضوع، ولكن ما هي الأسباب الرئيسية وراء هذه التطورات؟</p>
-        
-        <hr style="margin:25px 0; border:0; border-top:1px solid #eee;">
-        
-        <div style="display:flex; gap:20px; align-items:center; margin-bottom:25px;">
-            <img src="https://picsum.photos/seed/0.9715953702812565/400/300" style="width:200px; height:150px; border-radius:8px; object-fit:cover;">
-            <p style="flex:1; line-height:1.7; color:#555;">تعود الأسباب الرئيسية وراء ارتفاع أسعار الطاقة العالمية إلى تزايد الطلب على الطاقة من بلدان مثل الصين والهند، حيث تطور الاقتصاد بشكل سريع وتزايد الطلب على الطاقة للتصنيع والتوزيع. بالإضافة إلى ذلك، يلعب العنف السياسي في بعض الأماكن مثل شمال أفريقيا والشرق الأوسط دورًا كبيرًا في التأثير على إمدادات الطاقة العالمية، مما يؤدي إلى ارتفاع أسعارها.</p>
-        </div>
-
-        <p style="line-height:1.7; color:#555; margin-bottom:25px;">وفقًا لبيانات المنظمة الدولية للطاقة، بلغت أسعار النفط الخام في عام 2022 ما يقرب من 100 دولارًا للبرميل، وهو أعلى مما سبق ذلك. كما تؤثر التغيرات الجوية مثل الجفاف الذي يهب إلى بعض المناطق وتأثيرات التغير المناخي على إمدادات الطاقة، مما يزيد من التكاليف ويؤدي إلى ارتفاع أسعار الطاقة. بالإضافة إلى ذلك، تؤثر السياسات الاقتصادية للبلدان على أسعار الطاقة، حيث تتنافس على الإمدادات المتاحة.</p>
-
-        <div style="display:flex; gap:20px; align-items:center; margin-bottom:25px; flex-direction: row-reverse;">
-            <img src="https://picsum.photos/seed/0.8854032941133845/400/300" style="width:200px; height:150px; border-radius:8px; object-fit:cover;">
-            <p style="flex:1; line-height:1.7; color:#555;">تجدرmention أن هناك بعض الإجراءات التي يمكن اتخاذها لمواجهة ارتفاع أسعار الطاقة، مثل التوسع في الطاقة المتجددة وتحسين الكفاءة الطاقية. كما يمكن للحكومات تحسين الاستهلاك المحلي وتحفيز التنمية الاقتصادية لتحقيق التوازن بين الطلب وال nabíd.</p>
-        </div>
-
-        <p style="font-style:italic; color:#777; border-top:2px solid var(--gold); padding-top:15px;">من المهم أن نلفت انتباه القراء إلى أهمية فهم الأسباب الرئيسية وراء ارتفاع أسعار الطاقة العالمية، حيث يلعب ذلك دورًا كبيرًا في التأثير على الاقتصاد العالمي. كما يجب على الحكومات والشركات اتخاذ إجراءات فورية لتحقيق الاستقرار في أسعار الطاقة وتحقيق التوازن بين الطلب والنبى.</p>
-    </div>
-</div>
-<div class="news-card">
-    <div class="card-img">
-        <img src="https://picsum.photos/seed/200/800/500" alt="الحدث المصري" loading="lazy" style="width:100%; height:250px; display:block; object-fit:cover; background:#eee;">
-    </div>
-    <div class="card-content">
-        <span class="tag">اقتصاد</span>
-        <h3 style="color:#002b5b; font-size:1.5rem; line-height:1.4; margin:15px 0;">الاقتصاد المصري يتجاوز التوقعات في القطاع الزراعي</h3>
-        <p style="color:#555; line-height:1.8; font-size:1.05rem;">تمكنت مصر من تجاوز التوقعات في قطاع الزراعة، حيث سجلت إنتاجية عالية في مجالات مختلفة، بما في ذلك القطن والقطن الخشن والفول السوداني والذرة والمحاصيل الصيفية الأخرى. ووفقًا لبيان من وزارة الزراعة والري، حققت مصر إنتاجية قياسية في القطن، حيث بلغت 1.2 مليون طن، مع زيادة في المحصول بمقدار 10% مقارنة بالسنة السابقة. كما سجلت مصر إنتاجية عالية في القطن الخشن، حيث بلغت 1.5 مليون طن، مع زيادة في المحصول بمقدار 15% مقارنة بالسنة السابقة.</p>
-        <p style="color:#555; line-height:1.8; font-size:1.05rem;">كما سجلت مصر إنتاجية عالية في الفول السوداني، حيث بلغت 1.8 مليون طن، مع زيادة في المحصول بمقدار 20% مقارنة بالسنة السابقة. كما سجلت مصر إنتاجية عالية في الذرة، حيث بلغت 2.5 مليون طن، مع زيادة في المحصول بمقدار 25% مقارنة بالسنة السابقة. كما سجلت مصر إنتاجية عالية في المحاصيل الصيفية الأخرى، بما في ذلك البقوليات والخضروات والفاكهة.</p>
-        <p style="color:#555; line-height:1.8; font-size:1.05rem;">ووفقًا لبيان من وزارة الزراعة والري، يعد القطاع الزراعي أحد أهم القطاعات الاقتصادية في مصر، حيث يساهم في تأمين الغذاء للشعب المصري وينتج إنتاجًا كبيرًا للتصدير. كما يعد القطاع الزراعي مصدرًا هامًا للتوظيف والاستثمار في مصر، حيث يعتبر مصدرًا رئيسيًا للتوظيف والاستثمار في الريف المصري.</p>
-        <p style="color:#555; line-height:1.8; font-size:1.05rem;">وأضاف البيان أن الحكومة المصرية قد اتخذت العديد من الإجراءات لتعزيز قطاع الزراعة في مصر، بما في ذلك زيادة الاستثمار في القطاع الزراعي وتنفيذ مشاريع إنمائية كبيرة في مجالات مختلفة، مثل إنتاجية الأراضي والصادرات الزراعية.</p>
-        <a href="#" class="btn-read">التفاصيل الكاملة</a>
-    </div>
-</div>
-<div class="news-card">
-    <div class="card-img">
-        <img src="https://images.unsplash.com/photo-1504711432869-5d5932e22196?auto=format&fit=crop&w=800&q=80&sig=1776843506557" style="width:100%; height:250px; object-fit:cover;" alt="الحدث المصري">
-    </div>
-    <div class="card-content">
-        <span class="tag">فن وثقافة</span>
-        <h3 style="color:#002b5b; font-size:1.6rem; margin-bottom:15px;">"مهرجان الفنون الجميلة" يحيي فخراً بمصر في العالم</h3>
-        <p style="line-height:1.8; color:#444;">في إطار التزام مصر بتعزيز الثقافة والفنون وتنمية القيم الجمالية، يُحتفل في هذه الأيام بمهرجان الفنون الجميلة، الذي يعد أحد أهم الفعاليات الثقافية في مصر. ويهدف المهرجان إلى تشجيع وتشويش الفنون الجميلة، وتقديم فرص للفنانين الشباب لممارسة مهاراتهم وتحقيقهن لجودة عالية في العمل الفني. وتتميز الفعاليات التي تقدمها الدورة بتركيبة مميزة تضم العروض الخاصة للرسامين والفنانين والفنانات، حيث يتم طرح أعمالهم الفنية في مساحة معمّرة تتميز بالاستقبال الحار من الجمهور المصري والعالمي.</p>
-        <p style="line-height:1.8; color:#444;">وبالإضافة إلى ذلك، يضم المهرجان عروضاً فنية مميزة من الفنون الشعبية والفلكلور، حيث يتم تقديمها من قبل الفنانين والمطربين والموسيقيين والراقصين والفنانين البارزين في مجال الفنون الشعبية. وتتميز هذه العروض بجمالها الجمالي وأصالتها الثقافية، مما يجعلها مثالية لمشاهدة الجمهور المصري والforeign من مختلف الأعمار.</p>
-        <p style="line-height:1.8; color:#444;">وعلى الرغم من أن المهرجان يهدف إلى تعزيز الفنون الجميلة، إلا أنه يمتد أهدافه إلى تشجيع الفنون الشعبية والتراثية، وتقديم فرص للفنانين الشباب لممارسة مهاراتهم وتنمية قدراتهم الفنية. ويساهم هذا في تعزيز ثقافة الفنون الجميلة وتقديمها على أنها جزء أساسي من الحياة اليومية للمصريين.</p>
-        <p style="line-height:1.8; color:#444;">ومن خلال هذه الإضافة الثقافية، يركز المهرجان على تقديم فرص للفنانين الشباب لممارسة مهاراتهم وتحقيقهن لجودة عالية في العمل الفني. ويعد هذا بمثابة تزامن بين الفنون الجميلة والثقافة، حيث يتم تقديم الفرص المتاحة للفنانين الشباب لممارسة مهاراتهم وتحقيقهن لجودة عالية في العمل الفني.</p>
-        <a href="#" class="btn-read">اقرأ التفاصيل الكاملة</a>
-    </div>
-</div>
-<div class="news-card">
-    <div class="card-img">
-        <img src="https://plus.unsplash.com/premium_photo-1688561384439-e243a83d22d5?q=80&w=800&auto=format&fit=crop&random=1776843073875" style="width:100%; height:220px; object-fit:cover;" alt="صورة الخبر">
-    </div>
-    <div class="card-content">
-        <span class="tag">اقتصاد</span>
-        <h3>المصاريف العامة تواصل ارتفاعها لعدم تحقيق الدولة أرباحاً من استيراد البترول</h3>
-        <p>كشفت دراسة حديثة أن المصاريف العامة استمرت في التحاقرت بسبب ارتفاع مستويات استهلاك البترول، مع انخفاض عائدات الدولة من استيراد هذا المصدر الغذاء الأساسي، مما قد يضغط على البنك المركزي لتزاید أسعار الفائدة، ويشكل خطراً يهدد الاستقرار المالي.</p>
-        <a href="#" class="btn-read">اقرأ المزيد</a>
-    </div>
-</div>
-<div class="news-card">
-    <div class="card-img">📊 صورة تعليمية</div>
-    <div class="card-content">
-        <span class="tag">تكنولوجيا</span>
-        <h3>Google يعلن عن تحديث هام في نظامهم</h3>
-        <p>سيتم تحديث نظام Google لتحسين تجربة المستخدمين...</p>
-        <a href="#" class="btn-read">اقرأ المزيد</a>
-    </div>
-</div>
-        <div class="news-card">
-            <div class="card-img">صورة الخبر</div>
-            <div class="card-content">
-                <span class="tag">عاجل</span>
-                <h3>نظام التوليد الآلي يقوم الآن بصياغة الخبر الأول...</h3>
-                <p>انتظر ثواني ليقوم البوت بجمع التريندات وتحديث الواجهة تلقائياً.</p>
-                <a href="#" class="btn-read">اقرأ المزيد</a>
-            </div>
-        </div>
-    </div>
 </div>
 
 <footer>
-    © 2026 الحدث المصري - جميع الحقوق محفوظة
+    <p>&copy; 2026 الحدث المصري - جميع الحقوق محفوظة</p>
 </footer>
 
 </body>
