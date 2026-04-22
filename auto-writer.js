@@ -4,7 +4,6 @@ async function generate() {
     const apiKey = process.env.GEMINI_API_KEY ? process.env.GEMINI_API_KEY.trim() : "";
     const url = `https://api.groq.com/openai/v1/chat/completions`;
 
-    // البرومبت مخصص لاسم "الحدث المصري" وشكل الكروت الجديد
     const prompt = `اكتب مقالاً إخبارياً مصرياً قصيراً جداً لمنصة "الحدث المصري".
     يجب أن يكون الرد عبارة عن كود HTML فقط بتنسيق كارت (Card) كالتالي:
     <div class="news-card">
@@ -12,18 +11,16 @@ async function generate() {
         <div class="card-content">
             <span class="tag">عاجل</span>
             <h3>عنوان الخبر هنا</h3>
-            <p>ملخص سريع للخبر هنا...</p>
+            <p>ملخص سريع ومثير للخبر...</p>
             <a href="#" class="btn-read">اقرأ المزيد</a>
         </div>
     </div>`;
 
     try {
+        console.log("...جاري الاتصال بالمحرك لتوليد خبر لـ الحدث المصري");
         const response = await fetch(url, {
             method: 'POST',
-            headers: { 
-                'Authorization': `Bearer ${apiKey}`, 
-                'Content-Type': 'application/json' 
-            },
+            headers: { 'Authorization': `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
             body: JSON.stringify({
                 model: "llama-3.1-8b-instant",
                 messages: [{ role: "user", content: prompt }]
@@ -33,24 +30,22 @@ async function generate() {
         const result = await response.json();
         const newCard = result.choices[0].message.content.replace(/```html|```/g, "").trim();
 
-        // 1. حفظ المقال كملف منفصل للأرشفة
-        if (!fs.existsSync('./articles')) fs.mkdirSync('./articles', { recursive: true });
-        const fileName = `post-${Date.now()}.html`;
-        fs.writeFileSync(`./articles/${fileName}`, newCard);
-
-        // 2. تحديث الصفحة الرئيسية (index.html)
+        // 1. قراءة ملف الـ index
         let indexContent = fs.readFileSync('index.html', 'utf8');
         
-        // البحث عن مكان الـ grid لإضافة الخبر الجديد في البداية
-        const gridMarker = '<div class="news-grid">';
-        if (indexContent.includes(gridMarker)) {
-            indexContent = indexContent.replace(gridMarker, gridMarker + '\n' + newCard);
+        // 2. تحديد مكان "حقن" الخبر (بعد كلمة news-grid مباشرة)
+        const marker = '<div class="news-grid">';
+        if (indexContent.includes(marker)) {
+            // إضافة الخبر الجديد في أول القائمة
+            indexContent = indexContent.replace(marker, marker + '\n' + newCard);
             fs.writeFileSync('index.html', indexContent);
-            console.log("✅ تم تحديث الصفحة الرئيسية بنجاح!");
+            console.log("✅ تم حقن الخبر الجديد في الصفحة الرئيسية بنجاح!");
+        } else {
+            console.log("⚠️ لم يتم العثور على مكان news-grid في الملف.");
         }
 
     } catch (e) {
-        console.error("❌ حدث خطأ:", e.message);
+        console.error("❌ فشل التحديث:", e.message);
         process.exit(1);
     }
 }
