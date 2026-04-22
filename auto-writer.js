@@ -7,20 +7,25 @@ async function generate() {
     const categories = ["أخبار مصر", "تكنولوجيا", "اقتصاد", "رياضة", "فن وثقافة"];
     const randomCategory = categories[Math.floor(Math.random() * categories.length)];
     
-    // صورة عشوائية حقيقية تتغير مع كل خبر
-    const imageUrl = `https://plus.unsplash.com/premium_photo-1688561384439-e243a83d22d5?q=80&w=800&auto=format&fit=crop&random=${Date.now()}`;
+    // رابط صورة مباشر واحترافي يتغير مع كل خبر لضمان الظهور
+    const imageUrl = `https://images.unsplash.com/photo-1504711432869-5d5932e22196?auto=format&fit=crop&w=800&q=80&sig=${Date.now()}`;
 
-    const prompt = `اكتب مقالاً إخبارياً مصرياً قصيراً وحصرياً لقسم "${randomCategory}" في موقع "الحدث المصري". 
-    يجب أن يكون الرد كود HTML فقط بهذا التنسيق:
+    // برومبت صارم لضمان الجودة والحياد والمحتوى الطويل
+    const prompt = `اكتب مقالاً إخبارياً مصرياً طويلاً ومفصلاً لقسم "${randomCategory}" في منصة "الحدث المصري".
+    شروط هامة:
+    1. العنوان: يجب أن يكون جذاباً جداً (Catchy) واحترافياً دون أي إساءة للدولة أو مؤسساتها.
+    2. المحتوى: اكتب ملخصاً وافياً (لا يقل عن 4 جمل طويلة) يعطي القارئ معلومة حقيقية.
+    3. اللغة: لغة عربية صحيحة وسليمة.
+    الرد يجب أن يكون كود HTML فقط بهذا التنسيق:
     <div class="news-card">
         <div class="card-img">
-            <img src="${imageUrl}" style="width:100%; height:220px; object-fit:cover;" alt="صورة الخبر">
+            <img src="${imageUrl}" style="width:100%; height:250px; object-fit:cover;" alt="الحدث المصري">
         </div>
         <div class="card-content">
             <span class="tag">${randomCategory}</span>
-            <h3>عنوان الخبر بأسلوب صحفي جذاب</h3>
-            <p>تفاصيل الخبر بشكل مختصر ومفيد جداً للقارئ المصري...</p>
-            <a href="#" class="btn-read">اقرأ المزيد</a>
+            <h3 style="color:#002b5b; font-size:1.6rem; margin-bottom:15px;">عنوان الخبر هنا</h3>
+            <p style="line-height:1.8; color:#444;">تفاصيل الخبر الطويلة والمفصلة هنا...</p>
+            <a href="#" class="btn-read">اقرأ التفاصيل الكاملة</a>
         </div>
     </div>`;
 
@@ -30,7 +35,8 @@ async function generate() {
             headers: { 'Authorization': `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
             body: JSON.stringify({
                 model: "llama-3.1-8b-instant",
-                messages: [{ role: "user", content: prompt }]
+                messages: [{ role: "user", content: prompt }],
+                temperature: 0.6 // تقليل الابتكار لضمان الجدية والرصانة
             })
         });
 
@@ -43,9 +49,10 @@ async function generate() {
         if (indexContent.includes(marker)) {
             indexContent = indexContent.replace(marker, marker + '\n' + newCard);
             fs.writeFileSync('index.html', indexContent);
-            console.log("✅ تم تحديث الواجهة بنجاح!");
+            console.log("✅ تم نشر خبر احترافي جديد بصورة واضحة!");
         }
     } catch (e) {
+        console.error("❌ خطأ:", e.message);
         process.exit(1);
     }
 }
