@@ -4,47 +4,39 @@ async function generate() {
     const apiKey = process.env.GEMINI_API_KEY ? process.env.GEMINI_API_KEY.trim() : "";
     const url = `https://api.groq.com/openai/v1/chat/completions`;
 
+    // قائمة المجالات
     const categories = ["أخبار مصر", "تكنولوجيا", "اقتصاد", "رياضة", "فن وثقافة"];
     const randomCategory = categories[Math.floor(Math.random() * categories.length)];
-    
-    // صور واقعية ومختلفة
-    const mainImg = `https://picsum.photos/seed/${Math.random()}/1000/600`;
-    const subImg1 = `https://picsum.photos/seed/${Math.random()}/400/300`;
-    const subImg2 = `https://picsum.photos/seed/${Math.random()}/400/300`;
 
-    const prompt = `اكتب مقالاً إخبارياً طويلاً جداً (تحقيق صحفي) لقسم "${randomCategory}" في "الحدث المصري".
-    التعليمات:
-    1. العنوان: جذاب جداً، طويل، واحترافي.
-    2. التقسيم: المقال يجب أن يتكون من مقدمة، 3 فقرات دسمة، وخاتمة.
-    3. الصور: وزع الصور الموفرة لك داخل المقال.
-    4. المحتوى: ركز على التفاصيل والتحليل (مقال عالمي).
+    const prompt = `اكتب تحقيقاً صحفياً مطولاً جداً لقسم "${randomCategory}" في موقع "الحدث المصري".
+    التعليمات الصارمة:
+    1. المحتوى: مقال طويل (أكثر من 300 كلمة) مقسم لفقرات واضحة.
+    2. الصور: أريد منك وضع كلمات دلالية بالإنجليزية للصور في الأماكن المخصصة (مثلاً: egypt-economy, football-match).
+    3. التنسيق: استخدم HTML جذاب مع صور داخلية متناسقة.
     
-    التنسيق المطلوب كود HTML فقط:
-    <div class="news-card" style="grid-column: 1 / -1; max-width: 900px; margin: 0 auto 40px;">
-        <div class="card-img">
-            <img src="${mainImg}" style="width:100%; height:450px; object-fit:cover;" alt="صورة رئيسية">
-        </div>
-        <div class="card-content" style="padding: 30px;">
-            <span class="tag">${randomCategory}</span>
-            <h2 style="font-size:2.5rem; color:#002b5b; margin:20px 0;">عنوان جذاب وشامل</h2>
+    الرد يكون كود HTML فقط بهذا الشكل:
+    <div class="news-card" style="grid-column: 1 / -1; max-width: 850px; margin: 0 auto 50px; background: #fff; box-shadow: 0 10px 30px rgba(0,0,0,0.08); border-radius: 12px; overflow: hidden;">
+        <img src="https://source.unsplash.com/featured/?{KEYWORD1}" style="width:100%; height:400px; object-fit:cover;" alt="صورة رئيسية">
+        
+        <div style="padding: 40px;">
+            <span class="tag" style="background:#c5a059; color:#white; padding:5px 15px; border-radius:4px;">${randomCategory}</span>
+            <h1 style="font-size:2.8rem; color:#002b5b; line-height:1.3; margin:20px 0;">[عنوان طويل وجذاب جداً]</h1>
             
-            <p style="font-size:1.2rem; line-height:1.8; color:#333; font-weight:bold;">مقدمة المقال الطويلة والمميزة هنا...</p>
+            <p style="font-size:1.25rem; line-height:1.9; color:#333; margin-bottom:30px; font-weight:500;">[مقدمة دسمة جداً]</p>
             
-            <hr style="margin:25px 0; border:0; border-top:1px solid #eee;">
-            
-            <div style="display:flex; gap:20px; align-items:center; margin-bottom:25px;">
-                <img src="${subImg1}" style="width:200px; height:150px; border-radius:8px; object-fit:cover;">
-                <p style="flex:1; line-height:1.7; color:#555;">الفقرة الأولى التفصيلية التي تتحدث عن جوانب الخبر وتحليله العميق...</p>
+            <div style="display:flex; gap:25px; margin:30px 0; align-items:flex-start;">
+                <p style="flex:2; font-size:1.1rem; line-height:1.8; color:#555;">[الفقرة الأولى المحللة للخبر بالتفصيل...]</p>
+                <img src="https://source.unsplash.com/featured/?{KEYWORD2}" style="flex:1; width:250px; height:180px; border-radius:10px; object-fit:cover;">
             </div>
 
-            <p style="line-height:1.7; color:#555; margin-bottom:25px;">الفقرة الثانية التي تضيف معلومات إحصائية أو تاريخية عن الموضوع بشكل موسع...</p>
+            <p style="font-size:1.1rem; line-height:1.8; color:#555; margin-bottom:30px;">[الفقرة الثانية التي تحتوي على معلومات إضافية وإحصائيات...]</p>
 
-            <div style="display:flex; gap:20px; align-items:center; margin-bottom:25px; flex-direction: row-reverse;">
-                <img src="${subImg2}" style="width:200px; height:150px; border-radius:8px; object-fit:cover;">
-                <p style="flex:1; line-height:1.7; color:#555;">الفقرة الثالثة التي تتناول ردود الأفعال أو التأثيرات المستقبلية لهذا الخبر...</p>
+            <div style="background:#f9f9f9; border-right:5px solid #002b5b; padding:20px; margin:30px 0;">
+                <h4 style="margin:0; color:#002b5b;">نقطة تحليلية من "الحدث المصري":</h4>
+                <p style="margin:10px 0 0; color:#666; font-style:italic;">[تحليل سريع لمستقبل هذا الخبر]</p>
             </div>
 
-            <p style="font-style:italic; color:#777; border-top:2px solid var(--gold); padding-top:15px;">خاتمة المقال التي تلخص الموقف بأسلوب "الحدث المصري" الخاص.</p>
+            <p style="font-size:1.1rem; line-height:1.8; color:#555;">[الخاتمة النهائية للموضوع]</p>
         </div>
     </div>`;
 
@@ -60,7 +52,11 @@ async function generate() {
         });
 
         const result = await response.json();
-        let fullArticle = result.choices[0].message.content.replace(/```html|```/g, "").trim();
+        let content = result.choices[0].message.content;
+
+        // استبدال الكلمات الدلالية العشوائية بكلمات مرتبطة بالمحتوى
+        // البوت سيقوم بملء {KEYWORD} بكلمات مناسبة من اختياره
+        let fullArticle = content.replace(/```html|```/g, "").trim();
 
         let indexContent = fs.readFileSync('index.html', 'utf8');
         const marker = '<div class="news-grid">';
@@ -68,7 +64,7 @@ async function generate() {
         if (indexContent.includes(marker)) {
             indexContent = indexContent.replace(marker, marker + '\n' + fullArticle);
             fs.writeFileSync('index.html', indexContent);
-            console.log("✅ تم نشر التحقيق الصحفي بنجاح!");
+            console.log("✅ تم نشر التحقيق الصحفي المطور!");
         }
     } catch (e) {
         process.exit(1);
