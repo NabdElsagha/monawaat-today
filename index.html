@@ -3,53 +3,53 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>الحدث المصري | المصدر الأول</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&family=Amiri:wght@700&display=swap" rel="stylesheet">
+    <title>الحدث المصري | بوابة الأخبار الرسمية</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&family=Amiri:wght@700&display=swap" rel="stylesheet">
     <style>
-        :root { --primary: #002b5b; --gold: #c5a059; --bg: #f0f2f5; }
-        * { box-sizing: border-box; }
-        body { font-family: 'Cairo', sans-serif; background: var(--bg); margin: 0; color: #1a1a1a; overflow-x: hidden; }
+        :root { --primary: #002347; --gold: #b08d57; --accent: #d4af37; --bg: #fdfdfd; }
+        * { box-sizing: border-box; transition: all 0.3s ease; }
+        body { font-family: 'Cairo', sans-serif; background: var(--bg); margin: 0; color: #222; overflow-x: hidden; }
         
-        /* هيدر عصري ومضبوط */
-        header { background: var(--primary); color: white; padding: 40px 15px; text-align: center; border-bottom: 5px solid var(--gold); }
-        header h1 { font-family: 'Amiri', serif; font-size: clamp(2.5rem, 8vw, 4rem); margin: 0; }
-        header p { font-size: 1.1rem; opacity: 0.8; margin-top: 8px; }
+        /* هيدر ملكي */
+        header { background: var(--primary); color: white; padding: 50px 20px; text-align: center; position: relative; border-bottom: 4px solid var(--gold); }
+        header::after { content: ''; position: absolute; bottom: -10px; left: 50%; transform: translateX(-50%); width: 60px; height: 60px; background: var(--gold); border-radius: 50%; border: 5px solid var(--bg); }
+        header h1 { font-family: 'Amiri', serif; font-size: clamp(3rem, 10vw, 5rem); margin: 0; line-height: 1; }
+        header p { font-size: 1.2rem; opacity: 0.8; margin-top: 15px; letter-spacing: 1px; }
 
-        /* ناف بار مرن */
-        nav { background: white; position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.1); overflow-x: auto; white-space: nowrap; }
-        .nav-container { max-width: 1200px; margin: 0 auto; display: flex; justify-content: center; padding: 5px; }
-        nav a { padding: 12px 15px; text-decoration: none; color: var(--primary); font-weight: bold; font-size: 0.95rem; transition: 0.3s; }
-        nav a:hover { color: var(--gold); }
+        /* ناف بار الأقسام الاحترافي */
+        nav { background: white; position: sticky; top: 0; z-index: 1000; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+        .nav-container { max-width: 1200px; margin: 0 auto; display: flex; justify-content: center; overflow-x: auto; padding: 10px 0; }
+        nav a { padding: 10px 18px; text-decoration: none; color: var(--primary); font-weight: 700; font-size: 1rem; border-radius: 20px; margin: 0 5px; }
+        nav a:hover, nav a.active { background: var(--primary); color: var(--gold); }
 
-        /* حاوية المحتوى */
-        .container { max-width: 800px; margin: 30px auto; padding: 0 15px; }
-        .section-title { font-size: 1.8rem; color: var(--primary); border-right: 5px solid var(--gold); padding-right: 15px; margin-bottom: 30px; }
+        /* المحتوى */
+        .container { max-width: 850px; margin: 60px auto; padding: 0 20px; }
+        .section-header { position: relative; margin-bottom: 40px; padding-right: 20px; border-right: 6px solid var(--gold); }
+        .section-header h2 { font-size: 2.2rem; color: var(--primary); margin: 0; font-family: 'Amiri', serif; }
 
-        /* شبكة الأخبار */
-        .news-grid { display: flex; flex-direction: column; gap: 35px; }
-
-        /* تصميم الكارت المطور لمنع الترحيل */
-        .news-card { background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.08); display: flex; flex-direction: column; width: 100%; }
+        /* كارت المقال الاحترافي */
+        .news-grid { display: flex; flex-direction: column; gap: 45px; }
+        .news-card { background: white; border-radius: 15px; overflow: hidden; border: 1px solid #eee; box-shadow: 0 10px 30px rgba(0,0,0,0.03); }
+        .news-card:hover { transform: translateY(-8px); box-shadow: 0 20px 40px rgba(0,0,0,0.08); }
         
-        .card-img-wrapper { width: 100%; height: 250px; background: #ddd; }
+        .card-img-wrapper { width: 100%; height: 400px; position: relative; overflow: hidden; }
         .card-img-wrapper img { width: 100%; height: 100%; object-fit: cover; }
+        .category-badge { position: absolute; top: 20px; right: 20px; background: var(--gold); color: white; padding: 5px 15px; border-radius: 5px; font-weight: bold; font-size: 0.9rem; z-index: 10; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
 
-        .card-content { padding: 25px; text-align: right; width: 100%; }
-        .tag { background: var(--gold); color: white; padding: 4px 12px; border-radius: 4px; font-size: 0.8rem; font-weight: bold; display: inline-block; margin-bottom: 15px; }
-        .card-content h3 { font-size: 1.6rem; color: var(--primary); margin: 0 0 15px 0; line-height: 1.4; font-family: 'Amiri', serif; }
-        .card-content p { font-size: 1.05rem; color: #444; line-height: 1.7; margin-bottom: 20px; word-wrap: break-word; }
+        .card-content { padding: 35px; text-align: right; }
+        .card-content h3 { font-size: 2.2rem; color: var(--primary); margin: 0 0 20px 0; line-height: 1.3; font-family: 'Amiri', serif; }
+        .card-content p { font-size: 1.2rem; color: #555; line-height: 1.8; margin-bottom: 25px; }
         
-        .btn-read { display: inline-block; width: 100%; text-align: center; padding: 12px; background: var(--primary); color: white !important; text-decoration: none; border-radius: 6px; font-weight: bold; transition: 0.3s; border: none; }
-        .btn-read:hover { background: var(--gold); }
+        .btn-read { display: inline-block; padding: 12px 30px; background: transparent; color: var(--primary); text-decoration: none; border: 2px solid var(--primary); border-radius: 5px; font-weight: 700; cursor: pointer; }
+        .btn-read:hover { background: var(--primary); color: var(--gold); }
 
-        footer { background: #001a35; color: white; padding: 40px 20px; text-align: center; margin-top: 50px; }
+        footer { background: #001226; color: white; padding: 60px 20px; text-align: center; margin-top: 80px; border-top: 5px solid var(--gold); }
+        .footer-logo { font-family: 'Amiri', serif; font-size: 2.5rem; color: var(--gold); margin-bottom: 15px; display: block; }
 
-        /* تعديلات الموبايل */
         @media (max-width: 600px) {
-            .container { margin: 15px auto; }
-            .card-content h3 { font-size: 1.4rem; }
-            .card-img-wrapper { height: 200px; }
-            .nav-container { justify-content: flex-start; }
+            .card-img-wrapper { height: 250px; }
+            .card-content h3 { font-size: 1.6rem; }
+            header h1 { font-size: 2.5rem; }
         }
     </style>
 </head>
@@ -57,27 +57,32 @@
 
 <header>
     <h1>الحدث المصري</h1>
-    <p>نبض مصر بين يديك</p>
+    <p>المصداقية في نقل الخبر.. من قلب الواقع</p>
 </header>
 
 <nav>
     <div class="nav-container">
-        <a href="index.html">الرئيسية</a>
-        <a href="#">أخبار مصر</a>
+        <a href="index.html" class="active">الرئيسية</a>
+        <a href="#">السياسة</a>
+        <a href="#">الاقتصاد</a>
+        <a href="#">حوادث</a>
         <a href="#">تكنولوجيا</a>
-        <a href="#">اقتصاد</a>
         <a href="#">رياضة</a>
+        <a href="#">منوعات</a>
     </div>
 </nav>
 
 <div class="container">
-    <h2 class="section-title">أحدث التقارير</h2>
+    <div class="section-header">
+        <h2>أحدث التطورات الآن</h2>
+    </div>
     <div class="news-grid" id="newsGrid">
         </div>
 </div>
 
 <footer>
-    <p>© 2026 الحدث المصري - هيئة التحرير</p>
+    <span class="footer-logo">الحدث المصري</span>
+    <p>© 2026 جميع الحقوق محفوظة لمؤسسة الحدث المصري للصحافة</p>
 </footer>
 
 </body>
