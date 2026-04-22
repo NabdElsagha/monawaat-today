@@ -7,26 +7,24 @@ async function generate() {
     const categories = ["أخبار مصر", "تكنولوجيا", "اقتصاد", "رياضة", "فن وثقافة"];
     const randomCategory = categories[Math.floor(Math.random() * categories.length)];
 
-    const prompt = `اكتب مقالاً إخبارياً مصرياً طويلاً ومحترفاً لقسم "${randomCategory}" لموقع "الحدث المصري".
+    const prompt = `اكتب تحقيقاً صحفياً مطولاً جداً لقسم "${randomCategory}" في موقع "الحدث المصري".
     التعليمات:
-    1. العنوان: يجب أن يكون جذاباً جداً.
-    2. المحتوى: مقال دسم (6 جمل طويلة مفصلة).
-    3. صورة الخبر: اختر كلمة واحدة فقط بالإنجليزية (Search Term) تعبر بدقة عن العنوان الذي كتبته (مثلاً لو العنوان عن محمد صلاح اختر كلمة "Salah" أو "Liverpool").
+    1. العنوان: طويل، جذاب، واحترافي جداً.
+    2. المحتوى: 8 جمل طويلة مفصلة تشرح الخبر من جميع جوانبه.
+    3. صورة الخبر: اختر كلمة واحدة بالإنجليزية من العنوان تعبر عن الموضوع (مثل: Cairo, Money, AI, Sports).
     
-    الرد كود HTML فقط بهذا التنسيق حصراً:
+    الرد كود HTML فقط بهذا الشكل:
     <div class="news-card">
         <div class="card-img-wrapper">
-            <img src="https://loremflickr.com/800/500/{KEYWORD}" alt="صورة الخبر" onerror="this.src='https://via.placeholder.com/800x500/002b5b/ffffff?text=الحدث+المصري'">
+            <img src="https://loremflickr.com/1000/600/{KEYWORD}" alt="الحدث">
         </div>
         <div class="card-content">
             <span class="tag">${randomCategory}</span>
-            <h3 class="news-title">العنوان هنا</h3>
-            <p class="news-text">المحتوى هنا...</p>
-            <a href="#" class="btn-read">إقرأ التفاصيل الكاملة</a>
+            <h3>العنوان هنا</h3>
+            <p>المحتوى الدسم هنا...</p>
+            <button class="btn-read" onclick="alert('جاري تحميل المقال الكامل...')">إقرأ التحقيق الكامل</button>
         </div>
-    </div>
-    
-    * ملاحظة: استبدل {KEYWORD} بالكلمة الإنجليزية التي تعبر عن العنوان.`;
+    </div>`;
 
     try {
         const response = await fetch(url, {
@@ -35,25 +33,22 @@ async function generate() {
             body: JSON.stringify({
                 model: "llama-3.1-8b-instant",
                 messages: [{ role: "user", content: prompt }],
-                temperature: 0.5 // تقليل الحرارة لضمان اختيار كلمات منطقية
+                temperature: 0.5
             })
         });
 
         const result = await response.json();
         let content = result.choices[0].message.content.replace(/```html|```/g, "").trim();
 
-        // قراءة الملف الحالي
         let indexContent = fs.readFileSync('index.html', 'utf8');
-        const marker = '<div class="news-grid">';
+        const marker = '<div class="news-grid" id="newsGrid">';
         
         if (indexContent.includes(marker)) {
-            // إضافة المقال الجديد في بداية الشبكة
             indexContent = indexContent.replace(marker, marker + '\n' + content);
             fs.writeFileSync('index.html', indexContent);
-            console.log("✅ تم نشر المقال بنجاح بصورة مرتبطة بالعنوان!");
+            console.log("✅ المقال الكبير اتنشر والزراير اشتغلت!");
         }
     } catch (e) {
-        console.error("❌ فشل الأكشن:", e.message);
         process.exit(1);
     }
 }
