@@ -4,39 +4,28 @@ async function generate() {
     const apiKey = process.env.GEMINI_API_KEY ? process.env.GEMINI_API_KEY.trim() : "";
     const url = `https://api.groq.com/openai/v1/chat/completions`;
 
-    // قائمة المجالات
     const categories = ["أخبار مصر", "تكنولوجيا", "اقتصاد", "رياضة", "فن وثقافة"];
     const randomCategory = categories[Math.floor(Math.random() * categories.length)];
-
-    const prompt = `اكتب تحقيقاً صحفياً مطولاً جداً لقسم "${randomCategory}" في موقع "الحدث المصري".
-    التعليمات الصارمة:
-    1. المحتوى: مقال طويل (أكثر من 300 كلمة) مقسم لفقرات واضحة.
-    2. الصور: أريد منك وضع كلمات دلالية بالإنجليزية للصور في الأماكن المخصصة (مثلاً: egypt-economy, football-match).
-    3. التنسيق: استخدم HTML جذاب مع صور داخلية متناسقة.
     
-    الرد يكون كود HTML فقط بهذا الشكل:
-    <div class="news-card" style="grid-column: 1 / -1; max-width: 850px; margin: 0 auto 50px; background: #fff; box-shadow: 0 10px 30px rgba(0,0,0,0.08); border-radius: 12px; overflow: hidden;">
-        <img src="https://source.unsplash.com/featured/?{KEYWORD1}" style="width:100%; height:400px; object-fit:cover;" alt="صورة رئيسية">
-        
-        <div style="padding: 40px;">
-            <span class="tag" style="background:#c5a059; color:#white; padding:5px 15px; border-radius:4px;">${randomCategory}</span>
-            <h1 style="font-size:2.8rem; color:#002b5b; line-height:1.3; margin:20px 0;">[عنوان طويل وجذاب جداً]</h1>
-            
-            <p style="font-size:1.25rem; line-height:1.9; color:#333; margin-bottom:30px; font-weight:500;">[مقدمة دسمة جداً]</p>
-            
-            <div style="display:flex; gap:25px; margin:30px 0; align-items:flex-start;">
-                <p style="flex:2; font-size:1.1rem; line-height:1.8; color:#555;">[الفقرة الأولى المحللة للخبر بالتفصيل...]</p>
-                <img src="https://source.unsplash.com/featured/?{KEYWORD2}" style="flex:1; width:250px; height:180px; border-radius:10px; object-fit:cover;">
-            </div>
+    // استخدام مصدر صور موثوق جداً وسريع مع رقم عشوائي لضمان التغيير
+    const imageID = Math.floor(Math.random() * 1000);
+    const imageUrl = `https://fastly.picsum.photos/id/${imageID % 500}/800/500.jpg?hmac=demo`;
 
-            <p style="font-size:1.1rem; line-height:1.8; color:#555; margin-bottom:30px;">[الفقرة الثانية التي تحتوي على معلومات إضافية وإحصائيات...]</p>
+    const prompt = `اكتب مقالاً إخبارياً مصرياً دسماً واحترافياً لقسم "${randomCategory}" في موقع "الحدث المصري".
+    التعليمات:
+    1. العنوان: جذاب جداً واحترافي (Catchy).
+    2. المحتوى: مقال طويل نسبياً (فقرتين كبار) بأسلوب صحفي راقي.
+    3. التنسيق: HTML بسيط ونظيف جداً يريح العين على الموبايل.
+    4. ابتعد تماماً عن أي محتوى مسيء أو عناوين مضللة.
 
-            <div style="background:#f9f9f9; border-right:5px solid #002b5b; padding:20px; margin:30px 0;">
-                <h4 style="margin:0; color:#002b5b;">نقطة تحليلية من "الحدث المصري":</h4>
-                <p style="margin:10px 0 0; color:#666; font-style:italic;">[تحليل سريع لمستقبل هذا الخبر]</p>
-            </div>
-
-            <p style="font-size:1.1rem; line-height:1.8; color:#555;">[الخاتمة النهائية للموضوع]</p>
+    الرد كود HTML فقط:
+    <div class="news-card" style="margin-bottom:30px; background:#fff; border-radius:8px; box-shadow:0 2px 10px rgba(0,0,0,0.1); overflow:hidden;">
+        <img src="${imageUrl}" style="width:100%; height:250px; object-fit:cover; display:block;" alt="الحدث">
+        <div style="padding:20px;">
+            <span class="tag" style="background:#c5a059; color:#fff; padding:3px 10px; font-size:12px; border-radius:3px;">${randomCategory}</span>
+            <h3 style="color:#002b5b; font-size:1.4rem; margin:15px 0; line-height:1.4;">عنوان الخبر هنا</h3>
+            <p style="color:#444; line-height:1.7; font-size:1rem;">محتوى الخبر المفصل الذي يملأ العين ويقدم معلومة مفيدة...</p>
+            <a href="#" class="btn-read" style="color:#c5a059; text-decoration:none; font-weight:bold; display:inline-block; margin-top:10px;">إقرأ المزيد ←</a>
         </div>
     </div>`;
 
@@ -47,24 +36,20 @@ async function generate() {
             body: JSON.stringify({
                 model: "llama-3.1-8b-instant",
                 messages: [{ role: "user", content: prompt }],
-                temperature: 0.7
+                temperature: 0.6
             })
         });
 
         const result = await response.json();
-        let content = result.choices[0].message.content;
-
-        // استبدال الكلمات الدلالية العشوائية بكلمات مرتبطة بالمحتوى
-        // البوت سيقوم بملء {KEYWORD} بكلمات مناسبة من اختياره
-        let fullArticle = content.replace(/```html|```/g, "").trim();
+        let newCard = result.choices[0].message.content.replace(/```html|```/g, "").trim();
 
         let indexContent = fs.readFileSync('index.html', 'utf8');
         const marker = '<div class="news-grid">';
         
         if (indexContent.includes(marker)) {
-            indexContent = indexContent.replace(marker, marker + '\n' + fullArticle);
+            indexContent = indexContent.replace(marker, marker + '\n' + newCard);
             fs.writeFileSync('index.html', indexContent);
-            console.log("✅ تم نشر التحقيق الصحفي المطور!");
+            console.log("✅ تم استعادة النظام ونشر المقال بنجاح!");
         }
     } catch (e) {
         process.exit(1);
