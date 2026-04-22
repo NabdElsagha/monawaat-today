@@ -1,26 +1,55 @@
-hover { transform: translateY(-5px); box-shadow: 0 30px 60px rgba(0,0,0,0.1); }
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الحدث المصري | المصدر الأول</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&family=Amiri:wght@700&display=swap" rel="stylesheet">
+    <style>
+        :root { --primary: #002b5b; --gold: #c5a059; --bg: #f0f2f5; }
+        * { box-sizing: border-box; }
+        body { font-family: 'Cairo', sans-serif; background: var(--bg); margin: 0; color: #1a1a1a; overflow-x: hidden; }
         
-        .card-img-wrapper { width: 100%; height: 550px; background: #eceff1; overflow: hidden; }
+        /* هيدر عصري ومضبوط */
+        header { background: var(--primary); color: white; padding: 40px 15px; text-align: center; border-bottom: 5px solid var(--gold); }
+        header h1 { font-family: 'Amiri', serif; font-size: clamp(2.5rem, 8vw, 4rem); margin: 0; }
+        header p { font-size: 1.1rem; opacity: 0.8; margin-top: 8px; }
+
+        /* ناف بار مرن */
+        nav { background: white; position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.1); overflow-x: auto; white-space: nowrap; }
+        .nav-container { max-width: 1200px; margin: 0 auto; display: flex; justify-content: center; padding: 5px; }
+        nav a { padding: 12px 15px; text-decoration: none; color: var(--primary); font-weight: bold; font-size: 0.95rem; transition: 0.3s; }
+        nav a:hover { color: var(--gold); }
+
+        /* حاوية المحتوى */
+        .container { max-width: 800px; margin: 30px auto; padding: 0 15px; }
+        .section-title { font-size: 1.8rem; color: var(--primary); border-right: 5px solid var(--gold); padding-right: 15px; margin-bottom: 30px; }
+
+        /* شبكة الأخبار */
+        .news-grid { display: flex; flex-direction: column; gap: 35px; }
+
+        /* تصميم الكارت المطور لمنع الترحيل */
+        .news-card { background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.08); display: flex; flex-direction: column; width: 100%; }
+        
+        .card-img-wrapper { width: 100%; height: 250px; background: #ddd; }
         .card-img-wrapper img { width: 100%; height: 100%; object-fit: cover; }
 
-        .card-content { padding: 45px; }
-        .tag { background: #eef2f7; color: var(--primary); padding: 5px 15px; border-radius: 4px; font-size: 0.85rem; font-weight: bold; text-transform: uppercase; border: 1px solid #d1d9e0; }
-        .card-content h3 { font-size: 2.8rem; color: var(--primary); margin: 25px 0; line-height: 1.2; font-family: 'Amiri', serif; }
-        .card-content p { font-size: 1.35rem; color: #4a5568; margin-bottom: 35px; text-align: justify; }
+        .card-content { padding: 25px; text-align: right; width: 100%; }
+        .tag { background: var(--gold); color: white; padding: 4px 12px; border-radius: 4px; font-size: 0.8rem; font-weight: bold; display: inline-block; margin-bottom: 15px; }
+        .card-content h3 { font-size: 1.6rem; color: var(--primary); margin: 0 0 15px 0; line-height: 1.4; font-family: 'Amiri', serif; }
+        .card-content p { font-size: 1.05rem; color: #444; line-height: 1.7; margin-bottom: 20px; word-wrap: break-word; }
         
-        .btn-read { display: inline-block; padding: 15px 45px; background: var(--primary); color: white; text-decoration: none; border-radius: 5px; font-weight: bold; font-size: 1.1rem; border: none; cursor: pointer; transition: 0.3s; }
+        .btn-read { display: inline-block; width: 100%; text-align: center; padding: 12px; background: var(--primary); color: white !important; text-decoration: none; border-radius: 6px; font-weight: bold; transition: 0.3s; border: none; }
         .btn-read:hover { background: var(--gold); }
 
-        /* فوتور رسمي */
-        footer { background: #001a35; color: white; padding: 80px 20px; text-align: center; margin-top: 100px; }
-        footer p { margin: 10px 0; font-size: 1.1rem; opacity: 0.8; }
-        .footer-logo { font-family: 'Amiri', serif; font-size: 2.5rem; color: var(--gold); margin-bottom: 20px; display: block; }
+        footer { background: #001a35; color: white; padding: 40px 20px; text-align: center; margin-top: 50px; }
 
-        @media (max-width: 768px) {
-            header h1 { font-size: 3rem; }
-            .card-img-wrapper { height: 350px; }
-            .card-content h3 { font-size: 2rem; }
-            .card-content { padding: 25px; }
+        /* تعديلات الموبايل */
+        @media (max-width: 600px) {
+            .container { margin: 15px auto; }
+            .card-content h3 { font-size: 1.4rem; }
+            .card-img-wrapper { height: 200px; }
+            .nav-container { justify-content: flex-start; }
         }
     </style>
 </head>
@@ -28,32 +57,27 @@ hover { transform: translateY(-5px); box-shadow: 0 30px 60px rgba(0,0,0,0.1); }
 
 <header>
     <h1>الحدث المصري</h1>
-    <p>تغطية صحفية شاملة.. من قلب الحدث</p>
+    <p>نبض مصر بين يديك</p>
 </header>
 
 <nav>
     <div class="nav-container">
         <a href="index.html">الرئيسية</a>
-        <a href="#" onclick="alert('جاري تحديث قسم الأخبار...')">أخبار مصر</a>
-        <a href="#" onclick="alert('قسم التكنولوجيا قيد التطوير...')">تكنولوجيا</a>
-        <a href="#" onclick="alert('نتابع مؤشرات الاقتصاد...')">اقتصاد</a>
-        <a href="mailto:contact@nabdelsagha.com">اتصل بنا</a>
+        <a href="#">أخبار مصر</a>
+        <a href="#">تكنولوجيا</a>
+        <a href="#">اقتصاد</a>
+        <a href="#">رياضة</a>
     </div>
 </nav>
 
 <div class="container">
-    <div class="section-header">
-        <h2>أحدث التقارير الحصرية</h2>
-    </div>
-
+    <h2 class="section-title">أحدث التقارير</h2>
     <div class="news-grid" id="newsGrid">
         </div>
 </div>
 
 <footer>
-    <span class="footer-logo">الحدث المصري</span>
-    <p>جميع الحقوق محفوظة © 2026 - مؤسسة الحدث المصري للصحافة والنشر</p>
-    <p style="font-size: 0.9rem; opacity: 0.5;">هيئة التحرير المركزية | القاهرة</p>
+    <p>© 2026 الحدث المصري - هيئة التحرير</p>
 </footer>
 
 </body>
