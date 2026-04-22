@@ -14,11 +14,11 @@ jobs:
       - name: Run
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-        run: node auto-writer.js
-      - name: Push
-        run: |
-          git config --global user.name 'bot'
-          git config --global user.email 'bot@bot.com'
-          git add articles/
-          git commit -m "new article" || exit 0
-          git push
+        run: node auto-
+            - name: Commit and Push changes
+      run: |
+        git config --global user.name "github-actions"
+        git config --global user.email "action@github.com"
+        git add index.html articles/
+        git commit -m "إضافة خبر جديد لـ الحدث المصري" || echo "لا توجد تغييرات"
+        git push
