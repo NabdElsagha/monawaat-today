@@ -4,16 +4,19 @@ async function generate() {
     const apiKey = process.env.GEMINI_API_KEY ? process.env.GEMINI_API_KEY.trim() : "";
     const url = `https://api.groq.com/openai/v1/chat/completions`;
 
-    // قائمة الأقسام الموسعة
-    const categories = ["السياسة", "الاقتصاد", "حوادث", "تكنولوجيا", "رياضة", "منوعات", "فن وثقافة"];
+    // رجعنا كل الأقسام عشان "الهيبة" والشكل الاحترافي
+    const categories = ["السياسة", "الاقتصاد", "حوادث", "تكنولوجيا", "رياضة", "منوعات"];
     const randomCategory = categories[Math.floor(Math.random() * categories.length)];
 
-    const prompt = `اكتب تحقيقاً صحفياً احترافياً جداً لقسم "${randomCategory}" في جريدة "الحدث المصري".
-    التعليمات:
-    1. العنوان: طويل، مثير، وبأسلوب كبار الكتاب.
-    2. المحتوى: 8-10 جمل طويلة مليئة بالتفاصيل والتحليل الصحفي.
-    3. الصورة: اختر كلمة إنجليزية واحدة تعبر عن جوهر الموضوع.
+    const prompt = `اكتب مقالاً صحفياً احترافياً لقسم "${randomCategory}" في موقع "الحدث المصري".
     
+    الخطوط الحمراء (هام جداً):
+    1. في قسم السياسة: ركز فقط على السياسة الدولية (أخبار الأمم المتحدة، قمم عالمية، اتفاقيات تجارية دولية).
+    2. ممنوع منعاً باتاً التعرض للسياسة الداخلية المصرية أو ذكر أي رموز سياسية محلية.
+    3. في قسم الحوادث: ركز على نصائح السلامة أو أخبار الحوادث العامة (مثل حريق في غابة عالمية، أو نصائح مرورية).
+    4. اجعل المحتوى "آمن" (Safe Content) وموافق لسياسات Google AdSense.
+    5. الأسلوب: رصين، بشري تماماً، وبدون أي إشارة للذكاء الاصطناعي.
+
     الرد كود HTML فقط:
     <div class="news-card">
         <div class="card-img-wrapper">
@@ -22,7 +25,7 @@ async function generate() {
         </div>
         <div class="card-content">
             <h3>العنوان الصحفي هنا</h3>
-            <p>نص التحقيق المفصل هنا...</p>
+            <p>المحتوى الصحفي هنا (8 جمل دسمة)...</p>
             <button class="btn-read" onclick="location.reload()">إقرأ المزيد</button>
         </div>
     </div>`;
@@ -47,7 +50,7 @@ async function generate() {
         if (indexContent.includes(marker)) {
             indexContent = indexContent.replace(marker, marker + '\n' + content);
             fs.writeFileSync('index.html', indexContent);
-            console.log("✅ المقال الاحترافي نزل بنجاح!");
+            console.log(`✅ تم نشر خبر في قسم ${randomCategory} بنجاح وبأمان تام.`);
         }
     } catch (e) {
         process.exit(1);
