@@ -41,6 +41,7 @@
         .card-body { padding: 30px; text-align: right; }
         .card-body h3 { font-size: 1.9rem; color: var(--primary); margin-bottom: 15px; line-height: 1.4; font-family: 'Amiri', serif; }
         
+        /* إخفاء النص الطويل */
         .more-text { display: none; margin-top: 10px; border-top: 1px dashed #ddd; padding-top: 15px; color: #444; }
         .btn-more { display: block; width: 100%; text-align: center; background: var(--primary); color: white !important; padding: 14px; border-radius: 8px; border: none; margin-top: 20px; font-weight: bold; cursor: pointer; }
 
@@ -71,8 +72,10 @@
     <div id="newsGrid"></div>
 </div>
 <footer><p>© 2026 الحدث المصري - جميع الحقوق محفوظة</p></footer>
+
 <script>
 function toggleReadMore(btn) {
+    // الزرار هيدور على العنصر اللي قبله مباشرة اللي واخد كلاس more-text
     const moreText = btn.previousElementSibling;
     if (moreText.style.display === "none" || moreText.style.display === "") {
         moreText.style.display = "block";
