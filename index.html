@@ -1,93 +1,156 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
-<head>
+<html lang="en" dir="ltr"> <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>الحدث المصري</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&family=Amiri:wght@700&display=swap" rel="stylesheet">
+    <title>ENB - Egypt News Bureau</title>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@700&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
     <style>
-        :root { --primary: #001f3f; --gold: #c5a059; --bg: #f4f7f9; --red: #e63946; }
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: 'Cairo', sans-serif; background: var(--bg); color: #1a1a1a; }
-        
-        /* الهيدر المظبوط */
-        header { background: var(--primary); color: white; padding: 45px 15px; display: flex; flex-direction: column; align-items: center; text-align: center; }
-        
-        .logo-container { 
-            width: 95px; height: 95px; background: var(--gold); border-radius: 4px; 
-            display: flex; align-items: center; justify-content: center; margin-bottom: 15px; 
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        :root { 
+            --black: #1a1a1a; /* أسود كربوني */
+            --white: #ffffff;
+            --gold: #c5a059;  /* ذهبي فخم (خفيف جداً) */
+            --bg: #f5f5f5;
         }
-
-        /* رسم حرف الحاء الكوفي المربع الصريح */
-        .logo-container svg { width: 65px; height: 65px; fill: var(--primary); }
-
-        header h1 { font-family: 'Amiri', serif; font-size: 3rem; margin: 0; line-height: 1; }
-        header p { font-size: 1.1rem; color: var(--gold); margin-top: 10px; font-weight: bold; }
-
-        /* شريط عاجل الإخباري */
-        .breaking-strip { background: var(--red); color: white; height: 45px; display: flex; align-items: center; overflow: hidden; position: relative; border-top: 2px solid var(--gold); }
-        .label { background: #9b1c1c; padding: 0 20px; height: 100%; display: flex; align-items: center; font-weight: 900; z-index: 10; position: absolute; right: 0; }
-        .scroller { display: inline-block; white-space: nowrap; animation: move 25s linear infinite; padding-right: 120px; font-weight: bold; }
-        @keyframes move { 0% { transform: translateX(-100%); } 100% { transform: translateX(100%); } }
-
-        nav { background: white; border-bottom: 2px solid var(--gold); position: sticky; top: 0; z-index: 1000; }
-        .nav-links { max-width: 1200px; margin: 0 auto; display: flex; justify-content: center; padding: 12px; gap: 25px; }
-        nav a { text-decoration: none; color: var(--primary); font-weight: 900; font-size: 1rem; }
-
-        .content { max-width: 750px; margin: 30px auto; padding: 0 15px; }
-        .card { background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.05); margin-bottom: 40px; border: 1px solid #eee; }
-        .card-img { width: 100%; height: 300px; object-fit: cover; }
-        .card-body { padding: 25px; text-align: right; }
-        .card-body h3 { font-size: 2rem; color: var(--primary); margin-bottom: 15px; font-family: 'Amiri', serif; }
-        .card-body p { line-height: 1.8; color: #444; }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Roboto', sans-serif; background: var(--bg); color: #333; }
         
-        .read-more-content { display: none; margin-top: 15px; border-top: 1px dashed #ccc; padding-top: 15px; }
-        .btn { display: block; width: 100%; background: var(--primary); color: white !important; text-align: center; padding: 15px; border-radius: 8px; border: none; margin-top: 20px; font-weight: 900; cursor: pointer; }
+        /* الهيدر الجديد (عصري ومسطح) */
+        header { 
+            background: var(--black); 
+            color: var(--white); 
+            padding: 25px 20px; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center;
+            border-bottom: 2px solid var(--gold);
+            position: fixed; /* هيدر مثبت */
+            width: 100%;
+            top: 0;
+            z-index: 2000;
+        }
+        
+        /* براند ENB - قوي وصريح */
+        .brand { 
+            font-family: 'Oswald', sans-serif; 
+            font-size: 3rem; 
+            letter-spacing: -2px;
+            color: var(--white);
+            display: flex;
+            align-items: center;
+            line-height: 1;
+        }
+        .brand span { color: var(--gold); margin-left: 2px; font-size: 1.5rem; vertical-align: top; }
 
-        footer { background: #001226; color: white; padding: 40px; text-align: center; border-top: 5px solid var(--gold); }
+        /* الأقسام الإنجليزية */
+        nav { display: flex; gap: 20px; }
+        nav a { 
+            text-decoration: none; 
+            color: rgba(255,255,255,0.7); 
+            font-weight: 700; 
+            text-transform: uppercase; 
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+            transition: 0.3s;
+        }
+        nav a:hover, nav a.active { color: var(--white); }
+
+        .container { max-width: 900px; margin: 120px auto 50px auto; padding: 0 20px; }
+        .grid-title { 
+            font-size: 1.5rem; 
+            color: var(--black); 
+            text-transform: uppercase; 
+            font-weight: 700; 
+            letter-spacing: 1.5px;
+            margin-bottom: 40px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .grid-title::after { content: ''; flex-grow: 1; height: 1px; background: #ddd; }
+
+        /* المقالات باللغة العربية (كما هو مطلوب للجمهور المصري) */
+        #newsGrid { direction: rtl; font-family: 'Roboto', sans-serif; } /* تفعيل اتجاه اليمين للمقال */
+        
+        .article-card { 
+            background: var(--white); 
+            margin-bottom: 40px; 
+            box-shadow: 0 5px 15px rgba(0,0,0,0.03); 
+            transition: 0.3s; 
+            overflow: hidden;
+            display: flex; /* كارت أفقي */
+            border: 1px solid #eee;
+        }
+        .article-card:hover { transform: translateY(-3px); box-shadow: 0 10px 25px rgba(0,0,0,0.06); }
+        
+        .card-img-wrap { width: 300px; height: 100%; position: relative; }
+        .card-img { width: 100%; height: 100%; object-fit: cover; }
+        .category-badge { position: absolute; top: 10px; right: 10px; background: var(--black); color: var(--white); padding: 5px 12px; font-size: 0.7rem; text-transform: uppercase; font-weight: 700; }
+
+        .card-body { padding: 30px; width: calc(100% - 300px); text-align: right; }
+        .card-body h3 { 
+            font-size: 1.6rem; 
+            color: var(--black); 
+            margin-bottom: 15px; 
+            line-height: 1.3;
+            font-weight: 700;
+        }
+        .card-body p { line-height: 1.8; color: #555; font-size: 1rem; }
+        
+        .full-article { display: none; margin-top: 20px; padding-top: 20px; border-top: 1px dashed #eee; color: #666; }
+        .read-btn { 
+            display: block; 
+            width: 100%; 
+            background: var(--black); 
+            color: var(--white) !important; 
+            text-align: center; 
+            padding: 15px; 
+            margin-top: 20px; 
+            font-weight: 700; 
+            cursor: pointer; 
+            border: none;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+        }
+        .read-btn:hover { background: #333; }
+
+        footer { background: var(--black); color: rgba(255,255,255,0.6); padding: 50px; text-align: center; margin-top: 80px; }
+        footer h2 { color: var(--white); font-family: 'Oswald', sans-serif; font-size: 2rem; margin-bottom: 10px; }
     </style>
 </head>
 <body>
 
 <header>
-    <div class="logo-container">
-        <svg viewBox="0 0 100 100">
-            <path d="M20 20h60v15H35v15h45v30H20v-15h45V65H20V20z"/>
-        </svg>
-    </div>
-    <h1>الحدث المصري</h1>
-    <p>نبض مصر بين يديك</p>
+    <div class="brand">ENB<span>.</span></div>
+    <nav>
+        <a href="index.html" class="active">News</a>
+        <a href="#">World</a>
+        <a href="#">Business</a>
+        <a href="#">Tech</a>
+        <a href="#">Sport</a>
+    </nav>
 </header>
 
-<div class="breaking-strip">
-    <div class="label">عاجل</div>
-    <div class="scroller" id="tickerContent">الحدث المصري يتابع أهم الأنباء والتقارير العالمية على مدار الساعة...</div>
+<div class="container">
+    <h2 class="grid-title">Latest Updates</h2>
+    <div id="newsGrid">
+        </div>
 </div>
 
-<nav>
-    <div class="nav-links">
-        <a href="index.html">الرئيسية</a>
-        <a href="#">عالمي</a>
-        <a href="#">اقتصاد</a>
-        <a href="#">رياضة</a>
-    </div>
-</nav>
-
-<div class="content">
-    <div id="newsGrid"></div>
-</div>
-
-<footer><p>© 2026 الحدث المصري - جميع الحقوق محفوظة</p></footer>
+<footer>
+    <h2>ENB</h2>
+    <p>© 2026 Egypt News Bureau. All rights reserved.</p>
+</footer>
 
 <script>
-function togglePost(btn) {
-    const details = btn.previousElementSibling;
-    if (details.style.display === "none" || details.style.display === "") {
-        details.style.display = "block";
+// وظيفة فتح المقال
+function toggleRead(btn) {
+    const fullText = btn.previousElementSibling;
+    if (fullText.style.display === "none" || fullText.style.display === "") {
+        fullText.style.display = "block";
         btn.innerText = "عرض أقل";
     } else {
-        details.style.display = "none";
+        fullText.style.display = "none";
         btn.innerText = "إقرأ المزيد";
     }
 }
