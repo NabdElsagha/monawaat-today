@@ -4,27 +4,24 @@ async function generate() {
     const apiKey = process.env.GEMINI_API_KEY ? process.env.GEMINI_API_KEY.trim() : "";
     const url = `https://api.groq.com/openai/v1/chat/completions`;
 
-    // الأقسام المعتمدة في التصميم الجديد
     const categories = ["أخبار عالمية", "اقتصاد", "حوادث", "تكنولوجيا", "رياضة"];
     const randomCategory = categories[Math.floor(Math.random() * categories.length)];
-
-    const prompt = `اكتب مقالاً صحفياً احترافياً لقسم "${randomCategory}" لموقع "الحدث المصري".
     
-    التعليمات الصارمة:
-    1. الموضوع: ركز على الشأن الدولي أو الأخبار العامة (ممنوع تماماً أي سياسة داخلية مصرية).
-    2. الأمان: المحتوى يجب أن يكون آمناً تماماً لسياسات Google AdSense.
-    3. التفاصيل: المقال يجب أن يكون دسماً (8 جمل طويلة) بأسلوب صحفي رصين.
-    4. الصورة: اختر كلمة إنجليزية واحدة تعبر عن الخبر (مثل: Business, Tech, Galaxy, Stadium).
+    // كلمات بحث بالإنجليزية لتحسين دقة الصور من Unsplash
+    const imgKeywords = { "أخبار عالمية": "global,news", "اقتصاد": "finance,gold", "حوادث": "police,fire", "تكنولوجيا": "technology,ai", "رياضة": "stadium,football" };
+    const searchWord = imgKeywords[randomCategory];
 
-    الرد كود HTML فقط بهذا التنسيق الاحترافي:
+    const prompt = `اكتب مقالاً صحفياً احترافياً باللغة العربية لقسم "${randomCategory}" لموقع "الحدث المصري".
+    الضوابط: شأن دولي فقط، ممنوع السياسة الداخلية المصرية، أسلوب رصين ودسم (8 جمل).
+    الرد كود HTML فقط:
     <div class="news-card">
         <div class="card-img">
             <span class="badge">${randomCategory}</span>
-            <img src="https://loremflickr.com/1000/600/{KEYWORD}?random=${Math.random()}" alt="الحدث">
+            <img src="https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=1000&q=80&sig=${Math.floor(Math.random() * 999999)}" alt="خبر">
         </div>
         <div class="card-body">
             <h3>العنوان الصحفي هنا</h3>
-            <p>محتوى الخبر هنا بأسلوب تحليلي جذاب...</p>
+            <p>محتوى الخبر هنا بأسلوب جذاب...</p>
             <button class="btn-more" onclick="location.reload()">إقرأ المزيد</button>
         </div>
     </div>`;
@@ -32,10 +29,7 @@ async function generate() {
     try {
         const response = await fetch(url, {
             method: 'POST',
-            headers: { 
-                'Authorization': `Bearer ${apiKey}`, 
-                'Content-Type': 'application/json' 
-            },
+            headers: { 'Authorization': `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
             body: JSON.stringify({
                 model: "llama-3.1-8b-instant",
                 messages: [{ role: "user", content: prompt }],
@@ -46,17 +40,19 @@ async function generate() {
         const result = await response.json();
         let content = result.choices[0].message.content.replace(/```html|```/g, "").trim();
 
+        // تحديث رابط الصورة بكود فريد جداً لضمان عدم التكرار
+        const uniqueID = Date.now() + Math.floor(Math.random() * 1000);
+        content = content.replace(/sig=\d+/, `sig=${uniqueID}`);
+
         let indexContent = fs.readFileSync('index.html', 'utf8');
         const marker = '<div id="newsGrid">';
         
         if (indexContent.includes(marker)) {
-            // إضافة الخبر الجديد فوراً تحت عنوان القسم
             indexContent = indexContent.replace(marker, marker + '\n' + content);
             fs.writeFileSync('index.html', indexContent);
-            console.log(`✅ تم نشر خبر بروفيشنال في قسم [${randomCategory}] بصورة فريدة.`);
+            console.log("✅ تم النشر بصورة فريدة.");
         }
     } catch (e) {
-        console.error("خطأ تقني:", e);
         process.exit(1);
     }
 }
