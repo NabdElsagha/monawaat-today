@@ -3,13 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ENB - Egypt News Bureau</title>
+    <title>ENB - Egypt News Bureau | Global Perspective</title>
     <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@700&family=Roboto:wght@400;900&display=swap" rel="stylesheet">
     <style>
         :root { --black: #111; --white: #fff; --gold: #c5a059; --bg: #f9f9f9; --red: #e63946; --trend: #ff4757; }
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: 'Roboto', sans-serif; background: var(--bg); color: #333; padding-top: 140px; }
         
+        /* الهيدر الثابت */
         header { 
             background: var(--black); color: var(--white); padding: 10px 5%; 
             display: flex; justify-content: space-between; align-items: center;
@@ -18,54 +19,55 @@
         .brand { font-family: 'Oswald', sans-serif; font-size: 2.2rem; color: var(--white); text-decoration: none; }
         .brand span { color: var(--gold); }
 
-        /* شريط عاجل المطور */
+        /* شريط عاجل المثبت */
         .breaking-bar { 
             background: var(--red); color: white; height: 40px; display: flex; 
             align-items: center; overflow: hidden; position: fixed; top: 72px; 
-            width: 100%; z-index: 2500;
+            width: 100%; z-index: 2500; border-bottom: 1px solid rgba(255,255,255,0.2);
         }
         .breaking-label { background: #9b1c1c; padding: 0 20px; height: 100%; display: flex; align-items: center; font-weight: 900; z-index: 10; position: absolute; right: 0; font-size: 0.85rem; }
         .ticker-move { display: inline-block; white-space: nowrap; animation: scroll-news 25s linear infinite; padding-right: 100%; font-weight: 700; }
         @keyframes scroll-news { 0% { transform: translateX(-100%); } 100% { transform: translateX(100%); } }
 
-        /* القائمة العلوية */
-        nav { display: flex; gap: 12px; overflow-x: auto; white-space: nowrap; padding-bottom: 5px; scrollbar-width: none; }
+        /* القائمة العلوية مرنة للموبايل */
+        nav { display: flex; gap: 12px; overflow-x: auto; white-space: nowrap; padding: 5px 0; scrollbar-width: none; }
         nav::-webkit-scrollbar { display: none; }
-        nav a { text-decoration: none; color: rgba(255,255,255,0.8); font-weight: 700; text-transform: uppercase; font-size: 0.75rem; padding: 5px 8px; border-radius: 3px; }
-        nav a:hover, nav a.active-link { color: var(--gold); background: rgba(255,255,255,0.1); }
-        .trend-link { color: var(--trend) !important; font-weight: 900; }
+        nav a { text-decoration: none; color: rgba(255,255,255,0.8); font-weight: 700; text-transform: uppercase; font-size: 0.75rem; padding: 5px 10px; transition: 0.3s; border-radius: 4px; }
+        nav a:hover { color: var(--gold); background: rgba(255,255,255,0.1); }
+        .trend-btn { color: var(--trend) !important; border: 1px solid var(--trend); }
 
-        .container { max-width: 1000px; margin: 0 auto; padding: 20px; }
-        .section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; border-bottom: 2px solid #ddd; padding-bottom: 10px; }
+        .container { max-width: 1000px; margin: 0 auto; padding: 20px; min-height: 600px; }
+        .section-header { margin-bottom: 35px; border-bottom: 2px solid #ddd; padding-bottom: 10px; }
         .section-title { font-size: 1.4rem; text-transform: uppercase; font-weight: 900; color: var(--black); }
 
-        #newsGrid { display: flex; flex-direction: column; gap: 20px; direction: rtl; min-height: 400px; }
+        /* شبكة الأخبار بتنسيق احترافي */
+        #newsGrid { display: flex; flex-direction: column; gap: 25px; direction: rtl; }
         
-        .article-card { background: var(--white); display: flex; border-radius: 4px; overflow: hidden; box-shadow: 0 2px 12px rgba(0,0,0,0.06); border: 1px solid #eee; transition: 0.3s; }
-        .article-card:hover { transform: translateY(-3px); }
-        .card-img-wrap { width: 35%; min-width: 280px; height: 260px; background: #f0f0f0; position: relative; }
+        .article-card { background: var(--white); display: flex; border-radius: 4px; overflow: hidden; box-shadow: 0 2px 15px rgba(0,0,0,0.06); border: 1px solid #eee; transition: 0.3s; }
+        .article-card:hover { transform: translateY(-3px); box-shadow: 0 5px 20px rgba(0,0,0,0.1); }
+        
+        .card-img-wrap { width: 35%; min-width: 280px; height: 280px; background: #eee; position: relative; }
         .card-img { width: 100%; height: 100%; object-fit: cover; display: block; }
         
-        /* علامة التريند */
-        .badge { position: absolute; top: 10px; left: 10px; padding: 5px 12px; font-size: 0.7rem; font-weight: 900; text-transform: uppercase; color: white; }
+        .badge { position: absolute; top: 10px; left: 10px; padding: 5px 12px; font-size: 0.7rem; font-weight: 900; text-transform: uppercase; color: white; z-index: 5; }
         .badge-trend { background: var(--trend); }
         .badge-normal { background: var(--gold); color: black; }
         
-        .card-body { padding: 25px; width: 65%; text-align: right; display: flex; flex-direction: column; justify-content: center; }
-        .card-body h3 { font-size: 1.7rem; margin-bottom: 15px; color: var(--black); font-weight: 900; line-height: 1.2; }
-        .card-body p { line-height: 1.8; color: #444; font-size: 1.05rem; }
+        .card-body { padding: 30px; width: 65%; text-align: right; display: flex; flex-direction: column; justify-content: center; }
+        .card-body h3 { font-size: 1.8rem; margin-bottom: 15px; color: var(--black); font-weight: 900; line-height: 1.2; }
+        .card-body p { line-height: 1.8; color: #444; font-size: 1.1rem; }
         
-        .full-article { display: none; margin-top: 20px; padding-top: 20px; border-top: 1px dashed #ddd; font-size: 1rem; color: #555; }
+        .full-article { display: none; margin-top: 20px; padding-top: 20px; border-top: 1px dashed #ddd; font-size: 1.05rem; color: #555; }
         .read-btn { background: var(--black); color: var(--white); padding: 12px 25px; border: none; cursor: pointer; margin-top: 20px; font-weight: 700; width: fit-content; align-self: flex-start; }
 
-        footer { background: var(--black); color: var(--white); padding: 50px 20px; text-align: center; border-top: 4px solid var(--gold); margin-top: 60px; }
+        footer { background: var(--black); color: var(--white); padding: 50px 20px; text-align: center; border-top: 5px solid var(--gold); margin-top: 80px; }
 
         @media (max-width: 768px) {
             .article-card { flex-direction: column; }
             .card-img-wrap { width: 100%; height: 220px; }
             .card-body { width: 100%; }
             body { padding-top: 160px; }
-            .breaking-bar { top: 85px; }
+            .breaking-bar { top: 82px; }
         }
     </style>
 </head>
@@ -74,7 +76,7 @@
 <header>
     <a href="index.html" class="brand">ENB<span>.</span></a>
     <nav>
-        <a href="#" class="trend-link" onclick="filterNews('Trending')">🔥 Trending</a>
+        <a href="#" class="trend-btn" onclick="filterNews('Trending')">🔥 Trending</a>
         <a href="#" onclick="filterNews('all')">Latest</a>
         <a href="#" onclick="filterNews('World')">World</a>
         <a href="#" onclick="filterNews('Business')">Business</a>
@@ -86,96 +88,24 @@
 
 <div class="breaking-bar">
     <div class="breaking-label">عاجل</div>
-    <div class="ticker-move">ENB EXCLUSIVE: تقارير حصرية وتحليلات لأهم الأحداث العالمية والتريندات لحظة بلحظة...</div>
+    <div class="ticker-move" id="liveTicker">ENB: نتابع معكم أهم التريندات العالمية والتقارير الحصرية والتحليلات الاقتصادية لحظة بلحظة...</div>
 </div>
 
 <div class="container">
     <div class="section-header">
-        <h2 class="section-title" id="titleHeader">Latest News</h2>
+        <h2 class="section-title" id="sectionTitle">Latest News</h2>
     </div>
     <div id="newsGrid">
-<div class="article-card" data-category="Sport">
-    <div class="card-img-wrap">
-        <span class="badge badge-normal">Sport</span>
-        <img src="https://images.unsplash.com/photo-1585311000000-0-754faaf9a09d" class="card-img">
-    </div>
-    <div class="card-body">
-        <h3>سقوط براند "ENB" في عالم الرياضة: ما وراء الصور?</h3>
-        <p>يقدم فريق "ENB"، الذي يُعتبر أحد أقوى الفرق في عالم الرياضة، تحديًا يصيب العالم بالذهول. بعد سلسلة من الأحداث الرائعة، يُلاحظ أن الفريق يتعرض لشائعات حول إنهاء عملهم. ما هي الحقيقة وراء هذه الأحداث؟</p>
-        <div class="full-article">
-            <p>في وقت سابق من هذا العام، تم الإعلان عن تعاقد فريق "ENB" مع أحد أفضل اللاعبين في عالم الرياضة، مما أدى إلى تجمع الفريق وتحقيق أهداف جديدة. ومع أن هذا التعاقد كان له تأثير كبير على الفريق، إلا أن هناك شائعات تتعلق بإنهاء عمل الفريق.</p>
-            <p>وفقًا لแหลباتنا، فإن الفريق يتعرض لضغوط كبيرة من قبل الإدارة، مما قد يؤدي إلى انهيار الفريق. هذا الأمر يسبقه سلسلة من الأحداث التي ساهمت في تدهور الوضع.</p>
-            <p>في المقابل، يرفض الفريق أي تعليق على هذه الشائعات، مما يجعل الأمر أكثر تعقيدًا. في وقت سابق، قام الفريق بإنشاء مقطع فيديو يظهر لاعباً من الفريق يؤكد على استمرارهم مع الفريق.</p>
-            <p>يُعد فريق "ENB" من بين أبرز الفرق في عالم الرياضة، وقد حقق العديد من النجاحات في السنوات الأخيرة. ومع أن هناك شائعات تتعلق بإنهاء عمل الفريق، إلا أن هناك العديد من العوامل التي قد تؤثر على هذا القرار.</p>
-            <p>من بين تلك العوامل، يُعد التحديات المالية واحدة من أهمها. في وقت سابق، أعلن الفريق عن مشاكل مالية كبيرة، مما قد يؤثر على استمرارهم.</p>
-            <p>في الوقت نفسه، يُعد تحديات الفريق الرياضية أيضًا من العوامل التي قد تؤثر على قرارهم. بمجرد أن يتوقف الفريق عن عملهم، قد يؤدي ذلك إلى انحطاط مستوى الفريق.</p>
-            <p>هذا الأمر يُضاف إلى الصراع بين أعضاء الفريق، مما قد يؤدي إلى انهيار الفريق. في وقت سابق، تسببت هذه الصراعات في تقديم العديد من الأصوات التي تؤكد على وجود مشاكل كبيرة في الفريق.</p>
-            <p>من بين تلك الأصوات، تُعد تعليقات أحد اللاعبين في الفريق من أكثرها إثارة. في وقت سابق، قام اللاعب بتعليق على حالة الفريق، مما أدى إلى تعليقات إضافية.</p>
-            <p>في الوقت نفسه، تُعد تصرفات الإدارة من العوامل التي قد تؤثر على قرار الفريق. بمجرد أن يتوقف الفريق عن عملهم، قد يؤدي ذلك إلى انحطاط مستوى الفريق.</p>
-            <p>هذا الأمر يُضاف إلى تحديات الفريق الرياضية، مما قد يؤدي إلى انهيار الفريق. في وقت سابق، تسببت هذه التحديات في تقديم العديد من الأصوات التي تؤكد على وجود مشاكل كبيرة في الفريق.</p>
-            <p>من بين تلك الأصوات، تُعد تعليقات أحد الإداريين في الفريق من أكثرها إثارة. في وقت سابق، قام الإداري بتعليق على حالة الفريق، مما أدى إلى تعليقات إضافية.</p>
-            <p>هذا التطور يُضيف إلى الصراع بين أعضاء الفريق، مما قد يؤدي إلى انهيار الفريق. في وقت سابق، تسببت هذه الصراعات في تقديم العديد من الأصوات التي تؤكد على وجود مشاكل كبيرة في الفريق.</p>
-            <p>هذا التطور يُضيف إلى تحديات الفريق الرياضية، مما قد يؤدي إلى انهيار الفريق. في وقت سابق، تسببت هذه التحديات في تقديم العديد من الأصوات التي تؤكد على وجود مشاكل كبيرة في الفريق.</p>
-            <p>وفقًا لنا، فإن فريق "ENB" يتعرض لتحديات كبيرة في الوقت الحالي، مما قد يؤثر على استمرارهم.</p>
-            <p>في الوقت نفسه، يُعد تحديات الفريق الرياضية من العوامل التي قد تؤثر على قرارهم.</p>
-            <p>هذا التطور يُضيف إلى الصراع بين أعضاء الفريق، مما قد يؤدي إلى انهيار الفريق.</p>
-            <p>في الوقت نفسه، تُعد تصرفات الإدارة من العوامل التي قد تؤثر على قرار الفريق.</p>
-            <p>وفقًا لنا، فإن فريق "ENB" يتعرض لتحديات كبيرة في الوقت الحالي، مما قد يؤثر على استمرارهم.</p>
-            <p>هذا التطور يُضيف إلى تحديات الفريق الرياضية، مما قد يؤدي إلى انهيار الفريق.</p>
-            <p>وفقًا لنا، فإن فريق "ENB" يتعرض لتحديات كبيرة في الوقت الحالي، مما قد يؤثر على استمرارهم.</p>
-            <p>هذا التطور يُضيف إلى الصراع بين أعضاء الفريق، مما قد يؤدي إلى انهيار الفريق.</p>
-            <p>في الوقت نفسه، تُعد تصرفات الإدارة من العوامل التي قد تؤثر على قرار الفريق.</p>
-            <p>هذا التطور يُضيف إلى تحديات الفريق الرياضية، مما قد يؤدي إلى انهيار الفريق.</p>
-            <p>في الوقت نفسه، يُعد تحديات الفريق الرياضية من العوامل التي قد تؤثر على قرارهم.</p>
-            <p>وفقًا لنا، فإن فريق "ENB" يتعرض لتحديات كبيرة في الوقت الحالي، مما قد يؤثر على استمرارهم.</p>
-            <p>هذا التطور يُضيف إلى الصراع بين أعضاء الفريق، مما قد يؤدي إلى انهيار الفريق.</p>
-            <p>في الوقت نفسه، تُعد تصرفات الإدارة من العوامل التي قد تؤثر على قرار الفريق.</p>
-            <button class="read-btn" onclick="toggleRead(this)">إقرأ المزيد</button>
-        </div>
-    </div>
-</div>
-<div class="article-card" data-category="Sport">
-    <div class="card-img-wrap">
-        <span class="badge badge-normal">Sport</span>
-        <img src="https://images.unsplash.com/photo-158547000000-0-754faaf9a09d" class="card-img">
-    </div>
-    <div class="card-body">
-        <h3>براند "ENB" يهز العالم في عالم الرياضة</h3>
-        <p>في عالم الرياضة، هناك العديد من الفرق واللاعبين الذين يحظون بشعبية كبيرة، ولكن هناك واحدة من بينهم تبرز أكثر من غيرها، وهي فريق "ENB" الذي يشاركه في مجال الرياضة بشكل كبير، ويشهد هذا الفريق العديد من النجاحات المذهلة على مر السنوات.</p>
-        <div class="full-article">
-            فريق "ENB" هو فريق رياضي عالمي يشاركه في العديد من الرياضات المختلفة، مثل كرة القدم، كرة السلة، تنس الريشة، وغيرها. ويحظى هذا الفريق بشعبية كبيرة في جميع أنحاء العالم، حيث يضم لاعبيًّا من مختلف الدول والثقافات.
-            ويتميز الفريق بكفاءته العالية والتنوع في الرياضات المختلفة، مما يجعله الفريق الأكثر شعبية في هذا المجال. ويتواجد الفريق في العديد من المسابقات والبطولات الدولية، ويشهد هذا الفريق العديد من النجاحات المذهلة على مر السنوات.
-            وفي هذا السياق، يلقي فريق "ENB" الضوء على أهمية الرياضة في الحياة، وتأثيرها الإيجابي على الصحة والروحانية، وكيف يمكن أن تعزز الرياضة من الوحدة والتعاون بين الناس. ويسعى الفريق دائمًا إلى تحسين أدائه وزيادة شكله وتقديم تجربة رياضية ممتعة ومتكاملة للجميع.
-            في نهايةً, يعتبر فريق "ENB" نموذجًا للنجاح والتفوق في عالم الرياضة، ويسعى إلى تحقيق المزيد من النجاحات والتحديات في هذا المجال.
-            ويشهد هذا الفريق العديد من النجاحات المذهلة على مر السنوات، حيث حقق العديد من المراتب والجوائز في مسابقات الرياضة المختلفة.
-            ويضم الفريق لاعبيًّا من مختلف الدول والثقافات، مما يعكس diversiy وتنوعًا في الرياضة.
-            ويسعى الفريق إلى تحسين أدائه وزيادة شكله وتقديم تجربة رياضية ممتعة ومتكاملة للجميع.
-            وفريق "ENB" هو نموذجًا للنجاح والتفوق في عالم الرياضة.
-            ويشهد هذا الفريق العديد من النجاحات المذهلة على مر السنوات.
-            وفي هذا السياق، يلقي الفريق الضوء على أهمية الرياضة في الحياة.
-            ويسعى الفريق إلى تحسين أدائه وزيادة شكله.
-            وتعزز الرياضة من الوحدة والتعاون بين الناس.
-            ويسعى الفريق إلى تحقيق المزيد من النجاحات والتحديات.
-            وفي نهايةً, يعتبر فريق "ENB" نموذجًا للنجاح والتفوق.
-            ويشهد هذا الفريق العديد من النجاحات المذهلة.
-            وفي هذا السياق، يلقي الفريق الضوء على أهمية الرياضة في الحياة.
-            ويسعى الفريق إلى تحسين أدائه وزيادة شكله.
-            وتعزز الرياضة من الوحدة والتعاون بين الناس.
-            ويسعى الفريق إلى تحقيق المزيد من النجاحات والتحديات.
-            وفي نهايةً, يعتبر فريق "ENB" نموذجًا للنجاح والتفوق.
-        </div>
-        <button class="read-btn" onclick="toggleRead(this)">Read More / إقرأ المزيد</button>
-    </div>
-</div>
         </div>
 </div>
 
 <footer>
-    <div class="brand" style="margin-bottom: 20px;">ENB<span>.</span></div>
-    <p>© 2026 ENB - Egypt News Bureau. Quality Journalism Matters.</p>
+    <div class="brand" style="margin-bottom: 15px;">ENB<span>.</span></div>
+    <p>© 2026 Egypt News Bureau. Global News, Egyptian Perspective.</p>
 </footer>
 
 <script>
+// وظيفة إظهار وإخفاء المقال
 function toggleRead(btn) {
     const full = btn.previousElementSibling;
     if (full.style.display === "none" || full.style.display === "") {
@@ -183,32 +113,36 @@ function toggleRead(btn) {
         btn.innerText = "عرض أقل";
     } else {
         full.style.display = "none";
-        btn.innerText = "Read More / إقرأ المزيد";
+        btn.innerText = "إقرأ المزيد";
     }
 }
 
+// فلتر الأقسام
 function filterNews(cat) {
     const cards = document.querySelectorAll('.article-card');
-    const header = document.getElementById('titleHeader');
-    header.innerText = cat === 'all' ? 'Latest News' : cat + " Updates";
-    
+    document.getElementById('sectionTitle').innerText = cat === 'all' ? 'Latest News' : cat + " Updates";
     cards.forEach(card => {
-        if (cat === 'all' || card.getAttribute('data-category') === cat) {
-            card.style.display = 'flex';
-        } else {
-            card.style.display = 'none';
+        card.style.display = (cat === 'all' || card.getAttribute('data-category') === cat) ? 'flex' : 'none';
+    });
+}
+
+// كود "الذكاء البصري" - يربط الصورة بمحتوى العنوان
+function autoFixImages() {
+    document.querySelectorAll('.article-card').forEach(card => {
+        const img = card.querySelector('.card-img');
+        const title = card.querySelector('h3').innerText;
+        
+        // إذا لم يتم تحميل الصورة أو كانت الصورة افتراضية، نبحث عن صورة مطابقة للعنوان
+        if (!img.complete || img.naturalWidth < 50 || img.src.includes('unsplash')) {
+            // استخراج أول كلمتين من العنوان (غالباً ما يكون فيهما الفاعل أو الحدث)
+            const searchTerms = title.split(' ').slice(0, 3).join(','); 
+            img.src = `https://loremflickr.com/800/600/${encodeURIComponent(searchTerms)}?random=${Math.random()}`;
         }
     });
 }
 
-// كود بديل للصور المعطلة لضمان القبول في AdSense
-setInterval(() => {
-    document.querySelectorAll('.card-img').forEach(img => {
-        if (!img.complete || img.naturalWidth === 0) {
-            img.src = "https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=800&q=80";
-        }
-    });
-}, 3000);
+// تشغيل الفحص الذكي للصور كل 3 ثواني
+setInterval(autoFixImages, 3000);
 </script>
 </body>
 </html>
