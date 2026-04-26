@@ -10,24 +10,22 @@
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: 'Cairo', sans-serif; background: var(--bg); color: #1a1a1a; line-height: 1.6; }
         
-        /* هيدر احترافي متناسق */
         header { 
             background: var(--primary); 
             color: white; 
             padding: 30px 15px; 
             display: flex; 
             flex-direction: column; 
-            align-items: center; /* توسيط كل العناصر */
+            align-items: center; 
             text-align: center;
             border-bottom: 4px solid var(--gold);
         }
 
-        /* تحسين شكل اللوجو */
         .logo-container {
             width: 70px;
             height: 70px;
             background: var(--gold);
-            border-radius: 12px; /* حواف دائرية أنيقة */
+            border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -36,103 +34,29 @@
         }
         .logo-svg { width: 45px; height: 45px; fill: var(--primary); }
 
-        header h1 { 
-            font-family: 'Amiri', serif; 
-            font-size: clamp(2rem, 10vw, 3.2rem); 
-            margin: 0; 
-            letter-spacing: -1px;
-        }
-        header p { 
-            font-size: 1.1rem; 
-            color: var(--gold); 
-            font-weight: bold; 
-            margin-top: 5px; 
-        }
+        header h1 { font-family: 'Amiri', serif; font-size: clamp(2.2rem, 10vw, 3.2rem); margin: 0; }
+        header p { font-size: 1.1rem; color: var(--gold); font-weight: bold; margin-top: 5px; }
 
-        /* ناف بار انسيابي */
-        nav { 
-            background: white; 
-            position: sticky; 
-            top: 0; 
-            z-index: 1000; 
-            box-shadow: 0 2px 15px rgba(0,0,0,0.08); 
-            overflow-x: auto; 
-        }
-        .nav-container { 
-            max-width: 1200px; 
-            margin: 0 auto; 
-            display: flex; 
-            justify-content: center; 
-            padding: 5px 0;
-        }
-        nav a { 
-            padding: 12px 18px; 
-            text-decoration: none; 
-            color: var(--primary); 
-            font-weight: 800; 
-            font-size: 0.9rem; 
-            white-space: nowrap;
-        }
-        nav a:hover { color: var(--gold); }
+        nav { background: white; position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 15px rgba(0,0,0,0.08); overflow-x: auto; }
+        .nav-container { max-width: 1200px; margin: 0 auto; display: flex; justify-content: center; padding: 5px 0; }
+        nav a { padding: 12px 18px; text-decoration: none; color: var(--primary); font-weight: 800; font-size: 0.9rem; white-space: nowrap; }
 
-        /* حاوية الأخبار المنسقة */
         .container { max-width: 800px; margin: 30px auto; padding: 0 15px; }
-        .section-title { 
-            font-size: 1.6rem; 
-            color: var(--primary); 
-            border-right: 5px solid var(--gold); 
-            padding-right: 15px; 
-            margin-bottom: 25px;
-            font-family: 'Amiri', serif;
-        }
+        .section-title { font-size: 1.6rem; color: var(--primary); border-right: 5px solid var(--gold); padding-right: 15px; margin-bottom: 25px; font-family: 'Amiri', serif; }
 
-        /* تصميم الكارت البروفيشنال */
-        .news-card { 
-            background: white; 
-            border-radius: 15px; 
-            overflow: hidden; 
-            box-shadow: 0 6px 18px rgba(0,0,0,0.05); 
-            margin-bottom: 30px;
-            border: 1px solid #eee;
-        }
-        .card-img { width: 100%; height: 260px; background: #ececec; position: relative; }
+        .news-card { background: white; border-radius: 15px; overflow: hidden; box-shadow: 0 6px 18px rgba(0,0,0,0.05); margin-bottom: 30px; border: 1px solid #eee; }
+        .card-img { width: 100%; height: 280px; background: #ececec; position: relative; }
         .card-img img { width: 100%; height: 100%; object-fit: cover; }
-        .badge { 
-            position: absolute; 
-            top: 15px; 
-            right: 15px; 
-            background: var(--gold); 
-            color: white; 
-            padding: 5px 12px; 
-            border-radius: 5px; 
-            font-size: 0.75rem; 
-            font-weight: bold; 
-        }
+        .badge { position: absolute; top: 15px; right: 15px; background: var(--gold); color: white; padding: 5px 12px; border-radius: 5px; font-size: 0.75rem; font-weight: bold; z-index: 10; }
 
         .card-body { padding: 25px; text-align: right; }
-        .card-body h3 { 
-            font-size: 1.7rem; 
-            color: var(--primary); 
-            margin-bottom: 12px; 
-            line-height: 1.3; 
-            font-family: 'Amiri', serif;
-        }
+        .card-body h3 { font-size: 1.7rem; color: var(--primary); margin-bottom: 12px; line-height: 1.3; font-family: 'Amiri', serif; }
         .card-body p { color: #555; font-size: 1.05rem; margin-bottom: 20px; }
         
-        .btn-more { 
-            display: block; 
-            text-align: center; 
-            background: var(--primary); 
-            color: white !important; 
-            padding: 12px; 
-            border-radius: 8px; 
-            text-decoration: none; 
-            font-weight: bold; 
-        }
+        .btn-more { display: block; text-align: center; background: var(--primary); color: white !important; padding: 12px; border-radius: 8px; text-decoration: none; font-weight: bold; }
 
-        footer { background: #001226; color: white; padding: 30px; text-align: center; border-top: 5px solid var(--gold); }
+        footer { background: #001226; color: white; padding: 30px; text-align: center; border-top: 5px solid var(--gold); margin-top: 50px; }
 
-        /* ضبط الموبايل */
         @media (max-width: 600px) {
             header { padding: 25px 10px; }
             .card-img { height: 210px; }
@@ -141,53 +65,22 @@
     </style>
 </head>
 <body>
-
 <header>
     <div class="logo-container">
         <svg class="logo-svg" viewBox="0 0 100 100">
-            <rect x="20" y="20" width="60" height="10" />
-            <rect x="70" y="20" width="10" height="60" />
-            <rect x="20" y="70" width="60" height="10" />
-            <rect x="20" y="45" width="40" height="10" />
-            <rect x="20" y="45" width="10" height="35" />
-            <circle cx="48" cy="60" r="5" />
+            <rect x="20" y="20" width="60" height="10" /><rect x="70" y="20" width="10" height="60" />
+            <rect x="20" y="70" width="60" height="10" /><rect x="20" y="45" width="40" height="10" />
+            <rect x="20" y="45" width="10" height="35" /><circle cx="48" cy="60" r="5" />
         </svg>
     </div>
     <h1>الحدث المصري</h1>
     <p>نبض مصر بين يديك</p>
 </header>
-
-<nav>
-    <div class="nav-container">
-        <a href="index.html">الرئيسية</a>
-        <a href="#">أخبار مصر</a>
-        <a href="#">اقتصاد</a>
-        <a href="#">حوادث</a>
-        <a href="#">تكنولوجيا</a>
-        <a href="#">رياضة</a>
-    </div>
-</nav>
-
+<nav><div class="nav-container"><a href="#">الرئيسية</a><a href="#">أخبار عالمية</a><a href="#">اقتصاد</a><a href="#">تكنولوجيا</a><a href="#">رياضة</a></div></nav>
 <div class="container">
     <h2 class="section-title">أحدث التقارير الآن</h2>
-    <div id="newsGrid">
-<div class="news-card">
-    <div class="card-img">
-        <span class="badge">اقتصاد</span>
-        <img src="https://loremflickr.com/1000/600/Economy?random=0.45358797242107096" alt="الحدث">
-    </div>
-    <div class="card-body">
-        <h3>توقعات بزيادة أسعار النفط العالمية بسبب الصراع بين روسيا وإيران</h3>
-        <p>أفادت مصادر اعلامية أن أسعار النفط سوف تصل إلى أعلى مستوى منذ أكثر من 14 عاماً بسبب الصراع بين روسيا وإيران في الخليج الفارسى. ووفقاً لتقديرات المحللين، فإن أسعار النفط سوف تصل إلى 140 دولاراً للبرميل في الربع الاول من العام الجارى، ما يعني زيادة بنسبة 20% عن مستوىها الحالى. هذا التوقعات جاءت في ظل تصعيد التوترات بين روسيا وإيران في الخليج الفارسى، حيث أعلنت روسيا أنها سوف تعمل على حماية مصالحها في المنطقة، بينما أعلنت إيران أنها سوف تعمل على حماية حقوقها في الخليج. ووفقاً لتقديرات المحللين، فإن الصراع بين روسيا وإيران سوف يؤدي إلى زيادة في أسعار النفط العالمية، ما قد يؤثر على الاقتصاد العالمى.</p>
-        <button class="btn-more" onclick="location.reload()">إقرأ المزيد</button>
-    </div>
+    <div id="newsGrid"></div>
 </div>
-        </div>
-</div>
-
-<footer>
-    <p>© 2026 الحدث المصري - جميع الحقوق محفوظة</p>
-</footer>
-
+<footer><p>© 2026 الحدث المصري - جميع الحقوق محفوظة</p></footer>
 </body>
 </html>
