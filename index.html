@@ -4,59 +4,54 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ENB - Egypt News Bureau</title>
-    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@700&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@700&family=Roboto:wght@400;900&display=swap" rel="stylesheet">
     <style>
-        :root { --black: #111; --white: #fff; --gold: #c5a059; --bg: #f9f9f9; }
+        :root { --black: #111; --white: #fff; --gold: #c5a059; --bg: #f9f9f9; --red: #e63946; }
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: 'Roboto', sans-serif; background: var(--bg); color: #333; overflow-x: hidden; }
+        body { font-family: 'Roboto', sans-serif; background: var(--bg); color: #333; padding-top: 130px; } /* مسافة للهيدر الثابت */
         
+        /* الهيدر الجديد */
         header { 
-            background: var(--black); color: var(--white); padding: 15px 5%; 
+            background: var(--black); color: var(--white); padding: 10px 5%; 
             display: flex; justify-content: space-between; align-items: center;
-            border-bottom: 2px solid var(--gold); position: fixed; width: 100%; top: 0; z-index: 2000;
+            border-bottom: 2px solid var(--gold); position: fixed; width: 100%; top: 0; z-index: 3000;
         }
-        
-        .brand { font-family: 'Oswald', sans-serif; font-size: 2.5rem; letter-spacing: -1px; color: var(--white); text-decoration: none; }
+        .brand { font-family: 'Oswald', sans-serif; font-size: 2.2rem; color: var(--white); text-decoration: none; }
         .brand span { color: var(--gold); }
 
-        nav { display: flex; gap: 15px; flex-wrap: wrap; justify-content: flex-end; }
-        nav a { 
-            text-decoration: none; color: rgba(255,255,255,0.7); 
-            font-weight: 700; text-transform: uppercase; font-size: 0.85rem;
-            letter-spacing: 0.5px; transition: 0.3s; padding: 5px 10px;
+        /* شريط عاجل المصلح */
+        .breaking-bar { 
+            background: var(--red); color: white; height: 40px; display: flex; 
+            align-items: center; overflow: hidden; position: fixed; top: 72px; /* تحت الهيدر مباشرة */
+            width: 100%; z-index: 2500; border-bottom: 1px solid var(--white);
         }
-        nav a:hover { color: var(--gold); }
+        .breaking-label { background: #9b1c1c; padding: 0 20px; height: 100%; display: flex; align-items: center; font-weight: 900; z-index: 10; position: absolute; right: 0; font-size: 0.9rem; }
+        .ticker-move { display: inline-block; white-space: nowrap; animation: scroll-news 20s linear infinite; padding-right: 100%; font-weight: 700; }
+        @keyframes scroll-news { 0% { transform: translateX(-100%); } 100% { transform: translateX(100%); } }
 
-        .container { max-width: 1000px; margin: 120px auto 50px auto; padding: 0 20px; }
-        .grid-title { font-size: 1.4rem; color: var(--black); text-transform: uppercase; font-weight: 700; margin-bottom: 30px; display: flex; align-items: center; gap: 15px; }
-        .grid-title::after { content: ''; flex-grow: 1; height: 1px; background: #ccc; }
+        nav { display: flex; gap: 10px; flex-wrap: wrap; }
+        nav a { text-decoration: none; color: rgba(255,255,255,0.7); font-weight: 700; text-transform: uppercase; font-size: 0.8rem; padding: 5px; }
 
-        #newsGrid { direction: rtl; display: flex; flex-direction: column; gap: 30px; }
-        
-        .article-card { 
-            background: var(--white); display: flex; flex-direction: row; 
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05); border-radius: 4px; overflow: hidden; border: 1px solid #eee;
-        }
-        
-        .card-img-wrap { width: 35%; min-width: 250px; position: relative; height: 250px; }
-        .card-img { width: 100%; height: 100%; object-fit: cover; }
-        .category-badge { position: absolute; top: 10px; left: 10px; background: var(--gold); color: var(--black); padding: 4px 10px; font-size: 0.7rem; font-weight: 900; text-transform: uppercase; }
+        .container { max-width: 900px; margin: 0 auto; padding: 20px; }
+        .section-title { font-size: 1.5rem; text-transform: uppercase; font-weight: 900; margin-bottom: 25px; border-left: 5px solid var(--gold); padding-left: 15px; }
 
-        .card-body { padding: 25px; width: 65%; display: flex; flex-direction: column; justify-content: center; }
-        .card-body h3 { font-size: 1.8rem; color: var(--black); margin-bottom: 12px; font-weight: 900; line-height: 1.2; }
-        .card-body p { line-height: 1.7; color: #444; font-size: 1.05rem; }
+        #newsGrid { display: flex; flex-direction: column; gap: 25px; direction: rtl; }
         
-        .full-article { display: none; margin-top: 15px; padding-top: 15px; border-top: 1px dashed #ddd; }
-        .read-btn { 
-            background: var(--black); color: var(--white); text-align: center; padding: 12px; 
-            margin-top: 15px; font-weight: 700; cursor: pointer; border: none; font-size: 0.9rem; width: fit-content; align-self: flex-start;
-        }
+        .article-card { background: var(--white); display: flex; border-radius: 4px; overflow: hidden; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+        .card-img-wrap { width: 30%; min-width: 200px; height: 200px; background: #eee; position: relative; }
+        
+        /* إصلاح الصور: استخدام رابط خارجي موثوق */
+        .card-img { width: 100%; height: 100%; object-fit: cover; display: block; }
+        
+        .card-body { padding: 20px; width: 70%; text-align: right; }
+        .card-body h3 { font-size: 1.5rem; margin-bottom: 10px; color: var(--black); font-weight: 900; }
+        .card-body p { line-height: 1.6; color: #555; }
+        
+        .read-btn { background: var(--black); color: var(--white); padding: 10px 20px; border: none; cursor: pointer; margin-top: 15px; font-weight: 700; }
 
-        footer { background: var(--black); color: var(--white); padding: 40px; text-align: center; border-top: 5px solid var(--gold); }
-        
-        @media (max-width: 768px) {
+        @media (max-width: 600px) {
             .article-card { flex-direction: column; }
-            .card-img-wrap { width: 100%; height: 200px; }
+            .card-img-wrap { width: 100%; height: 180px; }
             .card-body { width: 100%; }
         }
     </style>
@@ -65,8 +60,7 @@
 
 <header>
     <a href="index.html" class="brand">ENB<span>.</span></a>
-    <nav id="mainNav">
-        <a href="#" onclick="filterNews('all')">Latest</a>
+    <nav>
         <a href="#" onclick="filterNews('World')">World</a>
         <a href="#" onclick="filterNews('Business')">Business</a>
         <a href="#" onclick="filterNews('Tech')">Tech</a>
@@ -74,84 +68,32 @@
     </nav>
 </header>
 
-<div class="container">
-    <h2 class="grid-title" id="sectionTitle">Latest Updates</h2>
-    <div id="newsGrid">
-<div class="article-card" data-category="Tech">
-    <div class="card-img-wrap">
-        <span class="category-badge">Tech</span>
-        <img src="https://images.unsplash.com/photo-1585000000456-754faaf9a09d?auto=format&fit=crop&w=800&q=80" class="card-img" alt="News">
-    </div>
-    <div class="card-body">
-        <h3>تريند عالمي: التكنولوجيا المتقدمة تتسارع في كل مكان</h3>
-        <p>فيما يأتي تريند عالمي من غير المسبوق، يبدو أن التكنولوجيا المتقدمة تتسارع في كل مكان على هذا الكوكب. من الابتكارات المذهلة في مجال الذكاء الصناعي إلى التطورات الهائلة في مجال الطاقة الشمسية.</p>
-        <p>في هذا المقال، سنتناول بعض من أبرز التطورات التكنولوجية التي تحدث في الوقت الحالي، والتي تحظى باهتمام كثيف من قبل الباحثين والمتخصصين في هذا المجال.</p>
-        <p>ومن الأمور التي تبرز في هذا السياق، هو أن التكنولوجيا المتقدمة باتت تؤثر بشكل كبير على جميع المجالات، مما يشكل فرصة كبيرة للابتكار والتنمية.</p>
-        <p>في الوقت الحالي، نرى تطورات هائلة في مجال الذكاء الصناعي، حيث يتم تطوير آلاف من البرامج التي يمكن أن تساعد في حل العديد من المشكلات التي يواجهها البشر.</p>
-        <p>وإضافة إلى ذلك، نجد أن الطاقة الشمسية باتت تتطور بسرعة كبيرة، مما يجعلها من بين أهم مصادر الطاقة المتجددة في الوقت الحاضر.</p>
-        <div class="full-article">
-            <p>ومن بين الأمور التي تبرز في هذا السياق، هو أن التكنولوجيا المتقدمة باتت تؤثر بشكل كبير على جميع المجالات، مما يشكل فرصة كبيرة للابتكار والتنمية.</p>
-            <p>ونحن نرى أن التكنولوجيا هي المفتاح لتحقيق التنمية المستدامة، حيث يمكن أن تساعد في حل العديد من المشكلات التي يواجهها البشر.</p>
-            <p>وهذه بعض من أبرز التطورات التكنولوجية التي تحدث في الوقت الحالي، والتي تحظى باهتمام كثيف من قبل الباحثين والمتخصصين في هذا المجال.</p>
-            <p>ومن بين هذه التطورات، نجد أن الذكاء الصناعي باتت تمثل أحدث تطورات التكنولوجيا، حيث يتم تطوير آلاف من البرامج التي يمكن أن تساعد في حل العديد من المشكلات التي يواجهها البشر.</p>
-            <p>وإضافة إلى ذلك، نجد أن الطاقة الشمسية باتت تتطور بسرعة كبيرة، مما يجعلها من بين أهم مصادر الطاقة المتجددة في الوقت الحاضر.</p>
-            <p>ومن بين العوامل التي تساهم في هذا التحول، هي التكنولوجيا المتقدمة، حيث يتم تطوير العديد من التقنيات التي يمكن أن تساعد في حل العديد من المشكلات التي يواجهها البشر.</p>
-            <p>ومن بين هذه التقنيات، نجد أن الذكاء الصناعي، الذي يتم تطويره بسرعة كبيرة، يمكن أن يساعد في حل العديد من المشكلات التي يواجهها البشر.</p>
-            <p>ومن بين هذه المشكلات، نجد أن حل المشكلات البيئية، مثل التغيرات الجوية، الذي يعتبر أحد أكبر التحديات التي يواجهها البشر في الوقت الحاضر.</p>
-            <p>ومن بين الحلول التي يمكن أن تساعد في حل هذه المشكلات، هو تطوير التكنولوجيا المتقدمة، التي يمكن أن تساعد في حل العديد من المشكلات التي يواجهها البشر.</p>
-            <p>ومن بين هذه الحلول، نجد أن الذكاء الصناعي، الذي يتم تطويره بسرعة كبيرة، يمكن أن يساعد في حل العديد من المشكلات التي يواجهها البشر.</p>
-            <p>ومن بين هذه المشكلات، نجد أن حل المشكلات الصحية، مثل سرطان الجلد، الذي يعتبر أحد أكبر التحديات التي يواجهها البشر في الوقت الحاضر.</p>
-            <p>ومن بين الحلول التي يمكن أن تساعد في حل هذه المشكلات، هو تطوير التكنولوجيا المتقدمة، التي يمكن أن تساعد في حل العديد من المشكلات التي يواجهها البشر.</p>
-            <p>ومن بين هذه الحلول، نجد أن الذكاء الصناعي، الذي يتم تطويره بسرعة كبيرة، يمكن أن يساعد في حل العديد من المشكلات التي يواجهها البشر.</p>
-            <p>ومن بين هذه المشكلات، نجد أن حل المشكلات الاقتصادية، مثل البطالة، الذي يعتبر أحد أكبر التحديات التي يواجهها البشر في الوقت الحاضر.</p>
-            <p>ومن بين الحلول التي يمكن أن تساعد في حل هذه المشكلات، هو تطوير التكنولوجيا المتقدمة، التي يمكن أن تساعد في حل العديد من المشكلات التي يواجهها البشر.</p>
-            <p>ومن بين هذه الحلول، نجد أن الذكاء الصناعي، الذي يتم تطويره بسرعة كبيرة، يمكن أن يساعد في حل العديد من المشكلات التي يواجهها البشر.</p>
-            <p>ومن بين هذه المشكلات، نجد أن حل المشكلات الاجتماعية، مثل الفقر، الذي يعتبر أحد أكبر التحديات التي يواجهها البشر في الوقت الحاضر.</p>
-            <p>ومن بين الحلول التي يمكن أن تساعد في حل هذه المشكلات، هو تطوير التكنولوجيا المتقدمة، التي يمكن أن تساعد في حل العديد من المشكلات التي يواجهها البشر.</p>
-            <p>ومن بين هذه الحلول، نجد أن الذكاء الصناعي، الذي يتم تطويره بسرعة كبيرة، يمكن أن يساعد في حل العديد من المشكلات التي يواجهها البشر.</p>
-            <p>ومن بين هذه المشكلات، نجد أن حل المشكلات البيئية، مثل التلوث، الذي يعتبر أحد أكبر التحديات التي يواجهها البشر في الوقت الحاضر.</p>
-            <p>ومن بين الحلول التي يمكن أن تساعد في حل هذه المشكلات، هو تطوير التكنولوجيا المتقدمة، التي يمكن أن تساعد في حل العديد من المشكلات التي يواجهها البشر.</p>
-            <p>ومن بين هذه الحلول، نجد أن الذكاء الصناعي، الذي يتم تطويره بسرعة كبيرة، يمكن أن يساعد في حل العديد من المشكلات التي يواجهها البشر.</p>
-            <p>ومن بين هذه المشكلات، نجد أن حل المشكلات الصحية، مثل الإيدز، الذي يعتبر أحد أكبر التحديات التي يواجهها البشر في الوقت الحاضر.</p>
-            <p>ومن بين الحلول التي يمكن أن تساعد في حل هذه المشكلات، هو تطوير التكنولوجيا المتقدمة، التي يمكن أن تساعد في حل العديد من المشكلات التي يواجهها البشر.</p>
-            <p>ومن بين هذه الحلول، نجد أن الذكاء الصناعي، الذي يتم تطويره بسرعة كبيرة، يمكن أن يساعد في حل العديد من المشكلات التي يواجهها البشر.</p>
-            <p>ومن بين هذه المشكلات، نجد أن حل المشكلات الاقتصادية، مثل الفقر، الذي يعتبر أحد أكبر التحديات التي يواجهها البشر في الوقت الحاضر.</p>
-            <p>ومن بين الحلول التي يمكن أن تساعد في حل هذه المشكلات، هو تطوير التكنولوجيا المتقدمة، التي يمكن أن تساعد في حل العديد من المشكلات التي يواجهها البشر.</p>
-            <p>ومن بين هذه الحلول، نجد أن الذكاء الصناعي، الذي يتم تطويره بسرعة كبيرة، يمكن أن يساعد في حل العديد من المشكلات التي يواجهها البشر.</p>
-        </div>
-        <button class="read-btn" onclick="toggleRead(this)">إقرأ المزيد...</button>
-    </div>
-</div>
-        </div>
+<div class="breaking-bar">
+    <div class="breaking-label">عاجل</div>
+    <div class="ticker-move" id="tickerText">ENB: نتابع معكم أهم التريندات العالمية والتقارير الحصرية لحظة بلحظة...</div>
 </div>
 
-<footer>
-    <p>© 2026 ENB - Egypt News Bureau</p>
-</footer>
+<div class="container">
+    <h2 class="section-title" id="titleHeader">Latest Updates</h2>
+    <div id="newsGrid">
+        </div>
+</div>
 
 <script>
-function toggleRead(btn) {
-    const fullText = btn.previousElementSibling;
-    if (fullText.style.display === "none" || fullText.style.display === "") {
-        fullText.style.display = "block";
-        btn.innerText = "Show Less / عرض أقل";
-    } else {
-        fullText.style.display = "none";
-        btn.innerText = "Read More / إقرأ المزيد";
-    }
-}
+// تعديل رابط الصورة في المقالات المحقونة برمجياً
+setInterval(() => {
+    document.querySelectorAll('.card-img').forEach(img => {
+        if (img.src.includes('undefined') || img.src === "" || img.complete === false) {
+            img.src = "https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=800&q=80";
+        }
+    });
+}, 2000);
 
 function filterNews(cat) {
     const cards = document.querySelectorAll('.article-card');
-    const title = document.getElementById('sectionTitle');
-    title.innerText = cat === 'all' ? 'Latest Updates' : cat + ' News';
-    
+    document.getElementById('titleHeader').innerText = cat + " News";
     cards.forEach(card => {
-        if (cat === 'all' || card.getAttribute('data-category') === cat) {
-            card.style.display = 'flex';
-        } else {
-            card.style.display = 'none';
-        }
+        card.style.display = card.getAttribute('data-category') === cat ? 'flex' : 'none';
     });
 }
 </script>
