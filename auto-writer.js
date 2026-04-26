@@ -8,22 +8,21 @@ async function generate() {
     const randomCat = categories[Math.floor(Math.random() * categories.length)];
 
     const prompt = `اكتب مقالاً إخبارياً حقيقياً لبراند "ENB" في قسم "${randomCat}".
-    شروط هامة جداً:
-    1. ابحث عن تريند حقيقي حالي (شخصية مشهورة أو حدث عالمي ضخم).
-    2. استخرج "اسم الشخصية أو الحدث بالإنجليزي" بدقة بالغة لاستخدامه في البحث عن الصور.
-    3. المقال يجب أن يكون 40 جملة حصرية بدون أي تكرار، بأسلوب صحفي محترف.
-    4. ممنوع كتابة أخبار وهمية عن الموقع نفسه.
-
-    الرد كود HTML فقط بتنسيق دقيق (بدون backticks):
+    المطلوب:
+    1. موضوع عن شخصية مشهورة أو تريند عالمي حقيقي (مثل محمد صلاح، ميسي، إيلون ماسك، الذكاء الاصطناعي).
+    2. استخرج "كلمة مفتاحية واحدة بالإنجليزي" للشخصية أو الموضوع.
+    3. المقال 40 جملة حصرية بدون تكرار.
+    
+    الرد كود HTML فقط:
     <div class="article-card" data-category="${randomCat}">
         <div class="card-img-wrap">
             <span class="badge ${randomCat === 'Trending' ? 'badge-trend' : 'badge-normal'}">${randomCat}</span>
-            <img src="https://loremflickr.com/800/600/[ENGLISH_KEYWORD]?random=1" class="card-img" alt="News Image">
+            <img src="https://loremflickr.com/800/600/[KEYWORD]?random=${Math.random()}" class="card-img" alt="News">
         </div>
         <div class="card-body">
-            <h3>عنوان إخباري حقيقي ومثير</h3>
-            <p>مقدمة المقال (5 جمل دسمة)...</p>
-            <div class="full-article">التفاصيل (35 جملة متنوعة لرفع جودة المحتوى لـ AdSense)...</div>
+            <h3>عنوان الخبر باللغة العربية</h3>
+            <p>مقدمة الخبر (5 جمل)...</p>
+            <div class="full-article">التفاصيل الكاملة (35 جملة دسمة)...</div>
             <button class="read-btn" onclick="toggleRead(this)">إقرأ المزيد</button>
         </div>
     </div>`;
@@ -33,14 +32,14 @@ async function generate() {
             method: 'POST',
             headers: { 'Authorization': `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
             body: JSON.stringify({
-                model: "llama3-8b-8192", // موديل أسرع وأخف
+                model: "llama3-8b-8192", // موديل خفيف عشان ميطلعش Error
                 messages: [{ role: "user", content: prompt }],
-                temperature: 0.8
+                temperature: 0.7
             })
         });
 
         const result = await response.json();
-        if (!result.choices) throw new Error("API Limit or Error");
+        if (!result.choices) throw new Error("API Limit");
 
         let content = result.choices[0].message.content.replace(/```html|```/g, "").trim();
 
@@ -48,18 +47,13 @@ async function generate() {
         const marker = '<div id="newsGrid">';
         
         if (indexContent.includes(marker)) {
+            // إضافة الخبر الجديد في أول القائمة
             indexContent = indexContent.replace(marker, marker + '\n' + content);
-            
-            const titleMatch = content.match(/<h3>(.*?)<\/h3>/);
-            if (titleMatch) {
-                indexContent = indexContent.replace(/id="liveTicker">.*?<\/div>/, `id="liveTicker"> عاجل: ${titleMatch[1]} ... </div>`);
-            }
-
             fs.writeFileSync('index.html', indexContent);
-            console.log("✅ Smart Article Published!");
+            console.log("✅ New Smart Article Added!");
         }
     } catch (e) {
-        console.error("Critical Error: " + e.message);
+        console.error("Error: " + e.message);
         process.exit(1);
     }
 }
