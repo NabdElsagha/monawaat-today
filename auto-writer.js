@@ -7,23 +7,26 @@ async function generate() {
     const categories = ["أخبار عالمية", "اقتصاد", "تكنولوجيا", "رياضة"];
     const randomCategory = categories[Math.floor(Math.random() * categories.length)];
 
-    const prompt = `اكتب مقالاً صحفياً "تريند" لقسم "${randomCategory}" لموقع "الحدث المصري".
-    التعليمات:
-    1. الطول: مقال طويل جداً (حوالي 40 جملة) مقسمة لجزئين.
-    2. الهيكل: أول 5 جمل مقدمة، والباقي (35 جملة) تحليل دسم وواقعي.
-    3. الأمان: شأن دولي فقط، لا سياسة مصرية.
-    4. الصورة: كلمة إنجليزية واحدة مناسبة للخبر.
+    // كلمات دلالية للصور لضمان ظهور صور حقيقية
+    const keywords = ["business", "technology", "city", "news", "world", "trading"];
+    const randomKey = keywords[Math.floor(Math.random() * keywords.length)];
 
-    الرد HTML فقط بهذا الشكل بالضبط:
+    const prompt = `اكتب مقالاً "تريند" جداً ومثيراً لقسم "${randomCategory}" لموقع "الحدث المصري".
+    المحتوى يجب أن يكون:
+    1. تريند عالمي (مثلاً: ثورة الذكاء الاصطناعي، أسعار الذهب، استكشاف الفضاء، كرة القدم العالمية).
+    2. الطول: 30 جملة دسمة (5 جمل مقدمة عاجلة، و 25 جملة تفاصيل المقال).
+    3. الأمان: شأن دولي فقط، ابعد عن السياسة المصرية.
+
+    الرد كود HTML فقط بهذا الشكل:
     <div class="news-card">
-        <div class="card-img-wrapper">
-            <img src="https://loremflickr.com/800/500/{KEYWORD}?sig=${Math.random()}" alt="خبر">
+        <div class="card-img">
+            <img src="https://source.unsplash.com/800x500/?${randomKey}&sig=${Math.random()}" onerror="this.src='https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800'" alt="Trend">
         </div>
-        <div class="card-content">
-            <h3>العنوان هنا</h3>
-            <span>أول 5 جمل هنا...</span>
-            <span class="more-text"> باقي الـ 35 جملة هنا...</span>
-            <button class="btn-read" onclick="toggleReadMore(this)">إقرأ المزيد</button>
+        <div class="card-body">
+            <h3>عنوان التريند المثير هنا</h3>
+            <p>أول 5 جمل (الخبر العاجل) هنا...</p>
+            <div class="more-text">باقي الـ 25 جملة من التحليل المفصل هنا...</div>
+            <button class="btn-more" onclick="toggleReadMore(this)">إقرأ المزيد</button>
         </div>
     </div>`;
 
@@ -34,7 +37,7 @@ async function generate() {
             body: JSON.stringify({
                 model: "llama-3.1-8b-instant",
                 messages: [{ role: "user", content: prompt }],
-                temperature: 0.7
+                temperature: 0.8
             })
         });
 
@@ -46,11 +49,19 @@ async function generate() {
         
         if (indexContent.includes(marker)) {
             indexContent = indexContent.replace(marker, marker + '\n' + content);
+            
+            // تحديث شريط الأخبار العاجلة بالعنوان الجديد (اختياري لجعل الموقع حيوي)
+            const titleMatch = content.match(/<h3>(.*?)<\/h3>/);
+            if (titleMatch) {
+                const newTitle = " عاجل: " + titleMatch[1] + " ... " ;
+                indexContent = indexContent.replace(/id="breakingText">.*?<\/div>/, `id="breakingText">${newTitle}</div>`);
+            }
+
             fs.writeFileSync('index.html', indexContent);
-            console.log("✅ تم التحديث.");
+            console.log("✅ تم التحديث بنجاح بالتريند الجديد.");
         }
     } catch (e) {
-        console.error("خطأ: " + e.message);
+        console.error("Error: " + e.message);
         process.exit(1);
     }
 }
