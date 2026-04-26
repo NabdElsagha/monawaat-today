@@ -6,23 +6,25 @@ async function generate() {
 
     const categories = ["أخبار عالمية", "اقتصاد", "حوادث", "تكنولوجيا", "رياضة"];
     const randomCategory = categories[Math.floor(Math.random() * categories.length)];
-    
-    // كلمات بحث بالإنجليزية لتحسين دقة الصور من Unsplash
-    const imgKeywords = { "أخبار عالمية": "global,news", "اقتصاد": "finance,gold", "حوادث": "police,fire", "تكنولوجيا": "technology,ai", "رياضة": "stadium,football" };
-    const searchWord = imgKeywords[randomCategory];
 
-    const prompt = `اكتب مقالاً صحفياً احترافياً باللغة العربية لقسم "${randomCategory}" لموقع "الحدث المصري".
-    الضوابط: شأن دولي فقط، ممنوع السياسة الداخلية المصرية، أسلوب رصين ودسم (8 جمل).
+    const prompt = `اكتب تقريراً صحفياً تحليلياً ضخماً وواقعياً لقسم "${randomCategory}" لموقع "الحدث المصري".
+    التعليمات المهنية:
+    1. الهدف: محتوى تريند عالمي، دسم، واقعي (60 جملة كاملة).
+    2. الهيكل: أول 5 جمل (مقدمة مثيرة) قبل الزر. باقي الـ 55 جملة (تحليل عميق ومعلومات) بعد الزر.
+    3. الأمان: لا تذكر السياسة المصرية الداخلية نهائياً.
+    4. الصورة: اختر كلمة إنجليزية دقيقة (AI, Crypto, Space, Football, Fire, Economy).
+
     الرد كود HTML فقط:
     <div class="news-card">
         <div class="card-img">
-            <span class="badge">${randomCategory}</span>
-            <img src="https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=1000&q=80&sig=${Math.floor(Math.random() * 999999)}" alt="خبر">
+            <span class="badge">${randomCategory} - تريند</span>
+            <img src="https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=1000&q=80&sig=${Math.floor(Math.random() * 99999)}" alt="تريند">
         </div>
         <div class="card-body">
-            <h3>العنوان الصحفي هنا</h3>
-            <p>محتوى الخبر هنا بأسلوب جذاب...</p>
-            <button class="btn-more" onclick="location.reload()">إقرأ المزيد</button>
+            <h3>عنوان التريند العالمي هنا</h3>
+            <p>أول 5 جمل هنا...</p>
+            <div class="more-text">باقي الـ 55 جملة من التحليل العميق هنا...</div>
+            <button class="btn-more" onclick="toggleReadMore(this)">إقرأ المزيد</button>
         </div>
     </div>`;
 
@@ -31,17 +33,16 @@ async function generate() {
             method: 'POST',
             headers: { 'Authorization': `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
             body: JSON.stringify({
-                model: "llama-3.1-8b-instant",
+                model: "llama-3.1-70b-versatile",
                 messages: [{ role: "user", content: prompt }],
-                temperature: 0.6
+                temperature: 0.7
             })
         });
 
         const result = await response.json();
         let content = result.choices[0].message.content.replace(/```html|```/g, "").trim();
 
-        // تحديث رابط الصورة بكود فريد جداً لضمان عدم التكرار
-        const uniqueID = Date.now() + Math.floor(Math.random() * 1000);
+        const uniqueID = Date.now();
         content = content.replace(/sig=\d+/, `sig=${uniqueID}`);
 
         let indexContent = fs.readFileSync('index.html', 'utf8');
@@ -50,10 +51,8 @@ async function generate() {
         if (indexContent.includes(marker)) {
             indexContent = indexContent.replace(marker, marker + '\n' + content);
             fs.writeFileSync('index.html', indexContent);
-            console.log("✅ تم النشر بصورة فريدة.");
+            console.log("✅ تم النشر بنجاح.");
         }
-    } catch (e) {
-        process.exit(1);
-    }
+    } catch (e) { process.exit(1); }
 }
 generate();
