@@ -1,26 +1,37 @@
-name: Auto Post
+name: Auto News Update
+
 on:
-  workflow_dispatch:
   schedule:
-    - cron: '0 */2 * * *'
+    - cron: '0 * * * *' # يشتغل كل ساعة
+  workflow_dispatch: # عشان تقدر تشغله يدوي
+
+permissions:
+  contents: write # ده السطر اللي بيسمح للأكشن إنه يعدل الملفات
+
 jobs:
   build:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v3
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
         with:
-          node-version: '20'
-      - name: Run Generator
+          node-version: '18'
+
+      - name: Install dependencies
+        run: npm install # لو مفيش ملف package.json مش مشكلة، الكود هيعدي
+
+      - name: Run Auto Writer
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          GEMINI_API_KEY_2: ${{ secrets.GEMINI_API_KEY_2 }}
         run: node auto-writer.js
+
       - name: Commit and Push
         run: |
-          git config --global user.name "github-actions"
-          git config --global user.email "action@github.com"
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git add index.html
-          git commit -m "نشر خبر تلقائي" || exit 0
+          git commit -m "Update News [Auto]" || echo "No changes to commit"
           git push
