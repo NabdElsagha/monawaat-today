@@ -7,25 +7,22 @@ async function generate() {
     const categories = ["أخبار عالمية", "اقتصاد", "تكنولوجيا", "رياضة"];
     const randomCategory = categories[Math.floor(Math.random() * categories.length)];
 
-    // كلمات دلالية للصور لضمان ظهور صور حقيقية
-    const keywords = ["business", "technology", "city", "news", "world", "trading"];
-    const randomKey = keywords[Math.floor(Math.random() * keywords.length)];
+    const prompt = `اكتب مقالاً صحفياً "تريند" ضخماً لقسم "${randomCategory}" لموقع "الحدث المصري".
+    المطلوب:
+    1. موضوع تريند عالمي حقيقي (مثل: تحركات الفيدرالي، صفقات كروية كبرى، اختراعات AI).
+    2. الطول: 35 جملة (5 جمل مقدمة، 30 جملة تفاصيل).
+    3. الهيكل: الـ 30 جملة الإضافية داخل <div class="more-text">.
+    4. الصورة: استخدم رابط Unsplash بكلمة دلالية مناسبة.
 
-    const prompt = `اكتب مقالاً "تريند" جداً ومثيراً لقسم "${randomCategory}" لموقع "الحدث المصري".
-    المحتوى يجب أن يكون:
-    1. تريند عالمي (مثلاً: ثورة الذكاء الاصطناعي، أسعار الذهب، استكشاف الفضاء، كرة القدم العالمية).
-    2. الطول: 30 جملة دسمة (5 جمل مقدمة عاجلة، و 25 جملة تفاصيل المقال).
-    3. الأمان: شأن دولي فقط، ابعد عن السياسة المصرية.
-
-    الرد كود HTML فقط بهذا الشكل:
+    الرد HTML فقط:
     <div class="news-card">
         <div class="card-img">
-            <img src="https://source.unsplash.com/800x500/?${randomKey}&sig=${Math.random()}" onerror="this.src='https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800'" alt="Trend">
+            <img src="https://images.unsplash.com/photo-1585829365234-78d9b692e6ad?auto=format&fit=crop&w=800&q=80" alt="News">
         </div>
         <div class="card-body">
             <h3>عنوان التريند المثير هنا</h3>
-            <p>أول 5 جمل (الخبر العاجل) هنا...</p>
-            <div class="more-text">باقي الـ 25 جملة من التحليل المفصل هنا...</div>
+            <p>أول 5 جمل (المقدمة) هنا...</p>
+            <div class="more-text">باقي الـ 30 جملة من التفاصيل والتحليل هنا...</div>
             <button class="btn-more" onclick="toggleReadMore(this)">إقرأ المزيد</button>
         </div>
     </div>`;
@@ -50,15 +47,14 @@ async function generate() {
         if (indexContent.includes(marker)) {
             indexContent = indexContent.replace(marker, marker + '\n' + content);
             
-            // تحديث شريط الأخبار العاجلة بالعنوان الجديد (اختياري لجعل الموقع حيوي)
+            // تحديث شريط العاجل بالعنوان
             const titleMatch = content.match(/<h3>(.*?)<\/h3>/);
             if (titleMatch) {
-                const newTitle = " عاجل: " + titleMatch[1] + " ... " ;
-                indexContent = indexContent.replace(/id="breakingText">.*?<\/div>/, `id="breakingText">${newTitle}</div>`);
+                indexContent = indexContent.replace(/id="breakingTicker">.*?<\/div>/, `id="breakingTicker">${titleMatch[1]} ... </div>`);
             }
 
             fs.writeFileSync('index.html', indexContent);
-            console.log("✅ تم التحديث بنجاح بالتريند الجديد.");
+            console.log("✅ تم تحديث التريند.");
         }
     } catch (e) {
         console.error("Error: " + e.message);
