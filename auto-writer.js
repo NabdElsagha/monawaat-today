@@ -1,22 +1,22 @@
 const fs = require('fs');
 
 async function generate() {
-    // 1. تعريف قائمة المفاتيح المتاحة عندك في الـ Secrets
+    // ناديت على المفاتيح بأساميها الجديدة (1 و 2)
     const apiKeys = [
-        process.env.GEMINI_API_KEY,      // المفتاح الأول
-        process.env.GEMINI_API_KEY_2,    // المفتاح الثاني (تأكد من إضافته في Secrets)
-        process.env.GEMINI_API_KEY_3     // مفتاح ثالث لو حابب تفتح على البحري
-    ].filter(key => key && key.trim() !== ""); // تصفية المفاتيح الفاضية
+        process.env.GEMINI_API_KEY_1,
+        process.env.GEMINI_API_KEY_2
+    ].filter(key => key && key.trim() !== "");
 
     const url = `https://api.groq.com/openai/v1/chat/completions`;
     const categories = ["Trending", "World", "Business", "Tech", "Lifestyle", "Sport"];
     const randomCat = categories[Math.floor(Math.random() * categories.length)];
 
+    // قللنا عدد الجمل شوية لـ 15 جملة عشان المفاتيح متخلصش بسرعة (Limit)
     const prompt = `اكتب مقالاً إخبارياً حقيقياً لبراند "ENB" في قسم "${randomCat}".
-    المطلوب: تريند حقيقي وشخصية مشهورة.
-    الرد كود HTML فقط (article-card) بـ 40 جملة حصرية.`;
+    الموضوع: تريند عالمي أو شخصية مشهورة حالياً.
+    المحتوى: 15 جملة حصرية واحترافية.
+    الرد كود HTML فقط (article-card) وبدون علامات backticks.`;
 
-    // 2. محاولة تشغيل المفاتيح واحد ورا التاني لو حصل خطأ
     for (let i = 0; i < apiKeys.length; i++) {
         const currentKey = apiKeys[i].trim();
         console.log(`🔄 Trying API Key #${i + 1}...`);
@@ -37,29 +37,27 @@ async function generate() {
 
             const result = await response.json();
 
-            // لو الـ API شغال تمام
             if (result.choices && result.choices.length > 0) {
                 let content = result.choices[0].message.content.replace(/```html|```/g, "").trim();
                 let indexContent = fs.readFileSync('index.html', 'utf8');
                 const marker = '<div id="newsGrid">';
                 
                 if (indexContent.includes(marker)) {
+                    // حقن الخبر الجديد
                     indexContent = indexContent.replace(marker, marker + '\n' + content);
                     fs.writeFileSync('index.html', indexContent);
-                    console.log(`✅ Success with Key #${i + 1}! Article Added.`);
-                    return; // نخرج من الدالة بعد النجاح
+                    console.log(`✅ Success! Key #${i + 1} worked like a charm.`);
+                    return; 
                 }
             } else {
-                console.warn(`⚠️ Key #${i + 1} hit a limit or returned no results.`);
+                console.warn(`⚠️ Key #${i + 1} is exhausted (Limit). Trying next...`);
             }
         } catch (e) {
             console.error(`❌ Error with Key #${i + 1}: ${e.message}`);
         }
-
-        // لو وصلنا لهنا معناه المفتاح ده فشل، الكود هيكمل للفة اللي بعدها ويجرب المفتاح التالي
     }
 
-    console.error("🚫 All API Keys failed. Please check your limits or keys.");
+    console.error("🚫 All keys (1 & 2) failed. Check your Groq Dashboard.");
     process.exit(1);
 }
 
