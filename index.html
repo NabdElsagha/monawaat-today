@@ -3,72 +3,38 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ENB - Egypt News Bureau | Global Perspective</title>
+    <title>ENB - Egypt News Bureau</title>
     <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@700&family=Roboto:wght@400;900&display=swap" rel="stylesheet">
     <style>
         :root { --black: #111; --white: #fff; --gold: #c5a059; --bg: #f9f9f9; --red: #e63946; --trend: #ff4757; }
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: 'Roboto', sans-serif; background: var(--bg); color: #333; padding-top: 140px; }
-        
-        /* الهيدر الثابت */
-        header { 
-            background: var(--black); color: var(--white); padding: 10px 5%; 
-            display: flex; justify-content: space-between; align-items: center;
-            border-bottom: 2px solid var(--gold); position: fixed; width: 100%; top: 0; z-index: 3000;
-        }
+        header { background: var(--black); color: var(--white); padding: 10px 5%; display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--gold); position: fixed; width: 100%; top: 0; z-index: 3000; }
         .brand { font-family: 'Oswald', sans-serif; font-size: 2.2rem; color: var(--white); text-decoration: none; }
         .brand span { color: var(--gold); }
-
-        /* شريط عاجل المثبت */
-        .breaking-bar { 
-            background: var(--red); color: white; height: 40px; display: flex; 
-            align-items: center; overflow: hidden; position: fixed; top: 72px; 
-            width: 100%; z-index: 2500; border-bottom: 1px solid rgba(255,255,255,0.2);
-        }
+        .breaking-bar { background: var(--red); color: white; height: 40px; display: flex; align-items: center; overflow: hidden; position: fixed; top: 72px; width: 100%; z-index: 2500; }
         .breaking-label { background: #9b1c1c; padding: 0 20px; height: 100%; display: flex; align-items: center; font-weight: 900; z-index: 10; position: absolute; right: 0; font-size: 0.85rem; }
         .ticker-move { display: inline-block; white-space: nowrap; animation: scroll-news 25s linear infinite; padding-right: 100%; font-weight: 700; }
         @keyframes scroll-news { 0% { transform: translateX(-100%); } 100% { transform: translateX(100%); } }
-
-        /* القائمة العلوية مرنة للموبايل */
-        nav { display: flex; gap: 12px; overflow-x: auto; white-space: nowrap; padding: 5px 0; scrollbar-width: none; }
-        nav::-webkit-scrollbar { display: none; }
-        nav a { text-decoration: none; color: rgba(255,255,255,0.8); font-weight: 700; text-transform: uppercase; font-size: 0.75rem; padding: 5px 10px; transition: 0.3s; border-radius: 4px; }
-        nav a:hover { color: var(--gold); background: rgba(255,255,255,0.1); }
+        nav { display: flex; gap: 12px; overflow-x: auto; white-space: nowrap; }
+        nav a { text-decoration: none; color: rgba(255,255,255,0.8); font-weight: 700; text-transform: uppercase; font-size: 0.75rem; padding: 5px 10px; }
         .trend-btn { color: var(--trend) !important; border: 1px solid var(--trend); }
-
         .container { max-width: 1000px; margin: 0 auto; padding: 20px; min-height: 600px; }
         .section-header { margin-bottom: 35px; border-bottom: 2px solid #ddd; padding-bottom: 10px; }
-        .section-title { font-size: 1.4rem; text-transform: uppercase; font-weight: 900; color: var(--black); }
-
-        /* شبكة الأخبار بتنسيق احترافي */
         #newsGrid { display: flex; flex-direction: column; gap: 25px; direction: rtl; }
-        
-        .article-card { background: var(--white); display: flex; border-radius: 4px; overflow: hidden; box-shadow: 0 2px 15px rgba(0,0,0,0.06); border: 1px solid #eee; transition: 0.3s; }
-        .article-card:hover { transform: translateY(-3px); box-shadow: 0 5px 20px rgba(0,0,0,0.1); }
-        
+        .article-card { background: var(--white); display: flex; border-radius: 4px; overflow: hidden; box-shadow: 0 2px 15px rgba(0,0,0,0.06); border: 1px solid #eee; }
         .card-img-wrap { width: 35%; min-width: 280px; height: 280px; background: #eee; position: relative; }
         .card-img { width: 100%; height: 100%; object-fit: cover; display: block; }
-        
         .badge { position: absolute; top: 10px; left: 10px; padding: 5px 12px; font-size: 0.7rem; font-weight: 900; text-transform: uppercase; color: white; z-index: 5; }
         .badge-trend { background: var(--trend); }
         .badge-normal { background: var(--gold); color: black; }
-        
         .card-body { padding: 30px; width: 65%; text-align: right; display: flex; flex-direction: column; justify-content: center; }
-        .card-body h3 { font-size: 1.8rem; margin-bottom: 15px; color: var(--black); font-weight: 900; line-height: 1.2; }
+        .card-body h3 { font-size: 1.8rem; margin-bottom: 15px; color: var(--black); font-weight: 900; }
         .card-body p { line-height: 1.8; color: #444; font-size: 1.1rem; }
-        
         .full-article { display: none; margin-top: 20px; padding-top: 20px; border-top: 1px dashed #ddd; font-size: 1.05rem; color: #555; }
         .read-btn { background: var(--black); color: var(--white); padding: 12px 25px; border: none; cursor: pointer; margin-top: 20px; font-weight: 700; width: fit-content; align-self: flex-start; }
-
         footer { background: var(--black); color: var(--white); padding: 50px 20px; text-align: center; border-top: 5px solid var(--gold); margin-top: 80px; }
-
-        @media (max-width: 768px) {
-            .article-card { flex-direction: column; }
-            .card-img-wrap { width: 100%; height: 220px; }
-            .card-body { width: 100%; }
-            body { padding-top: 160px; }
-            .breaking-bar { top: 82px; }
-        }
+        @media (max-width: 768px) { .article-card { flex-direction: column; } .card-img-wrap { width: 100%; height: 220px; } .card-body { width: 100%; } body { padding-top: 160px; } .breaking-bar { top: 82px; } }
     </style>
 </head>
 <body>
@@ -88,24 +54,17 @@
 
 <div class="breaking-bar">
     <div class="breaking-label">عاجل</div>
-    <div class="ticker-move" id="liveTicker">ENB: نتابع معكم أهم التريندات العالمية والتقارير الحصرية والتحليلات الاقتصادية لحظة بلحظة...</div>
+    <div class="ticker-move" id="liveTicker">ENB: نتابع معكم أهم التريندات العالمية والتقارير الحصرية لحظة بلحظة...</div>
 </div>
 
 <div class="container">
-    <div class="section-header">
-        <h2 class="section-title" id="sectionTitle">Latest News</h2>
-    </div>
-    <div id="newsGrid">
-        </div>
+    <div class="section-header"><h2 class="section-title" id="sectionTitle">Latest News</h2></div>
+    <div id="newsGrid"></div>
 </div>
 
-<footer>
-    <div class="brand" style="margin-bottom: 15px;">ENB<span>.</span></div>
-    <p>© 2026 Egypt News Bureau. Global News, Egyptian Perspective.</p>
-</footer>
+<footer><p>© 2026 ENB - Egypt News Bureau</p></footer>
 
 <script>
-// وظيفة إظهار وإخفاء المقال
 function toggleRead(btn) {
     const full = btn.previousElementSibling;
     if (full.style.display === "none" || full.style.display === "") {
@@ -113,35 +72,24 @@ function toggleRead(btn) {
         btn.innerText = "عرض أقل";
     } else {
         full.style.display = "none";
-        btn.innerText = "إقرأ المزيد";
+        btn.innerText = "Read More / إقرأ المزيد";
     }
 }
-
-// فلتر الأقسام
 function filterNews(cat) {
     const cards = document.querySelectorAll('.article-card');
     document.getElementById('sectionTitle').innerText = cat === 'all' ? 'Latest News' : cat + " Updates";
-    cards.forEach(card => {
-        card.style.display = (cat === 'all' || card.getAttribute('data-category') === cat) ? 'flex' : 'none';
-    });
+    cards.forEach(card => { card.style.display = (cat === 'all' || card.getAttribute('data-category') === cat) ? 'flex' : 'none'; });
 }
-
-// كود "الذكاء البصري" - يربط الصورة بمحتوى العنوان
 function autoFixImages() {
     document.querySelectorAll('.article-card').forEach(card => {
         const img = card.querySelector('.card-img');
         const title = card.querySelector('h3').innerText;
-        
-        // إذا لم يتم تحميل الصورة أو كانت الصورة افتراضية، نبحث عن صورة مطابقة للعنوان
         if (!img.complete || img.naturalWidth < 50 || img.src.includes('unsplash')) {
-            // استخراج أول كلمتين من العنوان (غالباً ما يكون فيهما الفاعل أو الحدث)
-            const searchTerms = title.split(' ').slice(0, 3).join(','); 
+            const searchTerms = title.split(' ').slice(0, 2).join(','); 
             img.src = `https://loremflickr.com/800/600/${encodeURIComponent(searchTerms)}?random=${Math.random()}`;
         }
     });
 }
-
-// تشغيل الفحص الذكي للصور كل 3 ثواني
 setInterval(autoFixImages, 3000);
 </script>
 </body>
