@@ -8,94 +8,97 @@
     <style>
         :root { --primary: #001f3f; --gold: #c5a059; --bg: #f4f7f9; --red: #e63946; }
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: 'Cairo', sans-serif; background: var(--bg); color: #1a1a1a; }
+        body { font-family: 'Cairo', sans-serif; background: var(--bg); color: #1a1a1a; line-height: 1.6; }
         
-        /* الهيدر باللوجو الهندسي الجديد */
-        header { background: var(--primary); color: white; padding: 45px 15px; display: flex; flex-direction: column; align-items: center; text-align: center; }
+        /* الهيدر واللوجو الاحترافي */
+        header { background: var(--primary); color: white; padding: 50px 15px; display: flex; flex-direction: column; align-items: center; text-align: center; border-bottom: 4px solid var(--gold); }
         
-        .logo-box { 
-            width: 100px; height: 100px; background: var(--gold); border-radius: 8px; 
-            display: flex; align-items: center; justify-content: center; margin-bottom: 15px; 
-            box-shadow: 0 6px 25px rgba(0,0,0,0.4); border: 2px solid #fff;
+        .logo-wrapper { 
+            width: 110px; height: 110px; background: var(--gold); border-radius: 5px; 
+            display: flex; align-items: center; justify-content: center; margin-bottom: 20px; 
+            box-shadow: 0 8px 30px rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.3);
         }
 
-        /* رسم الحرف الكوفي الهندسي بالظبط كما في الصورة */
-        .logo-box svg { width: 75px; height: 75px; fill: var(--primary); }
+        /* رسم الحرف الكوفي المربع الهندسي بدقة */
+        .logo-wrapper svg { width: 85px; height: 85px; }
+        .kufi-path { fill: var(--primary); }
+
+        header h1 { font-family: 'Amiri', serif; font-size: 3.5rem; margin: 0; line-height: 0.9; }
+        header p { font-size: 1.3rem; color: var(--gold); margin-top: 15px; font-weight: 700; letter-spacing: 1px; }
+
+        /* شريط عاجل */
+        .ticker-container { background: var(--red); color: white; height: 50px; display: flex; align-items: center; overflow: hidden; position: relative; border-bottom: 1px solid #fff; }
+        .ticker-label { background: #b91c1c; padding: 0 30px; height: 100%; display: flex; align-items: center; font-weight: 900; z-index: 10; position: absolute; right: 0; box-shadow: 10px 0 20px rgba(0,0,0,0.3); font-size: 1.2rem; }
+        .ticker-text { display: inline-block; white-space: nowrap; animation: marquee-scroll 35s linear infinite; padding-right: 100%; font-weight: 700; font-size: 1.15rem; }
+        @keyframes marquee-scroll { 0% { transform: translateX(-100%); } 100% { transform: translateX(100%); } }
+
+        nav { background: white; position: sticky; top: 0; z-index: 1000; box-shadow: 0 4px 20px rgba(0,0,0,0.1); }
+        .nav-links { max-width: 1200px; margin: 0 auto; display: flex; justify-content: center; padding: 15px; gap: 35px; }
+        nav a { text-decoration: none; color: var(--primary); font-weight: 900; font-size: 1.1rem; transition: 0.3s; }
+        nav a:hover { color: var(--gold); }
+
+        .content-area { max-width: 800px; margin: 45px auto; padding: 0 20px; }
+        .section-head { font-size: 2.4rem; color: var(--primary); border-right: 8px solid var(--gold); padding-right: 20px; margin-bottom: 40px; font-family: 'Amiri', serif; }
+
+        .article-card { background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 15px 45px rgba(0,0,0,0.06); margin-bottom: 55px; border: 1px solid #eee; }
+        .article-img { width: 100%; height: 420px; object-fit: cover; }
+        .article-body { padding: 40px; text-align: right; }
+        .article-body h3 { font-size: 2.6rem; color: var(--primary); margin-bottom: 25px; font-family: 'Amiri', serif; line-height: 1.2; }
+        .article-body p { font-size: 1.2rem; color: #333; line-height: 2; }
         
-        header h1 { font-family: 'Amiri', serif; font-size: 3.2rem; margin: 0; line-height: 1; letter-spacing: -1px; }
-        header p { font-size: 1.2rem; color: var(--gold); margin-top: 12px; font-weight: bold; opacity: 0.9; }
+        .full-text { display: none; margin-top: 25px; padding-top: 25px; border-top: 1px dashed #ddd; color: #555; }
+        .read-btn { display: block; width: 100%; background: var(--primary); color: white; text-align: center; padding: 20px; border-radius: 8px; border: none; margin-top: 35px; font-weight: 900; cursor: pointer; font-size: 1.2rem; transition: 0.3s; }
+        .read-btn:hover { background: #002d5c; transform: translateY(-2px); }
 
-        /* شريط الأخبار العاجلة */
-        .breaking-news { background: var(--red); color: white; height: 48px; display: flex; align-items: center; overflow: hidden; position: relative; border-top: 3px solid var(--gold); }
-        .breaking-label { background: #b91c1c; padding: 0 25px; height: 100%; display: flex; align-items: center; font-weight: 900; z-index: 10; position: absolute; right: 0; box-shadow: 5px 0 15px rgba(0,0,0,0.3); }
-        .breaking-content { display: inline-block; white-space: nowrap; animation: scroll 30s linear infinite; padding-right: 100%; font-weight: 700; font-size: 1.1rem; }
-        @keyframes scroll { 0% { transform: translateX(-100%); } 100% { transform: translateX(100%); } }
-
-        nav { background: white; position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 15px rgba(0,0,0,0.1); border-bottom: 2px solid var(--gold); }
-        .nav-inner { max-width: 1200px; margin: 0 auto; display: flex; justify-content: center; padding: 15px; gap: 30px; }
-        nav a { text-decoration: none; color: var(--primary); font-weight: 900; font-size: 1.05rem; }
-
-        .container { max-width: 800px; margin: 40px auto; padding: 0 20px; }
-        .main-title { font-size: 2.2rem; color: var(--primary); border-right: 6px solid var(--gold); padding-right: 15px; margin-bottom: 35px; font-family: 'Amiri', serif; }
-
-        .post-card { background: white; border-radius: 15px; overflow: hidden; box-shadow: 0 12px 35px rgba(0,0,0,0.08); margin-bottom: 50px; border: 1px solid #eee; }
-        .post-img { width: 100%; height: 400px; object-fit: cover; background: #ddd; }
-        .post-body { padding: 35px; text-align: right; }
-        .post-body h3 { font-size: 2.4rem; color: var(--primary); margin-bottom: 20px; font-family: 'Amiri', serif; line-height: 1.3; }
-        .post-body p { line-height: 1.9; font-size: 1.15rem; color: #333; }
-        
-        .read-more { display: none; margin-top: 25px; padding-top: 25px; border-top: 1px dashed #ccc; }
-        .toggle-btn { display: block; width: 100%; background: var(--primary); color: white; text-align: center; padding: 18px; border-radius: 10px; border: none; margin-top: 30px; font-weight: 900; cursor: pointer; font-size: 1.1rem; }
-
-        footer { background: #000d1a; color: white; padding: 50px; text-align: center; border-top: 6px solid var(--gold); margin-top: 80px; }
+        footer { background: #000a14; color: white; padding: 60px 20px; text-align: center; border-top: 8px solid var(--gold); margin-top: 100px; }
     </style>
 </head>
 <body>
 
 <header>
-    <div class="logo-box">
+    <div class="logo-wrapper">
         <svg viewBox="0 0 100 100">
-            <path d="M20 20h60v20h-10v-10h-40v30h40v-10h-20v-10h30v30h-60v-50z M40 50h10v10h-10z"/>
-            <rect x="20" y="20" width="10" height="10" fill="var(--primary)"/>
-            <rect x="35" y="20" width="10" height="10" fill="var(--primary)"/>
+            <rect x="20" y="15" width="12" height="12" class="kufi-path"/>
+            <rect x="37" y="15" width="12" height="12" class="kufi-path"/>
+            <path class="kufi-path" d="M20 35h60v50H20V55h45v15H35v-5h20V45H20z"/>
         </svg>
     </div>
     <h1>الحدث المصري</h1>
     <p>نبض مصر بين يديك</p>
 </header>
 
-<div class="breaking-news">
-    <div class="breaking-label">عاجل</div>
-    <div class="breaking-content" id="ticker">تريند اليوم: الحدث المصري يواصل تغطية أهم التقارير العالمية لحظة بلحظة...</div>
+<div class="ticker-container">
+    <div class="ticker-label">عاجل</div>
+    <div class="ticker-text" id="liveTicker">الحدث المصري يغطي أهم التريندات العالمية والتقارير الحصرية على مدار الساعة...</div>
 </div>
 
 <nav>
-    <div class="nav-inner">
+    <div class="nav-links">
         <a href="index.html">الرئيسية</a>
-        <a href="#">أخبار عاجلة</a>
+        <a href="#">أخبار عالمية</a>
+        <a href="#">اقتصاد</a>
         <a href="#">تحقيقات</a>
-        <a href="#">تكنولوجيا</a>
         <a href="#">رياضة</a>
     </div>
 </nav>
 
-<div class="container">
-    <h2 class="main-title">أحدث التقارير والتريندات</h2>
+<div class="content-area">
+    <h2 class="section-head">أحدث التقارير والتريندات</h2>
     <div id="newsGrid"></div>
 </div>
 
 <footer>
-    <p>© 2026 الحدث المصري - جميع الحقوق محفوظة</p>
+    <p>© 2026 جميع الحقوق محفوظة - مؤسسة الحدث المصري الصحفية</p>
 </footer>
 
 <script>
 function toggleContent(btn) {
-    const more = btn.previousElementSibling;
-    if (more.style.display === "none" || more.style.display === "") {
-        more.style.display = "block";
+    const moreText = btn.previousElementSibling;
+    if (moreText.style.display === "none" || moreText.style.display === "") {
+        moreText.style.display = "block";
         btn.innerText = "عرض أقل";
     } else {
-        more.style.display = "none";
+        moreText.style.display = "none";
         btn.innerText = "إقرأ المزيد";
     }
 }
