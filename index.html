@@ -10,7 +10,7 @@
         * { box-sizing: border-box; transition: all 0.3s ease; }
         body { font-family: 'Cairo', sans-serif; background: var(--bg); margin: 0; color: #222; overflow-x: hidden; }
         
-        /* هيدر احترافي مع لوجو على اليمين */
+        /* هيدر احترافي باللوجو الكوفي الجديد */
         header { 
             background: var(--primary); 
             color: white; 
@@ -19,72 +19,86 @@
             align-items: center; 
             justify-content: flex-start; 
             border-bottom: 4px solid var(--gold);
-            gap: 25px;
+            gap: 20px;
         }
 
-        .logo-container {
-            width: 85px;
-            height: 85px;
+        .logo-box {
+            width: 80px;
+            height: 80px;
             background: var(--gold);
-            border-radius: 15px;
+            border-radius: 8px;
             display: flex;
             align-items: center;
             justify-content: center;
             box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-            overflow: hidden;
             flex-shrink: 0;
         }
 
-        .logo-container img { width: 100%; height: 100%; object-fit: cover; }
+        /* تصميم كلمة "حدث" بالخط الكوفي المربع (SVG) */
+        .logo-svg {
+            width: 60px;
+            height: 60px;
+            fill: var(--primary);
+        }
 
         .header-text { text-align: right; }
-        header h1 { font-family: 'Amiri', serif; font-size: clamp(1.8rem, 5vw, 2.8rem); margin: 0; line-height: 1.1; }
-        header p { font-size: 1.1rem; opacity: 0.8; margin: 8px 0 0 0; }
+        header h1 { font-family: 'Amiri', serif; font-size: clamp(1.8rem, 5vw, 2.8rem); margin: 0; line-height: 1.1; color: white; }
+        header p { font-size: 1rem; opacity: 0.8; margin: 5px 0 0 0; color: var(--gold); font-weight: bold; }
 
         /* ناف بار الأقسام */
         nav { background: white; position: sticky; top: 0; z-index: 1000; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
         .nav-container { max-width: 1200px; margin: 0 auto; display: flex; justify-content: center; overflow-x: auto; padding: 10px 0; }
-        nav a { padding: 10px 18px; text-decoration: none; color: var(--primary); font-weight: 700; font-size: 1rem; border-radius: 20px; margin: 0 5px; white-space: nowrap; }
+        nav a { padding: 10px 18px; text-decoration: none; color: var(--primary); font-weight: 700; font-size: 0.95rem; border-radius: 20px; margin: 0 5px; white-space: nowrap; }
         nav a:hover, nav a.active { background: var(--primary); color: var(--gold); }
 
-        .container { max-width: 850px; margin: 50px auto; padding: 0 20px; }
-        .section-header { position: relative; margin-bottom: 40px; padding-right: 20px; border-right: 6px solid var(--gold); }
-        .section-header h2 { font-size: 2.2rem; color: var(--primary); margin: 0; font-family: 'Amiri', serif; }
+        /* حاوية المحتوى */
+        .container { max-width: 850px; margin: 40px auto; padding: 0 20px; }
+        .section-header { margin-bottom: 35px; border-right: 6px solid var(--gold); padding-right: 15px; }
+        .section-header h2 { font-size: 2rem; color: var(--primary); margin: 0; font-family: 'Amiri', serif; }
 
-        .news-grid { display: flex; flex-direction: column; gap: 45px; }
-        .news-card { background: white; border-radius: 15px; overflow: hidden; border: 1px solid #eee; box-shadow: 0 10px 30px rgba(0,0,0,0.03); }
-        
-        .card-img-wrapper { width: 100%; height: 400px; position: relative; overflow: hidden; background: #eee; }
+        /* كارت المقال */
+        .news-grid { display: flex; flex-direction: column; gap: 40px; }
+        .news-card { background: white; border-radius: 12px; overflow: hidden; border: 1px solid #eee; box-shadow: 0 5px 20px rgba(0,0,0,0.05); }
+        .card-img-wrapper { width: 100%; height: 380px; position: relative; background: #f0f0f0; }
         .card-img-wrapper img { width: 100%; height: 100%; object-fit: cover; }
-        .category-badge { position: absolute; top: 20px; right: 20px; background: var(--gold); color: white; padding: 5px 15px; border-radius: 5px; font-weight: bold; font-size: 0.9rem; z-index: 10; }
+        .category-badge { position: absolute; top: 15px; right: 15px; background: var(--gold); color: white; padding: 4px 12px; border-radius: 4px; font-weight: bold; font-size: 0.85rem; z-index: 10; }
 
-        .card-content { padding: 35px; text-align: right; }
-        .card-content h3 { font-size: 2.1rem; color: var(--primary); margin: 0 0 20px 0; line-height: 1.3; font-family: 'Amiri', serif; }
-        .card-content p { font-size: 1.2rem; color: #555; line-height: 1.8; margin-bottom: 25px; }
+        .card-content { padding: 30px; text-align: right; }
+        .card-content h3 { font-size: 2rem; color: var(--primary); margin: 0 0 15px 0; line-height: 1.3; font-family: 'Amiri', serif; }
+        .card-content p { font-size: 1.15rem; color: #444; line-height: 1.8; margin-bottom: 20px; }
         
-        .btn-read { display: inline-block; padding: 12px 30px; background: transparent; color: var(--primary); text-decoration: none; border: 2px solid var(--primary); border-radius: 5px; font-weight: 700; cursor: pointer; }
+        .btn-read { display: inline-block; padding: 10px 25px; border: 2px solid var(--primary); border-radius: 5px; color: var(--primary); text-decoration: none; font-weight: 700; }
+        .btn-read:hover { background: var(--primary); color: var(--gold); }
 
-        footer { background: #001226; color: white; padding: 50px 20px; text-align: center; margin-top: 80px; border-top: 5px solid var(--gold); }
-        .footer-logo { font-family: 'Amiri', serif; font-size: 2.5rem; color: var(--gold); margin-bottom: 10px; display: block; }
+        footer { background: #001226; color: white; padding: 40px 20px; text-align: center; margin-top: 60px; border-top: 4px solid var(--gold); }
 
         @media (max-width: 600px) {
-            header { padding: 20px; gap: 15px; }
-            .logo-container { width: 65px; height: 65px; }
-            .card-img-wrapper { height: 250px; }
-            .card-content h3 { font-size: 1.6rem; }
+            header { padding: 15px; gap: 15px; }
+            .logo-box { width: 65px; height: 65px; }
+            .logo-svg { width: 45px; height: 45px; }
+            .card-img-wrapper { height: 230px; }
         }
     </style>
 </head>
 <body>
+
 <header>
-    <div class="logo-container">
-        <img src="https://via.placeholder.com/150/b08d57/ffffff?text=الحدث" alt="لوجو">
+    <div class="logo-box">
+        <svg class="logo-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+            <rect x="10" y="10" width="80" height="15" />
+            <rect x="75" y="10" width="15" height="80" />
+            <rect x="10" y="75" width="80" height="15" />
+            <rect x="10" y="40" width="50" height="15" />
+            <rect x="10" y="40" width="15" height="50" />
+            <circle cx="45" cy="62" r="7" />
+        </svg>
     </div>
     <div class="header-text">
         <h1>الحدث المصري</h1>
         <p>نبض الواقع بصياغة احترافية</p>
     </div>
 </header>
+
 <nav>
     <div class="nav-container">
         <a href="index.html" class="active">الرئيسية</a>
@@ -96,27 +110,19 @@
         <a href="#">منوعات</a>
     </div>
 </nav>
+
 <div class="container">
     <div class="section-header">
-        <h2>أحدث التقارير الحصرية</h2>
+        <h2>أحدث التقارير الآن</h2>
     </div>
     <div class="news-grid" id="newsGrid">
-<div class="news-card">
-    <div class="card-img-wrapper">
-        <span class="category-badge">سياسة دولية</span>
-        <img src="https://loremflickr.com/1000/600/Global?random=0.9647131920113221" alt="الحدث">
-    </div>
-    <div class="card-content">
-        <h3>الضغط على الولايات المتحدة لاستئناف الانخراط في معاهدة أسلحة نووية</h3>
-        <p>في إطار التوترات المتزايدة بين الولايات المتحدة وإيران، أعلنت الولايات المتحدة استئناف الانخراط في معاهدة أسلحة نووية مع روسيا عام 2018، مما أدى إلى إزعاج العلاقات بين الحكومة الروسية والولايات المتحدة. وفي هذا السياق، يبدو أن الولايات المتحدة قد بدأت في الضغط على الدول الأخرى للاستفادة من معاهدة أسلحة نووية لمنع انتشار السلاح النووي. وقد أعلنت الولايات المتحدة أنها ستستأنف الانخراط في المعاهدة، مع التأكيد على أهمية الحفاظ على الأمن النووي. ومع ذلك، قد يتعرض هذا القرار للمعارضة من قبل الدول الأخرى، التي قد ترى أن هذا القرار يهدد الأمن النووي العالمي. وسيستمر الضغط على الولايات المتحدة للاستفادة من المعاهدة، مع الأخذ في الاعتبار التطورات في العلاقات الدولية. وفي هذه الأثناء، يبدو أن الولايات المتحدة ستستأنف الانخراط في المعاهدة، مع التأكيد على أهمية الحفاظ على الأمن النووي.</p>
-        <button class="btn-read" onclick="location.reload()">إقرأ المزيد</button>
-    </div>
-</div>
         </div>
 </div>
+
 <footer>
-    <span class="footer-logo">الحدث المصري</span>
-    <p>© 2026 جميع الحقوق محفوظة لمؤسسة الحدث المصري</p>
+    <h2 style="font-family: 'Amiri', serif; color: var(--gold); margin-bottom: 10px;">الحدث المصري</h2>
+    <p>© 2026 جميع الحقوق محفوظة لمؤسسة الحدث المصري الصحفية</p>
 </footer>
+
 </body>
 </html>
