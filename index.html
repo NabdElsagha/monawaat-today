@@ -3,70 +3,59 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>الحدث المصري | المصدر الأول</title>
+    <title>الحدث المصري | نبض مصر بين يديك</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&family=Amiri:wght@700&display=swap" rel="stylesheet">
     <style>
         :root { --primary: #001f3f; --gold: #c5a059; --bg: #f8f9fa; }
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: 'Cairo', sans-serif; background: var(--bg); color: #1a1a1a; line-height: 1.6; }
+        body { font-family: 'Cairo', sans-serif; background: var(--bg); color: #1a1a1a; line-height: 1.8; }
         
         header { 
-            background: var(--primary); 
-            color: white; 
-            padding: 30px 15px; 
-            display: flex; 
-            flex-direction: column; 
-            align-items: center; 
-            text-align: center;
-            border-bottom: 4px solid var(--gold);
+            background: var(--primary); color: white; padding: 40px 15px; 
+            display: flex; flex-direction: column; align-items: center; text-align: center;
+            border-bottom: 5px solid var(--gold);
         }
 
-        .logo-container {
-            width: 70px;
-            height: 70px;
-            background: var(--gold);
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 15px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        .logo-box {
+            width: 75px; height: 75px; background: var(--gold); border-radius: 12px;
+            display: flex; align-items: center; justify-content: center; margin-bottom: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
         }
-        .logo-svg { width: 45px; height: 45px; fill: var(--primary); }
+        .logo-svg { width: 50px; height: 50px; fill: var(--primary); }
 
-        header h1 { font-family: 'Amiri', serif; font-size: clamp(2.2rem, 10vw, 3.2rem); margin: 0; }
-        header p { font-size: 1.1rem; color: var(--gold); font-weight: bold; margin-top: 5px; }
+        header h1 { font-family: 'Amiri', serif; font-size: clamp(2.2rem, 10vw, 3.5rem); margin: 0; line-height: 1.1; }
+        header p { font-size: 1.1rem; color: var(--gold); font-weight: bold; margin-top: 10px; }
 
         nav { background: white; position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 15px rgba(0,0,0,0.08); overflow-x: auto; }
         .nav-container { max-width: 1200px; margin: 0 auto; display: flex; justify-content: center; padding: 5px 0; }
-        nav a { padding: 12px 18px; text-decoration: none; color: var(--primary); font-weight: 800; font-size: 0.9rem; white-space: nowrap; }
+        nav a { padding: 12px 18px; text-decoration: none; color: var(--primary); font-weight: 800; font-size: 0.95rem; white-space: nowrap; }
 
-        .container { max-width: 800px; margin: 30px auto; padding: 0 15px; }
-        .section-title { font-size: 1.6rem; color: var(--primary); border-right: 5px solid var(--gold); padding-right: 15px; margin-bottom: 25px; font-family: 'Amiri', serif; }
+        .container { max-width: 800px; margin: 40px auto; padding: 0 15px; }
+        .section-title { font-size: 1.8rem; color: var(--primary); border-right: 6px solid var(--gold); padding-right: 15px; margin-bottom: 30px; font-family: 'Amiri', serif; }
 
-        .news-card { background: white; border-radius: 15px; overflow: hidden; box-shadow: 0 6px 18px rgba(0,0,0,0.05); margin-bottom: 30px; border: 1px solid #eee; }
-        .card-img { width: 100%; height: 280px; background: #ececec; position: relative; }
+        .news-card { background: white; border-radius: 15px; overflow: hidden; box-shadow: 0 6px 20px rgba(0,0,0,0.05); margin-bottom: 40px; border: 1px solid #eee; }
+        .card-img { width: 100%; height: 300px; background: #ececec; position: relative; }
         .card-img img { width: 100%; height: 100%; object-fit: cover; }
-        .badge { position: absolute; top: 15px; right: 15px; background: var(--gold); color: white; padding: 5px 12px; border-radius: 5px; font-size: 0.75rem; font-weight: bold; z-index: 10; }
+        .badge { position: absolute; top: 15px; right: 15px; background: var(--gold); color: white; padding: 6px 15px; border-radius: 5px; font-size: 0.8rem; font-weight: bold; z-index: 10; }
 
-        .card-body { padding: 25px; text-align: right; }
-        .card-body h3 { font-size: 1.7rem; color: var(--primary); margin-bottom: 12px; line-height: 1.3; font-family: 'Amiri', serif; }
-        .card-body p { color: #555; font-size: 1.05rem; margin-bottom: 20px; }
+        .card-body { padding: 30px; text-align: right; }
+        .card-body h3 { font-size: 1.9rem; color: var(--primary); margin-bottom: 15px; line-height: 1.4; font-family: 'Amiri', serif; }
         
-        .btn-more { display: block; text-align: center; background: var(--primary); color: white !important; padding: 12px; border-radius: 8px; text-decoration: none; font-weight: bold; }
+        .more-text { display: none; margin-top: 10px; border-top: 1px dashed #ddd; padding-top: 15px; color: #444; }
+        .btn-more { display: block; width: 100%; text-align: center; background: var(--primary); color: white !important; padding: 14px; border-radius: 8px; border: none; margin-top: 20px; font-weight: bold; cursor: pointer; }
 
-        footer { background: #001226; color: white; padding: 30px; text-align: center; border-top: 5px solid var(--gold); margin-top: 50px; }
+        footer { background: #001226; color: white; padding: 40px 20px; text-align: center; border-top: 5px solid var(--gold); margin-top: 60px; }
 
         @media (max-width: 600px) {
-            header { padding: 25px 10px; }
-            .card-img { height: 210px; }
+            header { padding: 30px 10px; }
+            .card-img { height: 220px; }
             .nav-container { justify-content: flex-start; padding-left: 15px; }
         }
     </style>
 </head>
 <body>
 <header>
-    <div class="logo-container">
+    <div class="logo-box">
         <svg class="logo-svg" viewBox="0 0 100 100">
             <rect x="20" y="20" width="60" height="10" /><rect x="70" y="20" width="10" height="60" />
             <rect x="20" y="70" width="60" height="10" /><rect x="20" y="45" width="40" height="10" />
@@ -76,22 +65,25 @@
     <h1>الحدث المصري</h1>
     <p>نبض مصر بين يديك</p>
 </header>
-<nav><div class="nav-container"><a href="#">الرئيسية</a><a href="#">أخبار عالمية</a><a href="#">اقتصاد</a><a href="#">تكنولوجيا</a><a href="#">رياضة</a></div></nav>
+<nav><div class="nav-container"><a href="index.html">الرئيسية</a><a href="#">أخبار عالمية</a><a href="#">اقتصاد</a><a href="#">تكنولوجيا</a><a href="#">رياضة</a></div></nav>
 <div class="container">
-    <h2 class="section-title">أحدث التقارير الآن</h2>
-    <div id="newsGrid">
-<div class="news-card">
-    <div class="card-img">
-        <span class="badge">رياضة</span>
-        <img src="https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=1000&q=80&sig=1777195389251" alt="خبر">
-    </div>
-    <div class="card-body">
-        <h3>تيتو على وشك مغادرة مانشستر يونايتد</h3>
-        <p>أعلنت مانشستر يونايتد، النادي الإنجليزي، أن رئيس مجلس الإدارة جويل غلازر قرر مغادرة النادي في نهاية الموسم الحالي. وفيما يلي تفاصيل هذا الannouncement. </p>
-        <button class="btn-more" onclick="location.reload()">إقرأ المزيد</button>
-    </div>
-</div></div>
+    <h2 class="section-title">أحدث التقارير والتريندات</h2>
+    <div id="newsGrid"></div>
 </div>
 <footer><p>© 2026 الحدث المصري - جميع الحقوق محفوظة</p></footer>
+<script>
+function toggleReadMore(btn) {
+    const moreText = btn.previousElementSibling;
+    if (moreText.style.display === "none" || moreText.style.display === "") {
+        moreText.style.display = "block";
+        btn.innerText = "عرض أقل";
+        btn.style.background = "#666";
+    } else {
+        moreText.style.display = "none";
+        btn.innerText = "إقرأ المزيد";
+        btn.style.background = "#001f3f";
+    }
+}
+</script>
 </body>
 </html>
