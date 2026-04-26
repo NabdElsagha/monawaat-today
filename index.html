@@ -4,58 +4,155 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>الحدث المصري | المصدر الأول</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&family=Amiri:wght@700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&family=Amiri:wght@700&display=swap" rel="stylesheet">
     <style>
-        :root { --primary: #002b5b; --gold: #c5a059; --bg: #f0f2f5; }
-        * { box-sizing: border-box; }
-        body { font-family: 'Cairo', sans-serif; background: var(--bg); margin: 0; color: #1a1a1a; overflow-x: hidden; }
+        :root { --primary: #001f3f; --gold: #c5a059; --bg: #f8f9fa; }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Cairo', sans-serif; background: var(--bg); color: #1a1a1a; line-height: 1.6; }
         
-        /* هيدر عصري ومضبوط */
-        header { background: var(--primary); color: white; padding: 40px 15px; text-align: center; border-bottom: 5px solid var(--gold); }
-        header h1 { font-family: 'Amiri', serif; font-size: clamp(2.5rem, 8vw, 4rem); margin: 0; }
-        header p { font-size: 1.1rem; opacity: 0.8; margin-top: 8px; }
+        /* هيدر احترافي متناسق */
+        header { 
+            background: var(--primary); 
+            color: white; 
+            padding: 30px 15px; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; /* توسيط كل العناصر */
+            text-align: center;
+            border-bottom: 4px solid var(--gold);
+        }
 
-        /* ناف بار مرن */
-        nav { background: white; position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.1); overflow-x: auto; white-space: nowrap; }
-        .nav-container { max-width: 1200px; margin: 0 auto; display: flex; justify-content: center; padding: 5px; }
-        nav a { padding: 12px 15px; text-decoration: none; color: var(--primary); font-weight: bold; font-size: 0.95rem; transition: 0.3s; }
+        /* تحسين شكل اللوجو */
+        .logo-container {
+            width: 70px;
+            height: 70px;
+            background: var(--gold);
+            border-radius: 12px; /* حواف دائرية أنيقة */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+        .logo-svg { width: 45px; height: 45px; fill: var(--primary); }
+
+        header h1 { 
+            font-family: 'Amiri', serif; 
+            font-size: clamp(2rem, 10vw, 3.2rem); 
+            margin: 0; 
+            letter-spacing: -1px;
+        }
+        header p { 
+            font-size: 1.1rem; 
+            color: var(--gold); 
+            font-weight: bold; 
+            margin-top: 5px; 
+        }
+
+        /* ناف بار انسيابي */
+        nav { 
+            background: white; 
+            position: sticky; 
+            top: 0; 
+            z-index: 1000; 
+            box-shadow: 0 2px 15px rgba(0,0,0,0.08); 
+            overflow-x: auto; 
+        }
+        .nav-container { 
+            max-width: 1200px; 
+            margin: 0 auto; 
+            display: flex; 
+            justify-content: center; 
+            padding: 5px 0;
+        }
+        nav a { 
+            padding: 12px 18px; 
+            text-decoration: none; 
+            color: var(--primary); 
+            font-weight: 800; 
+            font-size: 0.9rem; 
+            white-space: nowrap;
+        }
         nav a:hover { color: var(--gold); }
 
-        /* حاوية المحتوى */
+        /* حاوية الأخبار المنسقة */
         .container { max-width: 800px; margin: 30px auto; padding: 0 15px; }
-        .section-title { font-size: 1.8rem; color: var(--primary); border-right: 5px solid var(--gold); padding-right: 15px; margin-bottom: 30px; }
+        .section-title { 
+            font-size: 1.6rem; 
+            color: var(--primary); 
+            border-right: 5px solid var(--gold); 
+            padding-right: 15px; 
+            margin-bottom: 25px;
+            font-family: 'Amiri', serif;
+        }
 
-        /* شبكة الأخبار */
-        .news-grid { display: flex; flex-direction: column; gap: 35px; }
+        /* تصميم الكارت البروفيشنال */
+        .news-card { 
+            background: white; 
+            border-radius: 15px; 
+            overflow: hidden; 
+            box-shadow: 0 6px 18px rgba(0,0,0,0.05); 
+            margin-bottom: 30px;
+            border: 1px solid #eee;
+        }
+        .card-img { width: 100%; height: 260px; background: #ececec; position: relative; }
+        .card-img img { width: 100%; height: 100%; object-fit: cover; }
+        .badge { 
+            position: absolute; 
+            top: 15px; 
+            right: 15px; 
+            background: var(--gold); 
+            color: white; 
+            padding: 5px 12px; 
+            border-radius: 5px; 
+            font-size: 0.75rem; 
+            font-weight: bold; 
+        }
 
-        /* تصميم الكارت المطور لمنع الترحيل */
-        .news-card { background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.08); display: flex; flex-direction: column; width: 100%; }
+        .card-body { padding: 25px; text-align: right; }
+        .card-body h3 { 
+            font-size: 1.7rem; 
+            color: var(--primary); 
+            margin-bottom: 12px; 
+            line-height: 1.3; 
+            font-family: 'Amiri', serif;
+        }
+        .card-body p { color: #555; font-size: 1.05rem; margin-bottom: 20px; }
         
-        .card-img-wrapper { width: 100%; height: 250px; background: #ddd; }
-        .card-img-wrapper img { width: 100%; height: 100%; object-fit: cover; }
+        .btn-more { 
+            display: block; 
+            text-align: center; 
+            background: var(--primary); 
+            color: white !important; 
+            padding: 12px; 
+            border-radius: 8px; 
+            text-decoration: none; 
+            font-weight: bold; 
+        }
 
-        .card-content { padding: 25px; text-align: right; width: 100%; }
-        .tag { background: var(--gold); color: white; padding: 4px 12px; border-radius: 4px; font-size: 0.8rem; font-weight: bold; display: inline-block; margin-bottom: 15px; }
-        .card-content h3 { font-size: 1.6rem; color: var(--primary); margin: 0 0 15px 0; line-height: 1.4; font-family: 'Amiri', serif; }
-        .card-content p { font-size: 1.05rem; color: #444; line-height: 1.7; margin-bottom: 20px; word-wrap: break-word; }
-        
-        .btn-read { display: inline-block; width: 100%; text-align: center; padding: 12px; background: var(--primary); color: white !important; text-decoration: none; border-radius: 6px; font-weight: bold; transition: 0.3s; border: none; }
-        .btn-read:hover { background: var(--gold); }
+        footer { background: #001226; color: white; padding: 30px; text-align: center; border-top: 5px solid var(--gold); }
 
-        footer { background: #001a35; color: white; padding: 40px 20px; text-align: center; margin-top: 50px; }
-
-        /* تعديلات الموبايل */
+        /* ضبط الموبايل */
         @media (max-width: 600px) {
-            .container { margin: 15px auto; }
-            .card-content h3 { font-size: 1.4rem; }
-            .card-img-wrapper { height: 200px; }
-            .nav-container { justify-content: flex-start; }
+            header { padding: 25px 10px; }
+            .card-img { height: 210px; }
+            .nav-container { justify-content: flex-start; padding-left: 15px; }
         }
     </style>
 </head>
 <body>
 
 <header>
+    <div class="logo-container">
+        <svg class="logo-svg" viewBox="0 0 100 100">
+            <rect x="20" y="20" width="60" height="10" />
+            <rect x="70" y="20" width="10" height="60" />
+            <rect x="20" y="70" width="60" height="10" />
+            <rect x="20" y="45" width="40" height="10" />
+            <rect x="20" y="45" width="10" height="35" />
+            <circle cx="48" cy="60" r="5" />
+        </svg>
+    </div>
     <h1>الحدث المصري</h1>
     <p>نبض مصر بين يديك</p>
 </header>
@@ -64,20 +161,21 @@
     <div class="nav-container">
         <a href="index.html">الرئيسية</a>
         <a href="#">أخبار مصر</a>
-        <a href="#">تكنولوجيا</a>
         <a href="#">اقتصاد</a>
+        <a href="#">حوادث</a>
+        <a href="#">تكنولوجيا</a>
         <a href="#">رياضة</a>
     </div>
 </nav>
 
 <div class="container">
-    <h2 class="section-title">أحدث التقارير</h2>
-    <div class="news-grid" id="newsGrid">
+    <h2 class="section-title">أحدث التقارير الآن</h2>
+    <div id="newsGrid">
         </div>
 </div>
 
 <footer>
-    <p>© 2026 الحدث المصري - هيئة التحرير</p>
+    <p>© 2026 الحدث المصري - جميع الحقوق محفوظة</p>
 </footer>
 
 </body>
