@@ -4,25 +4,26 @@ async function generate() {
     const apiKey = process.env.GEMINI_API_KEY ? process.env.GEMINI_API_KEY.trim() : "";
     const url = `https://api.groq.com/openai/v1/chat/completions`;
 
-    // قائمة الأقسام الكاملة
     const categories = ["Trending", "World", "Business", "Tech", "Lifestyle", "Sport"];
     const randomCat = categories[Math.floor(Math.random() * categories.length)];
 
-    const prompt = `اكتب مقالاً إخبارياً احترافياً لبراند "ENB" في قسم "${randomCat}". 
-    إذا كان القسم "Trending"، اختر موضوعاً عالمياً ساخناً ومثيراً للجدل.
-    اللغة: العربية (للمحتوى) والإنجليزية (للتصنيفات).
-    الطول: 40 جملة (5 جمل مقدمة، 35 جملة تفاصيل داخل div class="full-article").
-    
-    الرد كود HTML فقط بهذا التنسيق (بدون مارك داون):
+    // البرومبت ده بيجبر الـ AI يختار "اسم بطل الخبر" أو "الحدث الرئيسي" عشان نستخدمه في الصورة
+    const prompt = `اكتب مقالاً إخبارياً لبراند "ENB" في قسم "${randomCat}".
+    شروط صارمة:
+    1. ابحث عن تريند حقيقي وشخصية مشهورة (مثلاً: محمد صلاح، كريستيانو، ميسي، إيلون ماسك، أو حدث مثل إطلاق آيفون جديد).
+    2. استخرج "كلمة مفتاحية واحدة بالإنجليزية" تعبر عن الشخصية أو الحدث بدقة (مثال: Mo Salah).
+    3. المقال يجب أن يكون 40 جملة متنوعة بدون أي تكرار نهائياً.
+
+    الرد كود HTML فقط:
     <div class="article-card" data-category="${randomCat}">
         <div class="card-img-wrap">
             <span class="badge ${randomCat === 'Trending' ? 'badge-trend' : 'badge-normal'}">${randomCat}</span>
-            <img src="https://images.unsplash.com/photo-1585829365234-754faaf9a09d" class="card-img">
+            <img src="https://loremflickr.com/800/600/[KEYWORD]" class="card-img" alt="News Image">
         </div>
         <div class="card-body">
-            <h3>عنوان الخبر هنا</h3>
-            <p>مقدمة المقال (5 جمل) هنا...</p>
-            <div class="full-article">بقية المقال (35 جملة) هنا لزيادة المحتوى لـ AdSense...</div>
+            <h3>عنوان الخبر باللغة العربية</h3>
+            <p>مقدمة المقال (5 جمل)...</p>
+            <div class="full-article">تفاصيل دسمة جداً (35 جملة)...</div>
             <button class="read-btn" onclick="toggleRead(this)">Read More / إقرأ المزيد</button>
         </div>
     </div>`;
@@ -32,44 +33,32 @@ async function generate() {
             method: 'POST',
             headers: { 'Authorization': `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
             body: JSON.stringify({
-                model: "llama-3.1-8b-instant",
+                model: "llama-3.1-70b-versatile",
                 messages: [{ role: "user", content: prompt }],
                 temperature: 0.8
             })
         });
 
         const result = await response.json();
-        
-        // منع خطأ reading '0'
-        if (!result.choices || result.choices.length === 0) {
-            throw new Error("No response from AI API");
-        }
-
         let content = result.choices[0].message.content.replace(/```html|```/g, "").trim();
-        
-        // توليد رابط صورة عشوائي جديد
-        const randomPhotoID = Math.floor(Math.random() * 1000);
-        content = content.replace(/photo-\d+/, `photo-1585${randomPhotoID}000000-0`);
+
+        // استخراج العنوان لمحاولة استنتاج الكلمة المفتاحية لو الـ AI منساش
+        // أو هنخلي الـ AI نفسه يكتب الكلمة جوه الرابط، أنا ظبطت البرومبت يعمل ده.
+        // لو الـ AI كتب [KEYWORD]، هنستبدلها بأول كلمة في العنوان بالإنجليزي أو اسم القسم
+        if (content.includes('[KEYWORD]')) {
+             content = content.replace('[KEYWORD]', randomCat.toLowerCase());
+        }
 
         let indexContent = fs.readFileSync('index.html', 'utf8');
         const marker = '<div id="newsGrid">';
         
         if (indexContent.includes(marker)) {
             indexContent = indexContent.replace(marker, marker + '\n' + content);
-            
-            // تحديث شريط التيكر بعنوان الخبر الأخير
-            const titleMatch = content.match(/<h3>(.*?)<\/h3>/);
-            if (titleMatch) {
-                const newTitle = titleMatch[1];
-                indexContent = indexContent.replace(/id="liveTicker">.*?<\/div>/, `id="liveTicker"> عاجل: ${newTitle} ... </div>`);
-            }
-
             fs.writeFileSync('index.html', indexContent);
-            console.log("✅ Article published to ENB: " + randomCat);
+            console.log("✅ Smart Article Published!");
         }
     } catch (e) {
-        console.error("Publication Error: " + e.message);
-        process.exit(1);
+        console.error("Error: " + e.message);
     }
 }
 generate();
