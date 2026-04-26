@@ -4,26 +4,24 @@ async function generate() {
     const apiKey = process.env.GEMINI_API_KEY ? process.env.GEMINI_API_KEY.trim() : "";
     const url = `https://api.groq.com/openai/v1/chat/completions`;
 
-    const categories = ["أخبار عالمية", "اقتصاد", "تكنولوجيا", "رياضة"];
-    const randomCategory = categories[Math.floor(Math.random() * categories.length)];
+    const categories = ["World", "Business", "Tech", "Sport"];
+    const randomCat = categories[Math.floor(Math.random() * categories.length)];
 
-    const prompt = `اكتب مقالاً صحفياً "تريند" ضخماً لقسم "${randomCategory}" لموقع "الحدث المصري".
-    المطلوب:
-    1. موضوع تريند عالمي حقيقي (مثل: تحركات الفيدرالي، صفقات كروية كبرى، اختراعات AI).
-    2. الطول: 35 جملة (5 جمل مقدمة، 30 جملة تفاصيل).
-    3. الهيكل: الـ 30 جملة الإضافية داخل <div class="more-text">.
-    4. الصورة: استخدم رابط Unsplash بكلمة دلالية مناسبة.
-
-    الرد HTML فقط:
-    <div class="news-card">
-        <div class="card-img">
-            <img src="https://images.unsplash.com/photo-1585829365234-78d9b692e6ad?auto=format&fit=crop&w=800&q=80" alt="News">
+    const prompt = `اكتب مقالاً إخبارياً حصرياً لبراند "ENB" في قسم "${randomCat}".
+    المحتوى: تريند عالمي مثير وجذاب.
+    الطول: 40 جملة (5 جمل مقدمة، 35 جملة تفاصيل داخل div class="full-article").
+    
+    الرد كود HTML فقط بهذا التنسيق:
+    <div class="article-card" data-category="${randomCat}">
+        <div class="card-img-wrap">
+            <span class="category-badge">${randomCat}</span>
+            <img src="https://images.unsplash.com/photo-1585829365234-754faaf9a09d?auto=format&fit=crop&w=800&q=80" class="card-img" alt="News">
         </div>
         <div class="card-body">
-            <h3>عنوان التريند المثير هنا</h3>
-            <p>أول 5 جمل (المقدمة) هنا...</p>
-            <div class="more-text">باقي الـ 30 جملة من التفاصيل والتحليل هنا...</div>
-            <button class="btn-more" onclick="toggleReadMore(this)">إقرأ المزيد</button>
+            <h3>عنوان الخبر هنا</h3>
+            <p>أول 5 جمل تشويقية هنا...</p>
+            <div class="full-article">باقي الـ 35 جملة هنا لزيادة المحتوى لـ AdSense...</div>
+            <button class="read-btn" onclick="toggleRead(this)">Read More / إقرأ المزيد</button>
         </div>
     </div>`;
 
@@ -34,30 +32,33 @@ async function generate() {
             body: JSON.stringify({
                 model: "llama-3.1-8b-instant",
                 messages: [{ role: "user", content: prompt }],
-                temperature: 0.8
+                temperature: 0.7
             })
         });
 
         const result = await response.json();
+        
+        // إصلاح خطأ الـ undefined (reading '0')
+        if (!result.choices || result.choices.length === 0) {
+            throw new Error("API returned no data");
+        }
+
         let content = result.choices[0].message.content.replace(/```html|```/g, "").trim();
+        
+        // تغيير معرف الصورة لضمان التجديد
+        const randomID = Math.floor(Math.random() * 500);
+        content = content.replace(/photo-\d+/, `photo-${1585000000000 + randomID}`);
 
         let indexContent = fs.readFileSync('index.html', 'utf8');
         const marker = '<div id="newsGrid">';
         
         if (indexContent.includes(marker)) {
             indexContent = indexContent.replace(marker, marker + '\n' + content);
-            
-            // تحديث شريط العاجل بالعنوان
-            const titleMatch = content.match(/<h3>(.*?)<\/h3>/);
-            if (titleMatch) {
-                indexContent = indexContent.replace(/id="breakingTicker">.*?<\/div>/, `id="breakingTicker">${titleMatch[1]} ... </div>`);
-            }
-
             fs.writeFileSync('index.html', indexContent);
-            console.log("✅ تم تحديث التريند.");
+            console.log("✅ News updated successfully for ENB.");
         }
     } catch (e) {
-        console.error("Error: " + e.message);
+        console.error("Critical Error: " + e.message);
         process.exit(1);
     }
 }
