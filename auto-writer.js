@@ -7,22 +7,24 @@ async function generate() {
     const categories = ["Trending", "World", "Business", "Tech", "Lifestyle", "Sport"];
     const randomCat = categories[Math.floor(Math.random() * categories.length)];
 
-    const prompt = `اكتب مقالاً إخبارياً لبراند "ENB" في قسم "${randomCat}".
-    المطلوب: تريند حقيقي وشخصية مشهورة حالياً.
-    المحتوى: 40 جملة متنوعة بدون تكرار (مقدمة + تفاصيل دسمة + خاتمة).
-    اللغة: العربية.
-    
-    الرد كود HTML فقط (ممنوع مارك داون ممنوع backticks):
+    const prompt = `اكتب مقالاً إخبارياً حقيقياً لبراند "ENB" في قسم "${randomCat}".
+    شروط هامة جداً:
+    1. ابحث عن تريند حقيقي حالي (شخصية مشهورة أو حدث عالمي ضخم).
+    2. استخرج "اسم الشخصية أو الحدث بالإنجليزي" بدقة بالغة لاستخدامه في البحث عن الصور.
+    3. المقال يجب أن يكون 40 جملة حصرية بدون أي تكرار، بأسلوب صحفي محترف.
+    4. ممنوع كتابة أخبار وهمية عن الموقع نفسه.
+
+    الرد كود HTML فقط بتنسيق دقيق (بدون backticks):
     <div class="article-card" data-category="${randomCat}">
         <div class="card-img-wrap">
             <span class="badge ${randomCat === 'Trending' ? 'badge-trend' : 'badge-normal'}">${randomCat}</span>
-            <img src="https://loremflickr.com/800/600/${randomCat.toLowerCase()}?random=1" class="card-img" alt="News Image">
+            <img src="https://loremflickr.com/800/600/[ENGLISH_KEYWORD]?random=1" class="card-img" alt="News Image">
         </div>
         <div class="card-body">
-            <h3>عنوان الخبر</h3>
-            <p>مقدمة الخبر (5 جمل)...</p>
-            <div class="full-article">التفاصيل (35 جملة)...</div>
-            <button class="read-btn" onclick="toggleRead(this)">Read More / إقرأ المزيد</button>
+            <h3>عنوان إخباري حقيقي ومثير</h3>
+            <p>مقدمة المقال (5 جمل دسمة)...</p>
+            <div class="full-article">التفاصيل (35 جملة متنوعة لرفع جودة المحتوى لـ AdSense)...</div>
+            <button class="read-btn" onclick="toggleRead(this)">إقرأ المزيد</button>
         </div>
     </div>`;
 
@@ -31,7 +33,7 @@ async function generate() {
             method: 'POST',
             headers: { 'Authorization': `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
             body: JSON.stringify({
-                model: "llama-3.1-70b-versatile",
+                model: "llama3-8b-8192", // موديل أسرع وأخف
                 messages: [{ role: "user", content: prompt }],
                 temperature: 0.8
             })
@@ -46,22 +48,18 @@ async function generate() {
         const marker = '<div id="newsGrid">';
         
         if (indexContent.includes(marker)) {
-            // إضافة الخبر الجديد في بداية الشبكة
             indexContent = indexContent.replace(marker, marker + '\n' + content);
             
-            // تحديث شريط التيكر
             const titleMatch = content.match(/<h3>(.*?)<\/h3>/);
             if (titleMatch) {
                 indexContent = indexContent.replace(/id="liveTicker">.*?<\/div>/, `id="liveTicker"> عاجل: ${titleMatch[1]} ... </div>`);
             }
 
             fs.writeFileSync('index.html', indexContent);
-            console.log("✅ Published: " + randomCat);
-        } else {
-            console.log("❌ Marker not found in index.html");
+            console.log("✅ Smart Article Published!");
         }
     } catch (e) {
-        console.error("Error: " + e.message);
+        console.error("Critical Error: " + e.message);
         process.exit(1);
     }
 }
