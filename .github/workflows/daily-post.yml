@@ -1,37 +1,38 @@
-name: Auto News Update
+name: ENB News Auto Updater
 
 on:
   schedule:
-    - cron: '0 * * * *' # يشتغل كل ساعة
-  workflow_dispatch: # عشان تقدر تشغله يدوي
+    - cron: '0 * * * *' # الكود هيشتغل أوتوماتيك كل ساعة
+  workflow_dispatch: # الخيار ده بيخليك تقدر تشغل الأكشن يدوي في أي وقت
 
 permissions:
-  contents: write # ده السطر اللي بيسمح للأكشن إنه يعدل الملفات
+  contents: write # أهم سطر عشان الأكشن يقدر يضيف الأخبار للموقع
 
 jobs:
-  build:
+  generate-news:
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v3
-      
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '18'
 
-      - name: Install dependencies
-        run: npm install # لو مفيش ملف package.json مش مشكلة، الكود هيعدي
-
-      - name: Run Auto Writer
+      - name: Run Auto Writer Script
         env:
-          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          # هنا ربطنا الـ Secrets اللي إنت عملتها بالكود
+          GEMINI_API_KEY_1: ${{ secrets.GEMINI_API_KEY_1 }}
           GEMINI_API_KEY_2: ${{ secrets.GEMINI_API_KEY_2 }}
         run: node auto-writer.js
 
-      - name: Commit and Push
+      - name: Save and Upload Changes
         run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git config --global user.name "ENB-Bot"
+          git config --global user.email "actions@github.com"
           git add index.html
-          git commit -m "Update News [Auto]" || echo "No changes to commit"
+          # السطر ده عشان لو مفيش أخبار جديدة نزلت الأكشن ميفشلش
+          git commit -m "Update News Feed [Automated]" || echo "No changes to commit"
           git push
