@@ -9,10 +9,12 @@ async function generate() {
 
     const prompt = `اكتب تقريراً صحفياً تحليلياً ضخماً وواقعياً لقسم "${randomCategory}" لموقع "الحدث المصري".
     التعليمات المهنية:
-    1. الهدف: محتوى تريند عالمي، دسم، واقعي (60 جملة كاملة).
-    2. الهيكل: أول 5 جمل (مقدمة مثيرة) قبل الزر. باقي الـ 55 جملة (تحليل عميق ومعلومات) بعد الزر.
-    3. الأمان: لا تذكر السياسة المصرية الداخلية نهائياً.
-    4. الصورة: اختر كلمة إنجليزية دقيقة (AI, Crypto, Space, Football, Fire, Economy).
+    1. الهدف: محتوى تريند عالمي، دسم، وواقعي مكون من 60 جملة كاملة.
+    2. الهيكل: 
+       - أول 5 جمل (مقدمة مثيرة) توضع داخل وسم <p>.
+       - باقي الـ 55 جملة توضع داخل وسم <div class="more-text">.
+    3. الأمان: ممنوع ذكر السياسة المصرية الداخلية نهائياً.
+    4. الصورة: اختر كلمة إنجليزية دقيقة (مثل: AI, Crypto, Stadium).
 
     الرد كود HTML فقط:
     <div class="news-card">
@@ -22,8 +24,8 @@ async function generate() {
         </div>
         <div class="card-body">
             <h3>عنوان التريند العالمي هنا</h3>
-            <p>أول 5 جمل هنا...</p>
-            <div class="more-text">باقي الـ 55 جملة من التحليل العميق هنا...</div>
+            <p>أول 5 جمل من المقال هنا...</p>
+            <div class="more-text">باقي الـ 55 جملة من التحليل العميق والتريند هنا...</div>
             <button class="btn-more" onclick="toggleReadMore(this)">إقرأ المزيد</button>
         </div>
     </div>`;
@@ -31,7 +33,10 @@ async function generate() {
     try {
         const response = await fetch(url, {
             method: 'POST',
-            headers: { 'Authorization': `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
+            headers: { 
+                'Authorization': `Bearer ${apiKey}`, 
+                'Content-Type': 'application/json' 
+            },
             body: JSON.stringify({
                 model: "llama-3.1-70b-versatile",
                 messages: [{ role: "user", content: prompt }],
@@ -42,6 +47,7 @@ async function generate() {
         const result = await response.json();
         let content = result.choices[0].message.content.replace(/```html|```/g, "").trim();
 
+        // عشوائية الصورة
         const uniqueID = Date.now();
         content = content.replace(/sig=\d+/, `sig=${uniqueID}`);
 
@@ -49,10 +55,14 @@ async function generate() {
         const marker = '<div id="newsGrid">';
         
         if (indexContent.includes(marker)) {
+            // إضافة الخبر الجديد تحت الماركر مباشرة
             indexContent = indexContent.replace(marker, marker + '\n' + content);
             fs.writeFileSync('index.html', indexContent);
-            console.log("✅ تم النشر بنجاح.");
+            console.log("✅ تم نشر المقال بنجاح وتحديث الموقع.");
         }
-    } catch (e) { process.exit(1); }
+    } catch (e) {
+        console.error("حدث خطأ:", e.message);
+        process.exit(1);
+    }
 }
 generate();
